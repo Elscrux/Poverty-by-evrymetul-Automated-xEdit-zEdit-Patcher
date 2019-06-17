@@ -338,7 +338,7 @@ begin
 				//Add Items to List and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if not (getSignature(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')) = 'LVLI') then begin
+					if (not (getSignature(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')) = 'LVLI')) or (not Copy(getEditorID(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')), 0, 5) = 'Dummy') then begin
 						lEntry := ebip(rec, 'Leveled List Entries\[' + IntToStr(k) + ']');
 						lLevelList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Level'));
 						lReferenceList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference'));
