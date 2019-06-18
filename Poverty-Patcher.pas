@@ -29,7 +29,7 @@ begin
 	//Loading records
 	//--------------------------------
 	LoadChildRecords('CELL', 'REFR');
-	//LoadChildRecords('WRLD', 'REFR');
+	LoadChildRecords('WRLD', 'REFR');
 	LoadRecords('CONT');
 	LoadRecords('FLOR');
 	LoadRecords('LVLI');
@@ -338,7 +338,7 @@ begin
 				//Add Items to List and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (not (getSignature(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')) = 'LVLI')) or (not Copy(getEditorID(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')), 0, 5) = 'Dummy') then begin
+					if (not (getSignature(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')) = 'LVLI')) and (not (Copy(getEditorID(geev(rec, 'Leveled List Entries\[0]\LVLO\Reference')), 0, 5) = 'Dummy')) then begin
 						lEntry := ebip(rec, 'Leveled List Entries\[' + IntToStr(k) + ']');
 						lLevelList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Level'));
 						lReferenceList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference'));
@@ -379,33 +379,45 @@ begin
 			lCountList.Clear;
 		end
 		else if currentSignature = 'NPC_' then begin
-			nItems := ebip(rec, 'Items');
-			if Assigned(nItems) then begin
-				k := 0;
-				for j := 0 to ElementCount(nItems) - 1 do begin
-					nItem := geev(rec, 'Items\[' + IntToStr(j) + ']\CNTO\Item');
-					nEditorID := getEditorID(nItem);
-					nSignature := getSignature(nItem);
+			if Assigned(ebip(rec, 'Items')) then begin
+				//Add Items to List and delete them
+				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
+					cItem := ebip(rec, 'Items\[0]');
+					cItemsList.Add(geev(rec, 'Items\[0]\CNTO\Item'));
+					cCountsList.Add(geev(rec, 'Items\[0]\CNTO\Count'));
+					Remove(cItem);
+				end;
+				//Create new items and their Leveled List
+				for j := 0 to cItemsList.Count - 1 do begin
+					cNewItem := cItemsList[j];
+					if ContainsText(cNewItem, 'Error: Could not be resolved') then begin
+						errorFormIDs.Add(cNewItem + ' in ' + editorID);
+						Continue;
+					end;
+					cEditorID := getEditorID(cNewItem);
+					nSignature := getSignature(cNewItem);
 					if not ((nSignature = 'KEYM') or (nSignature = 'LVLI') or (nSignature = 'WEAP')) then begin
-						lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + nEditorID);
+						lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + cEditorID);
 						if not Assigned(lvliRecord) then begin
-							lvliRecord := AddLVLI(mxPatchFile, '', nEditorID, nSignature, getFormID(nItem));
-						end
-						seev(rec, 'Items\[' + IntToStr(j) + ']\CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
+							lvliRecord := AddLVLI(mxPatchFile, '', cEditorID, getSignature(cNewItem), getFormID(cNewItem));
+						end;
+						cItem := ElementAssign(ebip(rec, 'Items'), HighInteger, nil, false);
+						seev(cItem, 'CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
+						seev(cItem, 'CNTO\Count', cCountsList[j]);
 					end
 					else begin
-						k := k + 1;
+						cItem := ElementAssign(ebip(rec, 'Items'), HighInteger, nil, false);
+						seev(cItem, 'CNTO\Item', cItemsList[j]);
+						seev(cItem, 'CNTO\Count', cCountsList[j]);
 					end;
-				end;
-				if j + 1 = k then begin
-					Remove(rec);
-					Continue;
 				end;
 			end
 			else begin
 				Remove(rec);
 				Continue;
 			end;
+			cItemsList.Clear;
+			cCountsList.Clear;
 		end
 		else if currentSignature = 'TREE' then begin
 			if Assigned(ebip(rec, 'PFIG')) then begin
