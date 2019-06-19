@@ -9,7 +9,7 @@ var
   i, j, k, lastPercent: integer;
   currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, fIngredient, fEditor, lNewItem, fSignature, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
   rec, lvliRecord, rItemRecord, ItemsListubRecord, cItem, lEntries, lEntry, nItems: IInterface;
-  itemKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackListLVLI: TStringList;
+  referenceKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackListLVLI, blackListREFR: TStringList;
 
 begin
 	//--------------------------------
@@ -20,10 +20,17 @@ begin
 
 	//Name this whatever you like
 	PatchFileByName('Poverty All-in-One Patch.esp');
-
+	
+	//Add Poverty as master
+	AddMasterIfMissing(mxPatchFile, 'Poverty.esp');
+	
+	//Set File Header variables
+	seev(mxPatchFile, 'CNAM', 'Evrymetul and Elscrux');
+	seev(mxPatchFile, 'SNAM', 'Patch for Poverty');
+	
+	SetExclusions('Poverty.esp');
 	SetInclusions('HearthFires.esm');
 	//SetInclusions('Dawnguard.esm');
-	//SetExclusions('Poverty.esp');
 
 	//--------------------------------
 	//Loading records
@@ -35,17 +42,24 @@ begin
 	LoadRecords('LVLI');
 	LoadRecords('NPC_');
 	LoadRecords('TREE');
-	AddMessage('Records loaded');
-
-	CopyRecordsToPatch;
-	seev(mxPatchFile, 'CNAM', 'Evrymetul and Elscrux');
-	seev(mxPatchFile, 'SNAM', 'Patch for Poverty');
 	
-	AddMasterIfMissing(mxPatchFile, 'Poverty.esp');
+	//--------------------------------
+	//MESSAGE: Records loaded
+	//--------------------------------
+	AddMessage('Records loaded');
+	
+	//MXPF: Copy to patch
+	CopyRecordsToPatch;
 
+	//--------------------------------
+	//MESSAGE: Records copied
+	//--------------------------------
 	AddMessage('Records copied to patch');
-
-	itemKeywords := TStringList.Create;
+	
+	//--------------------------------
+	//Creating TStringLists
+	//--------------------------------
+	referenceKeywords := TStringList.Create;
 	failedFormIDs := TStringList.Create;
 	errorFormIDs := TStringList.Create;
 	cItemsList := TStringList.Create;
@@ -54,16 +68,20 @@ begin
 	lReferenceList := TStringList.Create;
 	lCountList := TStringList.Create;
 	blackListLVLI := TStringList.Create;
+	blackListREFR := TStringList.Create;
 
 	//--------------------------------
 	//Get dummys from Skyrim & Poverty
 	//--------------------------------
 	povertyFileLoadOrder := IntToStr(GetLoadOrder(FileByName('Poverty.esp')));
-
+	
+	//ALCH
 	dummyDrink := povertyFileLoadOrder + '01A21D';
 	dummyFood := povertyFileLoadOrder + '01A21E';
 	dummyPotion := '6A07E';
+	//AMMO
 	dummyArrow := '6A0BF';
+	//ARMO
 	dummyAmulet := povertyFileLoadOrder + '014C9A';
 	dummyBoots := '6A0A9';
 	dummyCirclet := povertyFileLoadOrder + '019DD5';
@@ -72,12 +90,17 @@ begin
 	dummyHelmet := '6A0AF';
 	dummyRing := povertyFileLoadOrder + '014C99';
 	dummyShield := '6A0B1';
+	//BOOK
 	dummyBook := 'D7866';
+	//INGR
 	dummyIngredient := povertyFileLoadOrder + '01A017';
+	//MISC
 	dummyClutter := povertyFileLoadOrder + '01A163';
 	dummyResource := povertyFileLoadOrder + '01A153';
 	dummySeptim := povertyFileLoadOrder + '01A119';
+	//SLGM
 	dummySoulGem := '6A0C2';
+	//WEAP
 	dummyBattleaxe := '6A0BB';
 	dummyBow := '6A0BD';
 	dummyDagger := '20163';
@@ -89,15 +112,24 @@ begin
 	dummyWarhammer := '20154';
 	dummyWeapon1H := '6B95F';
 	dummyWeapon2H := '6B95D';
-
+	
+	//--------------------------------
+	//MESSAGE: Number of Records
+	//--------------------------------
 	AddMessage('Patching ' + IntToStr(MaxPatchRecordIndex + 1) + ' Records');
 	AddMessage(' ');
 	
 	//--------------------------------
 	//Blacklists LVLI EditorIDs
-	//Example: blackListLVLI.Add('DLC1RV03HunterArmor');
+	//-------------------------------- 
+	
+	
 	//--------------------------------
-
+	//Blacklists REFR EditorIDs
+	//--------------------------------
+	blackListREFR.Add('DefaultBookShelfBookMarker');
+	
+	
 	lastPercent := 0;
 
 	for i := 0 to MaxPatchRecordIndex do begin
@@ -129,145 +161,109 @@ begin
 		//Process records
 		//--------------------------------
 		if currentSignature = 'REFR' then begin
-			//Check for potential errors
-			if not Assigned(ebip(rec, 'NAME')) then begin
-				Remove(rec);
-				Continue;
-			end;
-
+			
 			//Assign utility variables
 			rName := geev(rec, 'NAME');
 			rSignature := getSignature(rName);
 			rEditorID := getEditorID(rName);
 			rFormID := getFormID(rName);
-
-			//Remove references that are not being patched
-			if rFormID = '000DB0C9' then begin
-				Remove(rec);
-				Continue;
-			end;
-
-			if not hasPovertySignature(rSignature) then begin
-			Remove(rec);
-				Continue;
-			end;
-
-			//Add 'p' + editorID if not assigned
-			lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + rEditorID);
-			if not Assigned(lvliRecord) then begin
-				lvliRecord := AddLVLI(mxPatchFile, '', rEditorID, rFormID);
-			end;
-
-			//Process the reference record
-			if not Assigned(ebip(rec, 'XLIB')) then
-				Add(rec, 'XLIB', true);
-			seev(rec, 'XLIB', HexFormID(lvliRecord));
-
-			//Check for keywords of the name record
-			rItemRecord := RecordByHexFormID(rFormID);
-			for j := 0 to ElementCount(ebip(rItemRecord, 'KWDA')) do begin
-				if IsWinningOverride(rItemRecord) then begin
-					itemKeywords.Add(geev(rItemRecord, 'KWDA\[' + IntToStr(j) + ']'));
-				end
-				else begin
-					itemKeywords.Add(geev(WinningOverride(rItemRecord), 'KWDA\[' + IntToStr(j) + ']'));
-				end;
-			end;
 			
-			if rSignature = 'ALCH' then begin
-				seev(rec, 'NAME', dummyFood);
-			end
-			else if rSignature = 'AMMO' then begin
-				seev(rec, 'NAME', dummyArrow);
-			end
-			else if rSignature = 'BOOK' then begin
-				seev(rec, 'NAME', dummyBook);
-			end
-			else if rSignature = 'INGR' then begin
-				seev(rec, 'NAME', dummyIngredient);
-			end
-			else if rSignature = 'SLGM' then begin
-				seev(rec, 'NAME', dummySoulGem);
-			end
-			else if rSignature = 'ARMO' then begin
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ClothingNecklace [KYWD:0010CD0A]')) then begin
-				seev(rec, 'NAME', dummyAmulet);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ArmorBoots [KYWD:0006C0ED]')) then begin
-				seev(rec, 'NAME', dummyBoots);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ClothingCirclet [KYWD:0010CD08]')) then begin
-				seev(rec, 'NAME', dummyCirclet);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ArmorCuirass [KYWD:0006C0EC]')) then begin
-				seev(rec, 'NAME', dummyCuirass);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ArmorGauntlets [KYWD:0006C0EF]')) then begin
-				seev(rec, 'NAME', dummyGauntlets);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ArmorHelmet [KYWD:0006C0EE]')) then begin
-				seev(rec, 'NAME', dummyHelmet);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ClothingRing [KYWD:0010CD09]')) then begin
-				seev(rec, 'NAME', dummyRing);
-			end
-			else if (rSignature = 'ARMO') and (IsInTStringList(itemKeywords, 'ArmorShield [KYWD:000965B2]')) then begin
-				seev(rec, 'NAME', dummyShield);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeBattleaxe [KYWD:0006D932]')) then begin
-				seev(rec, 'NAME', dummyBattleaxe);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeBow [KYWD:0001E715]')) then begin
-				seev(rec, 'NAME', dummyBow);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeDagger [KYWD:0001E713]')) then begin
-				seev(rec, 'NAME', dummyDagger);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeGreatsword [KYWD:0006D931]')) then begin
-				seev(rec, 'NAME', dummyGreatSword);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeMace [KYWD:0001E714]')) then begin
-				seev(rec, 'NAME', dummyMace);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'ArmorShield [KYWD:000965B2]')) then begin
-				seev(rec, 'NAME', dummyStaff);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeWarAxe [KYWD:0001E712]')) then begin
-				seev(rec, 'NAME', dummyWarAxe);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeWarhammer [KYWD:0006D930]')) then begin
-				seev(rec, 'NAME', dummyWarhammer);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeSword [KYWD:0001E711]')) then begin
-				seev(rec, 'NAME', dummyWeapon1H);
-			end
-			else if (rSignature = 'WEAP') and (IsInTStringList(itemKeywords, 'WeapTypeGreatsword [KYWD:0006D931]')) then begin
-				seev(rec, 'NAME', dummyWeapon2H);
-			end
-			else if rSignature = 'MISC' then begin
-				seev(rec, 'NAME', dummyClutter);
-				if rEditorID = 'Gold001' then begin
-					seev(rec, 'NAME', dummySeptim);
-					Continue;
-				end;
-				for j := 0 to ReferencedByCount(rItemRecord) - 1 do begin
-					if getSignature(geev(ReferencedByIndex(rItemRecord, j), 'Record Header\FormID')) = 'COBJ' then begin
-						seev(rec, 'NAME', dummyResource);
-						Continue;
+			//Check for potential errors and sort out records that shall not be processed
+			if Assigned(ebip(rec, 'NAME')) and hasPovertySignature(rSignature) and (not IsInTStringList(blackListREFR, rEditorID)) then begin
+				
+				//Add poverty LVLI record
+				lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + rEditorID);
+				if not Assigned(lvliRecord) then
+					lvliRecord := AddLVLI(mxPatchFile, '', rEditorID, rFormID);
+				
+				//Add XLIB to reference
+				if not Assigned(ebip(rec, 'XLIB')) then
+					Add(rec, 'XLIB', true);
+				seev(rec, 'XLIB', HexFormID(lvliRecord));
+
+				//Check for keywords of the placed base record
+				rItemRecord := RecordByHexFormID(rFormID);
+				for j := 0 to ElementCount(ebip(rItemRecord, 'KWDA')) do begin
+					if IsWinningOverride(rItemRecord) then begin
+						referenceKeywords.Add(geev(rItemRecord, 'KWDA\[' + IntToStr(j) + ']'));
+					end
+					else begin
+						referenceKeywords.Add(geev(WinningOverride(rItemRecord), 'KWDA\[' + IntToStr(j) + ']'));
 					end;
 				end;
-			end;
-
-			if not (Copy(getEditorID(geev(rec, 'NAME')), 0, 5) = 'Dummy') then begin
-				failedFormIDs.Add(geev(rec, 'Record Header\FormID'));
+				
+				//Change the name
+				Case Pos(rSignature, 'ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP') of
+					1: seev(rec, 'NAME', dummyFood);
+						6: seev(rec, 'NAME', dummyArrow);
+						11: begin
+								for j := 0 to referenceKeywords.Count - 1 do begin
+									Case Pos(referenceKeywords[j], 'ArmorBoots|ArmorCuirass|ArmorGauntlets|ArmorHelmet|ArmorShield|ClothingCirclet|ClothingRing') of
+										1: seev(rec, 'NAME', dummyBoots);
+										12: seev(rec, 'NAME', dummyCuirass);
+										25: seev(rec, 'NAME', dummyGauntlets);
+										40: seev(rec, 'NAME', dummyHelmet);
+										52: seev(rec, 'NAME', dummyShield);
+										64: seev(rec, 'NAME', dummyCirclet);
+										80: seev(rec, 'NAME', dummyRing);
+									end;
+								end;
+							end;
+						16: seev(rec, 'NAME', dummyBook);
+						21: seev(rec, 'NAME', dummyIngredient);
+						26: begin
+								seev(rec, 'NAME', dummyClutter);
+								if rEditorID = 'Gold001' then begin
+									seev(rec, 'NAME', dummySeptim);
+									Continue;
+								end;
+								for j := 0 to ReferencedByCount(rItemRecord) - 1 do begin
+									if getSignature(geev(ReferencedByIndex(rItemRecord, j), 'Record Header\FormID')) = 'COBJ' then begin
+										seev(rec, 'NAME', dummyResource);
+										Continue;
+									end;
+								end;
+							end;
+						31: seev(rec, 'NAME', dummySoulGem);
+						36: begin
+								for j := 0 to referenceKeywords.Count - 1 do begin
+									Case Pos(referenceKeywords[j], 'WeapTypeBattleaxe|WeapTypeBow|WeapTypeDagger|WeapTypeGreatsword|WeapTypeMace|WeapTypeSword|WeapTypeGreatsword|WeapTypeWarAxe|WeapTypeWarhammer|WeapTypeStaff') of
+										1: seev(rec, 'NAME', dummyBattleaxe);
+										19: seev(rec, 'NAME', dummyBow);
+										31: seev(rec, 'NAME', dummyDagger);
+										46: seev(rec, 'NAME', dummyGreatSword);
+										65: seev(rec, 'NAME', dummyMace);
+										78: seev(rec, 'NAME', dummySword);
+										92: seev(rec, 'NAME', dummyGreatSword);
+										111: seev(rec, 'NAME', dummyWarAxe);
+										126: seev(rec, 'NAME', dummyWarhammer);
+										144: seev(rec, 'NAME', dummyStaff);
+									end;
+								end;
+							end;
+						else begin
+							failedFormIDs.Add(geev(rec, 'Record Header\FormID'));
+							Remove(rec);
+							Continue;
+						end;
+				end;
+				
+				//Remove record if it was not successfully processed
+				if not (Copy(getEditorID(geev(rec, 'NAME')), 0, 5) = 'Dummy') then begin
+					failedFormIDs.Add(geev(rec, 'Record Header\FormID'));
+					Remove(rec);
+					Continue;
+				end;
+				referenceKeywords.Clear;
+			end
+			else begin
 				Remove(rec);
 				Continue;
 			end;
-			itemKeywords.Clear;
 		end
 		else if currentSignature = 'CONT' then begin
 			if Assigned(ebip(rec, 'Items')) then begin
+				
 				//Add Items to List and delete them
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					cItem := ebip(rec, 'Items\[0]');
@@ -275,6 +271,7 @@ begin
 					cCountsList.Add(geev(rec, 'Items\[0]\CNTO\Count'));
 					Remove(cItem);
 				end;
+				
 				//Create new items and their Leveled List
 				for j := 0 to cItemsList.Count - 1 do begin
 					cNewItem := cItemsList[j];
@@ -325,6 +322,7 @@ begin
 		else if currentSignature = 'LVLI' then begin
 			lEntries := ebip(rec, 'Leveled List Entries');
 			if Assigned(lEntries) and (not (IsInTStringList(blackListLVLI, editorID))) then begin
+				
 				//Add Items to List and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
@@ -339,6 +337,7 @@ begin
 						k := k + 1;
 					end;
 				end;
+				
 				//Create new items and their Leveled List
 				for j := 0 to lReferenceList.Count - 1 do begin
 					lNewItem := lReferenceList[j];
@@ -349,6 +348,9 @@ begin
 					lEditorID := getEditorID(lNewItem);
 					lSignature := getSignature(lNewItem);
 					if not (lSignature = 'LVLI') then begin
+						if ContainsText(geev(rec, 'EDID'), 'Vendor') and (lEditorID = 'Gold001') then begin
+							lEditorID := lEditorID + 'M';
+						end;
 						lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + lEditorID);
 						if not Assigned(lvliRecord) then begin
 							lvliRecord := AddLVLI(mxPatchFile, '', lEditorID, getFormID(lNewItem));
@@ -552,31 +554,47 @@ begin
 	end
 end;
 
-function AddLVLI(f: IInterface; variant, eid, form: string): IInterface;
+function AddLVLI(f: IInterface; variant, eid, fid: string): IInterface;
 var
 	signature, reference, povertyFileLoadOrder, pAmmo, pArmor, pBook, pIngredient, pClutter, pSoulGem, pWeapon, pFood, pHarvestFoodFlora, pPotion, pResource, pGold, pDrink, pHarvestIngredientsFlora, pHarvestFoodNPC, pHarvestResourceNPC, pAmmoNPC, pMerchantGold, pBookSpell, pHarvestFoodFloraHanging, pHarvestIngredientsNPC, pMineNotInUse, pBugFishNotInUse: string;
-	innerlvli, lvli: IInterface;
+	innerlvli, lvli, itemRecord: IInterface;
 begin
   //Get global value from Poverty
 	povertyFileLoadOrder := IntToStr(GetLoadOrder(FileByName('Poverty.esp')));
-	pAmmo := povertyFileLoadOrder + '000802';
-	pArmor := povertyFileLoadOrder + '005911';
-	pBook := povertyFileLoadOrder + '005912';
-	pIngredient := povertyFileLoadOrder + '005913';
-	pClutter := povertyFileLoadOrder + '005914';
-	pSoulGem := povertyFileLoadOrder + '005915';
-	pWeapon := povertyFileLoadOrder + '005916';
+	//ALCH
+	pHarvestFoodFlora := povertyFileLoadOrder + '00AA19';
 	pFood := povertyFileLoadOrder + '00AA18';
-	pPotion := povertyFileLoadOrder + '00AA1A';
+	//AMMO
+	pAmmo := povertyFileLoadOrder + '000802';
+	//ARMO
+	pArmor := povertyFileLoadOrder + '005911';
+	//BOOK
+	pBook := povertyFileLoadOrder + '005912';
+	//INGR
+	pIngredient := povertyFileLoadOrder + '005913';
+	
+	pHarvestIngredientsFlora := povertyFileLoadOrder + '014CA1';
+	//MISC
+	pClutter := povertyFileLoadOrder + '005914';
 	pResource := povertyFileLoadOrder + '00AA1B';
 	pGold := povertyFileLoadOrder + '00FB1E';
+	pMerchantGold := povertyFileLoadOrder + '01A17F';
+	//SLGM
+	pSoulGem := povertyFileLoadOrder + '005915';
+	//WEAP
+	pWeapon := povertyFileLoadOrder + '005916';
+	
+	//Not used right now
+	pPotion := povertyFileLoadOrder + '00AA1A';
 	pDrink := povertyFileLoadOrder + '014C21';
-	pHarvestFoodFlora := povertyFileLoadOrder + '00AA19';
 	pHarvestFoodFloraHanging := povertyFileLoadOrder + '01A3D7';
-	pHarvestIngredientsFlora := povertyFileLoadOrder + '014CA1';
 	pHarvestFoodNPC := povertyFileLoadOrder + '01A023';
 	pHarvestIngredientsNPC := povertyFileLoadOrder + '01A3DA';
 	pHarvestResourceNPC := povertyFileLoadOrder + '01A162';
+	pAmmoNPC := povertyFileLoadOrder + '01A17E';
+	pBookSpell := povertyFileLoadOrder + '01A21F';
+	pMineNotInUse := povertyFileLoadOrder + '01A44E';
+	pBugFishNotInUse := povertyFileLoadOrder + '01A44F';
 	
 	//Add group record and lvliRecord
 	if not Assigned(GroupBySignature(f, 'LVLI')) then
@@ -597,7 +615,7 @@ begin
 	//Add Leveled List Entry
 	Add(lvli, 'Leveled List Entries', true);
 	seev(lvli, 'Leveled List Entries\[0]\LVLO\Level', '1');
-	seev(lvli, 'Leveled List Entries\[0]\LVLO\Reference', form);
+	seev(lvli, 'Leveled List Entries\[0]\LVLO\Reference', fid);
 	seev(lvli, 'Leveled List Entries\[0]\LVLO\Count', '1');
 	Result := lvli;
 	
@@ -629,7 +647,25 @@ begin
 					seev(lvli, 'LVLG', pIngredient);
 				end;
 			end;
-		26: seev(lvli, 'LVLG', pClutter);
+		26: begin
+				seev(lvli, 'LVLG', pClutter);
+				if eid = 'Gold001' then begin
+					seev(lvli, 'LVLG', pGold);
+					Continue;
+				end;
+				if eid = 'Gold001M' then begin
+					seev(lvli, 'LVLG', pMerchantGold);
+					Continue;
+				end;
+				itemRecord := RecordByHexFormID(fid);
+				//Access violation FIX THAT
+				for j := 0 to ReferencedByCount(itemRecord) - 1 do begin
+					if getSignature(geev(ReferencedByIndex(itemRecord, j), 'Record Header\FormID')) = 'COBJ' then begin
+						seev(lvli, 'LVLG', pResource);
+						Continue;
+					end;
+				end;
+			end;
 		31: seev(lvli, 'LVLG', pSoulGem);
 		36: seev(lvli, 'LVLG', pWeapon);
 	end;
