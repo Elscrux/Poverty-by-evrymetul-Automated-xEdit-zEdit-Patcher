@@ -9,7 +9,7 @@ var
   i, j, k, lastPercent: integer;
   currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, fIngredient, fEditor, lNewItem, fSignature, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
   rec, lvliRecord, rItemRecord, ItemsListubRecord, cItem, lEntries, lEntry, nItems: IInterface;
-  itemKeywords, signatures, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackListLVLI: TStringList;
+  itemKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackListLVLI: TStringList;
 
 begin
 	//--------------------------------
@@ -54,7 +54,6 @@ begin
 	lReferenceList := TStringList.Create;
 	lCountList := TStringList.Create;
 	blackListLVLI := TStringList.Create;
-	signatures := TStringList.Create;
 
 	//--------------------------------
 	//Get dummys from Skyrim & Poverty
@@ -93,15 +92,6 @@ begin
 
 	AddMessage('Patching ' + IntToStr(MaxPatchRecordIndex + 1) + ' Records');
 	AddMessage(' ');
-	
-	signatures.Add('MISC');
-	signatures.Add('ALCH');
-	signatures.Add('INGR');
-	signatures.Add('BOOK');
-	signatures.Add('WEAP');
-	signatures.Add('ARMO');
-	signatures.Add('AMMO');
-	signatures.Add('SLGM');
 	
 	//--------------------------------
 	//Blacklists LVLI EditorIDs
@@ -165,7 +155,7 @@ begin
 			//Add 'p' + editorID if not assigned
 			lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + rEditorID);
 			if not Assigned(lvliRecord) then begin
-				lvliRecord := AddLVLI(mxPatchFile, '', rEditorID, rSignature, rFormID);
+				lvliRecord := AddLVLI(mxPatchFile, '', rEditorID, rFormID);
 			end;
 
 			//Process the reference record
@@ -261,7 +251,7 @@ begin
 					seev(rec, 'NAME', dummySeptim);
 					Continue;
 				end;
-				for j := 0 to ReferencedByCount(rItemRecord) do begin
+				for j := 0 to ReferencedByCount(rItemRecord) - 1 do begin
 					if getSignature(geev(ReferencedByIndex(rItemRecord, j), 'Record Header\FormID')) = 'COBJ' then begin
 						seev(rec, 'NAME', dummyResource);
 						Continue;
@@ -295,7 +285,7 @@ begin
 					cEditorID := getEditorID(cNewItem);
 					lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + cEditorID);
 					if not Assigned(lvliRecord) then begin
-						lvliRecord := AddLVLI(mxPatchFile, '', cEditorID, getSignature(cNewItem), getFormID(cNewItem));
+						lvliRecord := AddLVLI(mxPatchFile, '', cEditorID, getFormID(cNewItem));
 					end;
 					cItem := ElementAssign(ebip(rec, 'Items'), HighInteger, nil, false);
 					seev(cItem, 'CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
@@ -323,7 +313,7 @@ begin
 				end;
 				lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + fEditor);
 				if not Assigned(lvliRecord) then begin
-					lvliRecord := AddLVLI(mxPatchFile, 'FLOR', fEditor, fSignature, fFormID);
+					lvliRecord := AddLVLI(mxPatchFile, 'FLOR', fEditor, fFormID);
 				end;
 				seev(rec, 'PFIG', geev(lvliRecord, 'Record Header\FormID'));
 			end
@@ -361,7 +351,7 @@ begin
 					if not (lSignature = 'LVLI') then begin
 						lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + lEditorID);
 						if not Assigned(lvliRecord) then begin
-							lvliRecord := AddLVLI(mxPatchFile, '', lEditorID, lSignature, getFormID(lNewItem));
+							lvliRecord := AddLVLI(mxPatchFile, '', lEditorID, getFormID(lNewItem));
 						end;
 						lEntry := ElementAssign(lEntries, HighInteger, nil, false);
 						seev(lEntry, 'LVLO\Level', lLevelList[j]);
@@ -399,7 +389,7 @@ begin
 					if not ((nSignature = 'KEYM') or (nSignature = 'LVLI') or (nSignature = 'WEAP')) then begin
 						lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + cEditorID);
 						if not Assigned(lvliRecord) then begin
-							lvliRecord := AddLVLI(mxPatchFile, '', cEditorID, getSignature(cNewItem), getFormID(cNewItem));
+							lvliRecord := AddLVLI(mxPatchFile, '', cEditorID, getFormID(cNewItem));
 						end;
 						cItem := ElementAssign(ebip(rec, 'Items'), HighInteger, nil, false);
 						seev(cItem, 'CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
@@ -433,7 +423,7 @@ begin
 				end;
 				lvliRecord := RecordByEditorIDAllFiles('LVLI', 'p' + tEditorID);
 				if not Assigned(lvliRecord) then begin
-					lvliRecord := AddLVLI(mxPatchFile, 'FLOR', tEditorID, tSignature, tFormID);
+					lvliRecord := AddLVLI(mxPatchFile, 'FLOR', tEditorID, tFormID);
 				end;
 				seev(rec, 'PFIG', geev(lvliRecord, 'Record Header\FormID'));
 			end
@@ -562,59 +552,12 @@ begin
 	end
 end;
 
-function AddLVLI(f: IInterface; variant, eid, sig, form: string): IInterface;
+function AddLVLI(f: IInterface; variant, eid, form: string): IInterface;
 var
-  povertyFileLoadOrder: string;
-  lvli, pAmmo, pArmor, pBook, pIngredient, pClutter, pSoulGem, pWeapon, pFood, pHarvestFoodFlora, pPotion, pResource, pGold, pDrink, pHarvestIngredientsFlora, pHarvestFoodNPC, pHarvestResourceNPC, pAmmoNPC, pMerchantGold, pBookSpell, pHarvestFoodFloraHanging, pHarvestIngredientsNPC, pMineNotInUse, pBugFishNotInUse: IInterface;
+	signature, reference, povertyFileLoadOrder, pAmmo, pArmor, pBook, pIngredient, pClutter, pSoulGem, pWeapon, pFood, pHarvestFoodFlora, pPotion, pResource, pGold, pDrink, pHarvestIngredientsFlora, pHarvestFoodNPC, pHarvestResourceNPC, pAmmoNPC, pMerchantGold, pBookSpell, pHarvestFoodFloraHanging, pHarvestIngredientsNPC, pMineNotInUse, pBugFishNotInUse: string;
+	innerlvli, lvli: IInterface;
 begin
   //Get global value from Poverty
-  povertyFileLoadOrder := IntToStr(GetLoadOrder(FileByName('Poverty.esp')));
-  pAmmo := povertyFileLoadOrder + '000802';
-  pArmor := povertyFileLoadOrder + '005911';
-  pBook := povertyFileLoadOrder + '005912';
-  pIngredient := povertyFileLoadOrder + '005913';
-  pClutter := povertyFileLoadOrder + '005914';
-  pSoulGem := povertyFileLoadOrder + '005915';
-  pWeapon := povertyFileLoadOrder + '005916';
-  pFood := povertyFileLoadOrder + '00AA18';
-  pHarvestFoodFlora := povertyFileLoadOrder + '00AA19';
-  pPotion := povertyFileLoadOrder + '00AA1A';
-  pResource := povertyFileLoadOrder + '00AA1B';
-  pGold := povertyFileLoadOrder + '00FB1E';
-  pDrink := povertyFileLoadOrder + '014C21';
-
-
-  if not Assigned(GroupBySignature(f, 'LVLI')) then
-    Add(f, 'LVLI', true);
-  lvli := Add(GroupBySignature(f, 'LVLI'), 'LVLI', true);
-
-  //Add EditorID
-  Add(lvli, 'EDID', true);
-  seev(lvli, 'EDID', 'p' + eid);
-  //Add Flag
-  SetNativeValue(ebip(lvli, 'LVLF'), GetNativeValue(ebip(lvli, 'LVLF')) or 1 shl 1);
-
-  //Add Global
-  Add(lvli, 'LVLG', true);
-  ProcessLVLG(variant, sig, lvli);
-
-  //Add Count
-  Add(lvli, 'LLCT', true);
-  seev(lvli, 'LLCT', '1');
-
-  //Add Leveled List Entry
-  Add(lvli, 'Leveled List Entries', true);
-  seev(lvli, 'Leveled List Entries\[0]\LVLO\Level', '1');
-  seev(lvli, 'Leveled List Entries\[0]\LVLO\Reference', form);
-  seev(lvli, 'Leveled List Entries\[0]\LVLO\Count', '1');
-  Result := lvli;
-end;
-
-procedure ProcessLVLG(variant, sig: string; lvli: IInterface);
-var
-	povertyFileLoadOrder: string;
-	pAmmo, pArmor, pBook, pIngredient, pClutter, pSoulGem, pWeapon, pFood, pHarvestFoodFlora, pPotion, pResource, pGold, pDrink, pHarvestIngredientsFlora, pHarvestFoodNPC, pHarvestResourceNPC, pAmmoNPC, pMerchantGold, pBookSpell, pHarvestFoodFloraHanging, pHarvestIngredientsNPC, pMineNotInUse, pBugFishNotInUse: IInterface;
-begin
 	povertyFileLoadOrder := IntToStr(GetLoadOrder(FileByName('Poverty.esp')));
 	pAmmo := povertyFileLoadOrder + '000802';
 	pArmor := povertyFileLoadOrder + '005911';
@@ -628,74 +571,68 @@ begin
 	pResource := povertyFileLoadOrder + '00AA1B';
 	pGold := povertyFileLoadOrder + '00FB1E';
 	pDrink := povertyFileLoadOrder + '014C21';
-	povertyFileLoadOrder := IntToStr(GetLoadOrder(FileByName('Poverty.esp')));
 	pHarvestFoodFlora := povertyFileLoadOrder + '00AA19';
 	pHarvestFoodFloraHanging := povertyFileLoadOrder + '01A3D7';
 	pHarvestIngredientsFlora := povertyFileLoadOrder + '014CA1';
 	pHarvestFoodNPC := povertyFileLoadOrder + '01A023';
 	pHarvestIngredientsNPC := povertyFileLoadOrder + '01A3DA';
 	pHarvestResourceNPC := povertyFileLoadOrder + '01A162';
+	
+	//Add group record and lvliRecord
+	if not Assigned(GroupBySignature(f, 'LVLI')) then
+		Add(f, 'LVLI', true);
+	lvli := Add(GroupBySignature(f, 'LVLI'), 'LVLI', true);
 
-	if variant = 'FLOR' then begin
-		if sig = 'ALCH' then begin
-			seev(lvli, 'LVLG', pHarvestFoodFlora);
-		end
-		else if sig = 'ALCH' then begin
-			seev(lvli, 'LVLG', pHarvestFoodFloraHanging);
-		end
-		else if sig = 'ALCH' then begin
-			seev(lvli, 'LVLG', pHarvestFoodNPC);
-		end
-		else if sig = 'INGR' then begin
-			seev(lvli, 'LVLG', pHarvestIngredientsFlora);
-		end
-		else if sig = 'INGR' then begin
-			seev(lvli, 'LVLG', pHarvestIngredientsNPC);
-		end
-		else if sig = 'TREE' then begin
-			seev(lvli, 'LVLG', pHarvestResourceNPC);
-		end;
-	end
-	else begin
-		if sig = 'ALCH' then begin
-			seev(lvli, 'LVLG', pFood);
-		end
-		else if sig = 'AMMO' then begin
-			seev(lvli, 'LVLG', pAmmo);
-		end
-		else if sig = 'ARMO' then begin
-			seev(lvli, 'LVLG', pArmor);
-		end
-		else if sig = 'BOOK' then begin
-			seev(lvli, 'LVLG', pBook);
-		end
-		else if sig = 'INGR' then begin
-			seev(lvli, 'LVLG', pIngredient);
-		end
-		else if sig = 'MISC' then begin
-			seev(lvli, 'LVLG', pClutter);
-		end
-		else if sig = 'SLGM' then begin
-			seev(lvli, 'LVLG', pSoulGem);
-		end
-		else if sig = 'WEAP' then begin
-			seev(lvli, 'LVLG', pWeapon);
-		end;
+	//Add EditorID
+	Add(lvli, 'EDID', true);
+	seev(lvli, 'EDID', 'p' + eid);
+	
+	//Add Flag
+	SetNativeValue(ebip(lvli, 'LVLF'), GetNativeValue(ebip(lvli, 'LVLF')) or 1 shl 1);
+	
+	//Add Count
+	Add(lvli, 'LLCT', true);
+	seev(lvli, 'LLCT', '1');
+	
+	//Add Leveled List Entry
+	Add(lvli, 'Leveled List Entries', true);
+	seev(lvli, 'Leveled List Entries\[0]\LVLO\Level', '1');
+	seev(lvli, 'Leveled List Entries\[0]\LVLO\Reference', form);
+	seev(lvli, 'Leveled List Entries\[0]\LVLO\Count', '1');
+	Result := lvli;
+	
+	//Add Global
+	Add(lvli, 'LVLG', true);
+	reference := geev(lvli, 'Leveled List Entries\[0]\LVLO\Reference');
+	while getSignature(reference) = 'LVLI' do begin
+		innerlvli := RecordByHexFormID(getFormID(reference));
+		reference := geev(innerlvli, 'Leveled List Entries\[0]\LVLO\Reference');
 	end;
-end;
-
-function StrIndex(s: string; sl: TStringList): integer;
-var
-	i: integer;
-begin
-	for i := 0 to Length(sl) - 1 do begin
-		if sl[0] = string then begin
-			Result := i;
-			Exit;
-		end;
-		sl.Delete(0);
+	signature := getSignature(reference);
+	Case Pos(signature, 'ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP') of
+		1: 	begin
+				if variant = 'FLOR' then begin
+					seev(lvli, 'LVLG', pHarvestFoodFlora);
+				end
+				else begin
+					seev(lvli, 'LVLG', pFood);
+				end;
+			end;	
+		6: seev(lvli, 'LVLG', pAmmo);
+		11: seev(lvli, 'LVLG', pArmor);
+		16: seev(lvli, 'LVLG', pBook);
+		21: begin
+				if variant = 'FLOR' then begin
+					seev(lvli, 'LVLG', pHarvestIngredientsFlora);
+				end
+				else begin
+					seev(lvli, 'LVLG', pIngredient);
+				end;
+			end;
+		26: seev(lvli, 'LVLG', pClutter);
+		31: seev(lvli, 'LVLG', pSoulGem);
+		36: seev(lvli, 'LVLG', pWeapon);
 	end;
-	Result := -1;
 end;
 
 end.
