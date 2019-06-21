@@ -36,8 +36,8 @@ begin
 	//--------------------------------
 	//Loading records
 	//--------------------------------
-	//LoadChildRecords('CELL', 'REFR');
-	//LoadChildRecords('WRLD', 'REFR');
+	LoadChildRecords('CELL', 'REFR');
+	LoadChildRecords('WRLD', 'REFR');
 	LoadRecords('CONT');
 	LoadRecords('FLOR');
 	LoadRecords('LVLI');
