@@ -7,9 +7,9 @@ function Initialize: integer;
 var
   changed: boolean;
   i, j, k, lastPercent: integer;
-  currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, fIngredient, fEditor, lNewItem, fSignature, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
+  currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, item, fIngredient, fEditor, lNewItem, fSignature, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
   rec, lvliRecord, rItemRecord, ItemsListubRecord, cItem, lEntries, lEntry, nItems: IInterface;
-  referenceKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackListLVLI, blackListREFR: TStringList;
+  referenceKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackList: TStringList;
 
 begin
 	//--------------------------------
@@ -68,8 +68,7 @@ begin
 	lLevelList := TStringList.Create;
 	lReferenceList := TStringList.Create;
 	lCountList := TStringList.Create;
-	blackListLVLI := TStringList.Create;
-	blackListREFR := TStringList.Create;
+	blackList := TStringList.Create;
 
 	//--------------------------------
 	//Get dummys from Skyrim & Poverty
@@ -121,164 +120,161 @@ begin
 	AddMessage(' ');
 	
 	//--------------------------------
-	//Blacklists LVLI EditorIDs
-	//-------------------------------- 
-	blackListLVLI.Add('');
-	
-	//--------------------------------
 	//Blacklists REFR EditorIDs
 	//--------------------------------
-	blackListREFR.Add('DefaultBookShelfBookMarker');
-	blackListREFR.Add('AleWhiterunQuest');
-	blackListREFR.Add('ArmorBoneCrown');
-	blackListREFR.Add('ArmorDragonPriestMaskWoodHelmet');
-	blackListREFR.Add('BasketCarry');
-	blackListREFR.Add('BYOHHouseGuide');
-	blackListREFR.Add('C04HagravenHead');
-	blackListREFR.Add('CasSecEntranceCrest');
-	blackListREFR.Add('CivilWarMapFlag01');
-	blackListREFR.Add('CR12TotemsOfHircine');
-	blackListREFR.Add('CW');
-	blackListREFR.Add('DA01');
-	blackListREFR.Add('DA03RuefulAxe');
-	blackListREFR.Add('DA04');
-	blackListREFR.Add('DA06Volendrung');
-	blackListREFR.Add('DA07');
-	blackListREFR.Add('DA08EbonyBlade');
-	blackListREFR.Add('DA13Afflicted');
-	blackListREFR.Add('DA14');
-	blackListREFR.Add('DA16SkullofCorruption');
-	blackListREFR.Add('DA16Torpor');
-	blackListREFR.Add('DancersFlute');
-	blackListREFR.Add('DB003TovaLetter');
-	blackListREFR.Add('DB01AventusLetter');
-	blackListREFR.Add('DB05ElvenBow');
-	blackListREFR.Add('DB06Schedule');
-	blackListREFR.Add('DB07Journal');
-	blackListREFR.Add('DBArmorGlovesReward');
-	blackListREFR.Add('DBBladeOfWoeReward');
-	blackListREFR.Add('DBCiceroJournal');
-	blackListREFR.Add('DLC01DrawKnife');
-	blackListREFR.Add('DLC01DweSchematics');
-	blackListREFR.Add('DLC01SoulCairnReaperFragment');
-	blackListREFR.Add('DLC01TortureTool01');
-	blackListREFR.Add('DLC1BoneHawk');
-	blackListREFR.Add('DLC1Book3Valuable');
-	blackListREFR.Add('DLC1DarkfallPassageNote');
-	blackListREFR.Add('DLC1DawnguardRune');
-	blackListREFR.Add('DLC1dunRedwaterDenJournal');
-	blackListREFR.Add('DLC1FVBook02English');
-	blackListREFR.Add('DLC1IvoryCrown');
-	blackListREFR.Add('DLC1LD_Aetheri');
-	blackListREFR.Add('DLC1LD_Katria');
-	blackListREFR.Add('DLC1nVampireNightPowerNecklaceBats');
-	blackListREFR.Add('DLC1RecipeFrenzy1');
-	blackListREFR.Add('DLC1RuunvaldJournal');
-	blackListREFR.Add('DLC1SoulCairnRJPOI2Note');
-	blackListREFR.Add('DLC1SpellTomeConjure');
-	blackListREFR.Add('DLC1V');
-	blackListREFR.Add('DLC2Bl');
-	blackListREFR.Add('DLC2dunFahlbtharzDwarvenHelmet');
-	blackListREFR.Add('DLC2dunBloodskalNote01');
-	blackListREFR.Add('DLC2dunHaknirScimitar01');
-	blackListREFR.Add('DLC2dunK');
-	blackListREFR.Add('DLC2dunNchardakCube');
-	blackListREFR.Add('DLC2DweKagrumezControlGemInv01');
-	blackListREFR.Add('DLC2ExpSpiderExperimentJournal');
-	blackListREFR.Add('DLC2FrostmothLetter04');
-	blackListREFR.Add('DLC2Hork');
-	blackListREFR.Add('DLC2Hrodulf');
-	blackListREFR.Add('DLC2IldariJournal');
-	blackListREFR.Add('DLC2KagrumezFateBow01');
-	blackListREFR.Add('dlc2MerchNote');
-	blackListREFR.Add('DLC2POIUshaNote01');
-	blackListREFR.Add('DLC2RR');
-	blackListREFR.Add('DLC2TG');
-	blackListREFR.Add('DLC2TT2HeartStone');
-	blackListREFR.Add('dunAbandonedPrisonNote');
-	blackListREFR.Add('dunAlftandDwemerStudy01');
-	blackListREFR.Add('dunAlftandEndrastsJournal01');
-	blackListREFR.Add('dunAlftandJ');
-	blackListREFR.Add('dunAlftandManifestJournal01');
-	blackListREFR.Add('dunAn');
-	blackListREFR.Add('dunB');
-	blackListREFR.Add('dunC');
-	blackListREFR.Add('dunD');
-	blackListREFR.Add('dunEmbershardTatteredJournal');
-	blackListREFR.Add('dunF');
-	blackListREFR.Add('dunG');
-	blackListREFR.Add('dunH');
-	blackListREFR.Add('dunIlinaltasDeepAdventurerJournal');
-	blackListREFR.Add('dunIronbindLetter');
-	blackListREFR.Add('dunK');
-	blackListREFR.Add('dunL');
-	blackListREFR.Add('dunM');
-	blackListREFR.Add('dunN');
-	blackListREFR.Add('dunOrotheimJournal');
-	blackListREFR.Add('dunP');
-	blackListREFR.Add('dunR');
-	blackListREFR.Add('dunSaarthalStaffJyrikStaff');
-	blackListREFR.Add('dunSerpentsBluffNote');
-	blackListREFR.Add('dunShipwreck04TriusNote');
-	blackListREFR.Add('dunSilentMoonsLunarBook');
-	blackListREFR.Add('dunSteamcragCampNote');
-	blackListREFR.Add('dunT');
-	blackListREFR.Add('dunU');
-	blackListREFR.Add('dunV');
-	blackListREFR.Add('dunW');
-	blackListREFR.Add('dunYng');
-	blackListREFR.Add('EnchArmorDraugrHelmetResistFire03');
-	blackListREFR.Add('EnchCircletWaterbreathing');
-	blackListREFR.Add('EnchDraugrGreatswordHonedFire03');
-	blackListREFR.Add('EnchSteelBattleaxeFierySouls');
-	blackListREFR.Add('Favor');
-	blackListREFR.Add('FF');
-	blackListREFR.Add('FirebrandWine');
-	blackListREFR.Add('Freeform');
-	blackListREFR.Add('FXdustDropMedWEP');
-	blackListREFR.Add('highGateRuinsScroll');
-	blackListREFR.Add('ImperialWarHorn');
-	blackListREFR.Add('IronSwordBrokenHandle');
-	blackListREFR.Add('IronWarAxeBroken');
-	blackListREFR.Add('Letter');
-	blackListREFR.Add('Markarth');
-	blackListREFR.Add('MG03Book');
-	blackListREFR.Add('MGRArniel04SoulGem');
-	blackListREFR.Add('MGRDestruction');
-	blackListREFR.Add('MGRitual02Book');
-	blackListREFR.Add('MGRKeening');
-	blackListREFR.Add('MQ103FarengarBook');
-	blackListREFR.Add('MQ105Note');
-	blackListREFR.Add('MQ106DragonParchment');
-	blackListREFR.Add('MQPaarthurnaxBook');
-	blackListREFR.Add('MS');
-	blackListREFR.Add('NN01SinderionsJournal');
-	blackListREFR.Add('POI');
-	blackListREFR.Add('sc_ArvakSkullUNIQUE');
-	blackListREFR.Add('SolitudeToryggWarHorn');
-	blackListREFR.Add('SpellTomeTransmuteOreMineral');
-	blackListREFR.Add('SovRoastOx');
-	blackListREFR.Add('SteelBattleAxeBroken');
-	blackListREFR.Add('T0');
-	blackListREFR.Add('TG00MadesiRing');
-	blackListREFR.Add('TG01HaelgaStatue');
-	blackListREFR.Add('TG02BillofSale');
-	blackListREFR.Add('TG03SabjornLetter');
-	blackListREFR.Add('TG04');
-	blackListREFR.Add('TG05GallusJournalPre');
-	blackListREFR.Add('TG07');
-	blackListREFR.Add('TG08SkeletonKey');
-	blackListREFR.Add('TGBook0NightingalesVolume');
-	blackListREFR.Add('TGCrown');
-	blackListREFR.Add('TGFenceCaravanSatchel');
-	blackListREFR.Add('TGLT');
-	blackListREFR.Add('TGTQ');
-	blackListREFR.Add('TGRFOValueItem');
-	blackListREFR.Add('TGRGeneralValueItem');
-	blackListREFR.Add('TGTQ03SolitudeLetter');
-	blackListREFR.Add('TrapDweBallistaBoltAmmo01');
-	blackListREFR.Add('Windhelm');
-	blackListREFR.Add('YsgramorsBladePiece07');
+	blackList.Add('DefaultBookShelfBookMarker');
+	blackList.Add('AleWhiterunQuest');
+	blackList.Add('ArmorBoneCrown');
+	blackList.Add('ArmorDragonPriestMaskWoodHelmet');
+	blackList.Add('BasketCarry');
+	blackList.Add('BYOHHouseGuide');
+	blackList.Add('C04HagravenHead');
+	blackList.Add('CasSecEntranceCrest');
+	blackList.Add('CivilWarMapFlag01');
+	blackList.Add('CR12TotemsOfHircine');
+	blackList.Add('CW');
+	blackList.Add('DA01');
+	blackList.Add('DA03RuefulAxe');
+	blackList.Add('DA04');
+	blackList.Add('DA06Volendrung');
+	blackList.Add('DA07');
+	blackList.Add('DA08EbonyBlade');
+	blackList.Add('DA13Afflicted');
+	blackList.Add('DA14');
+	blackList.Add('DA16SkullofCorruption');
+	blackList.Add('DA16Torpor');
+	blackList.Add('DancersFlute');
+	blackList.Add('DB003TovaLetter');
+	blackList.Add('DB01AventusLetter');
+	blackList.Add('DB05ElvenBow');
+	blackList.Add('DB06Schedule');
+	blackList.Add('DB07Journal');
+	blackList.Add('DBArmorGlovesReward');
+	blackList.Add('DBBladeOfWoeReward');
+	blackList.Add('DBCiceroJournal');
+	blackList.Add('DLC01DrawKnife');
+	blackList.Add('DLC01DweSchematics');
+	blackList.Add('DLC1ElderScrollBack');
+	blackList.Add('DLC01SoulCairnReaperFragment');
+	blackList.Add('DLC01TortureTool01');
+	blackList.Add('DLC1BoneHawk');
+	blackList.Add('DLC1Book3Valuable');
+	blackList.Add('DLC1DarkfallPassageNote');
+	blackList.Add('DLC1DawnguardRune');
+	blackList.Add('DLC1dunRedwaterDenJournal');
+	blackList.Add('DLC1FVBook02English');
+	blackList.Add('DLC1IvoryCrown');
+	blackList.Add('DLC1LD_Aetheri');
+	blackList.Add('DLC1LD_Katria');
+	blackList.Add('DLC1nVampireNightPowerNecklaceBats');
+	blackList.Add('DLC1RecipeFrenzy1');
+	blackList.Add('DLC1RuunvaldJournal');
+	blackList.Add('DLC1SoulCairnRJPOI2Note');
+	blackList.Add('DLC1SpellTomeConjure');
+	blackList.Add('DLC1VQ07InitiatesEwer');
+	blackList.Add('DLC1V');
+	blackList.Add('DLC2Bl');
+	blackList.Add('DLC2dunFahlbtharzDwarvenHelmet');
+	blackList.Add('DLC2dunBloodskalNote01');
+	blackList.Add('DLC2dunHaknirScimitar01');
+	blackList.Add('DLC2dunK');
+	blackList.Add('DLC2dunNchardakCube');
+	blackList.Add('DLC2DweKagrumezControlGemInv01');
+	blackList.Add('DLC2ExpSpiderExperimentJournal');
+	blackList.Add('DLC2FrostmothLetter04');
+	blackList.Add('DLC2Hork');
+	blackList.Add('DLC2Hrodulf');
+	blackList.Add('DLC2IldariJournal');
+	blackList.Add('DLC2KagrumezFateBow01');
+	blackList.Add('dlc2MerchNote');
+	blackList.Add('DLC2POIUshaNote01');
+	blackList.Add('DLC2RR');
+	blackList.Add('DLC2TG');
+	blackList.Add('DLC2TT2HeartStone');
+	blackList.Add('dunAbandonedPrisonNote');
+	blackList.Add('dunAlftandDwemerStudy01');
+	blackList.Add('dunAlftandEndrastsJournal01');
+	blackList.Add('dunAlftandJ');
+	blackList.Add('dunAlftandManifestJournal01');
+	blackList.Add('dunAn');
+	blackList.Add('dunB');
+	blackList.Add('dunC');
+	blackList.Add('dunD');
+	blackList.Add('dunEmbershardTatteredJournal');
+	blackList.Add('dunF');
+	blackList.Add('dunG');
+	blackList.Add('dunH');
+	blackList.Add('dunIlinaltasDeepAdventurerJournal');
+	blackList.Add('dunIronbindLetter');
+	blackList.Add('dunK');
+	blackList.Add('dunL');
+	blackList.Add('dunM');
+	blackList.Add('dunN');
+	blackList.Add('dunOrotheimJournal');
+	blackList.Add('dunP');
+	blackList.Add('dunR');
+	blackList.Add('dunSaarthalStaffJyrikStaff');
+	blackList.Add('dunSerpentsBluffNote');
+	blackList.Add('dunShipwreck04TriusNote');
+	blackList.Add('dunSilentMoonsLunarBook');
+	blackList.Add('dunSteamcragCampNote');
+	blackList.Add('dunT');
+	blackList.Add('dunU');
+	blackList.Add('dunV');
+	blackList.Add('dunW');
+	blackList.Add('dunYng');
+	blackList.Add('EnchArmorDraugrHelmetResistFire03');
+	blackList.Add('EnchCircletWaterbreathing');
+	blackList.Add('EnchDraugrGreatswordHonedFire03');
+	blackList.Add('EnchSteelBattleaxeFierySouls');
+	blackList.Add('Favor');
+	blackList.Add('FF');
+	blackList.Add('FirebrandWine');
+	blackList.Add('Freeform');
+	blackList.Add('FXdustDropMedWEP');
+	blackList.Add('highGateRuinsScroll');
+	blackList.Add('ImperialWarHorn');
+	blackList.Add('IronSwordBrokenHandle');
+	blackList.Add('IronWarAxeBroken');
+	blackList.Add('Letter');
+	blackList.Add('Markarth');
+	blackList.Add('MG03Book');
+	blackList.Add('MGRArniel04SoulGem');
+	blackList.Add('MGRDestruction');
+	blackList.Add('MGRitual02Book');
+	blackList.Add('MGRKeening');
+	blackList.Add('MQ103FarengarBook');
+	blackList.Add('MQ105Note');
+	blackList.Add('MQ106DragonParchment');
+	blackList.Add('MQPaarthurnaxBook');
+	blackList.Add('MS');
+	blackList.Add('NN01SinderionsJournal');
+	blackList.Add('POI');
+	blackList.Add('sc_ArvakSkullUNIQUE');
+	blackList.Add('SolitudeToryggWarHorn');
+	blackList.Add('SpellTomeTransmuteOreMineral');
+	blackList.Add('SovRoastOx');
+	blackList.Add('SteelBattleAxeBroken');
+	blackList.Add('T0');
+	blackList.Add('TG00MadesiRing');
+	blackList.Add('TG01HaelgaStatue');
+	blackList.Add('TG02BillofSale');
+	blackList.Add('TG03SabjornLetter');
+	blackList.Add('TG04');
+	blackList.Add('TG05GallusJournalPre');
+	blackList.Add('TG07');
+	blackList.Add('TG08SkeletonKey');
+	blackList.Add('TGBook0NightingalesVolume');
+	blackList.Add('TGCrown');
+	blackList.Add('TGFenceCaravanSatchel');
+	blackList.Add('TGLT');
+	blackList.Add('TGTQ');
+	blackList.Add('TGRFOValueItem');
+	blackList.Add('TGRGeneralValueItem');
+	blackList.Add('TGTQ03SolitudeLetter');
+	blackList.Add('TrapDweBallistaBoltAmmo01');
+	blackList.Add('Windhelm');
+	blackList.Add('YsgramorsBladePiece07');
 	
 	lastPercent := 0;
 
@@ -321,7 +317,7 @@ begin
 			rFormID := getFormID(rName);
 			
 			//Check for potential errors and sort out records that shall not be processed
-			if Assigned(ebip(rec, 'NAME')) and hasPovertySignature(rSignature) and (not IsInTStringListCopy(blackListREFR, rEditorID)) and (not (Copy(rEditorID, 0, 5) = 'Dummy')) then begin
+			if Assigned(ebip(rec, 'NAME')) and hasPovertySignature(rSignature) and (not IsInTStringListCopy(blackList, rEditorID)) and (not (Copy(rEditorID, 0, 5) = 'Dummy')) then begin
 				
 				rItemRecord := RecordByHexFormID(rFormID);
 				
@@ -485,10 +481,11 @@ begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
-					if (not (getSignature(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item')) = 'LVLI')) and (not (Copy(getEditorID(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item')), 0, 5) = 'Dummy')) then begin
-						cItem := ebip(rec, 'Items\[0]');
-						cItemsList.Add(geev(rec, 'Items\[0]\CNTO\Item'));
-						cCountsList.Add(geev(rec, 'Items\[0]\CNTO\Count'));
+					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
+					if (not (getSignature(item) = 'LVLI')) and (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
+						cItem := ebip(rec, 'Items\[' + IntToStr(k) + ']');
+						cItemsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
+						cCountsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count'));
 						Remove(cItem);
 					end
 					else begin
@@ -552,12 +549,12 @@ begin
 		end
 		else if currentSignature = 'LVLI' then begin
 			lEntries := ebip(rec, 'Leveled List Entries');
-			if Assigned(lEntries) and (not (IsInTStringListCopy(blackListLVLI, editorID))) then begin
+			if Assigned(lEntries) then begin
 
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (not (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI')) and (not (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy')) then begin
+					if (not (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI')) and (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy')) then begin
 						lEntry := ebip(rec, 'Leveled List Entries\[' + IntToStr(k) + ']');
 						lLevelList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Level'));
 						lReferenceList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference'));
@@ -611,11 +608,12 @@ begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
-					nSignature := getSignature(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
-					if (not (nSignature = 'LVLI')) and (not (nSignature = 'KEYM')) and (not (nSignature = 'WEAP')) and (not (Copy(getEditorID(nSignature), 0, 5) = 'Dummy')) then begin
-						cItem := ebip(rec, 'Items\[0]');
-						cItemsList.Add(geev(rec, 'Items\[0]\CNTO\Item'));
-						cCountsList.Add(geev(rec, 'Items\[0]\CNTO\Count'));
+					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
+					nSignature := getSignature(item);
+					if (not (nSignature = 'LVLI')) and (not (nSignature = 'KEYM')) and (not (nSignature = 'WEAP')) and (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
+						cItem := ebip(rec, 'Items\[' + IntToStr(k) + ']');
+						cItemsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
+						cCountsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count'));
 						Remove(cItem);
 					end
 					else begin
