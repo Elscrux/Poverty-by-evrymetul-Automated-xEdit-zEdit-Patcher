@@ -31,7 +31,6 @@ begin
 	SetExclusions('Poverty.esp');
 	SetInclusions('HearthFires.esm');
 	SetInclusions('Dawnguard.esm');
-	//SetInclusions('Test.esp');
 
 	//--------------------------------
 	//Loading records
@@ -44,6 +43,7 @@ begin
 	LoadRecords('NPC_');
 	LoadRecords('TREE');
 	
+	
 	//--------------------------------
 	//MESSAGE: Records loaded
 	//--------------------------------
@@ -51,11 +51,13 @@ begin
 	
 	//MXPF: Copy to patch
 	CopyRecordsToPatch;
-
+	
+	
 	//--------------------------------
 	//MESSAGE: Records copied
 	//--------------------------------
 	AddMessage('Records copied to patch');
+	
 	
 	//--------------------------------
 	//Creating TStringLists
@@ -69,7 +71,8 @@ begin
 	lReferenceList := TStringList.Create;
 	lCountList := TStringList.Create;
 	blackList := TStringList.Create;
-
+	
+	
 	//--------------------------------
 	//Get dummys from Skyrim & Poverty
 	//--------------------------------
@@ -113,20 +116,26 @@ begin
 	dummyWeapon1H := '6B95F';
 	dummyWeapon2H := '6B95D';
 	
+	
 	//--------------------------------
 	//MESSAGE: Number of Records
 	//--------------------------------
 	AddMessage('Patching ' + IntToStr(MaxPatchRecordIndex + 1) + ' Records');
 	AddMessage(' ');
 	
+	
+	//--------------------------------
 	//Blacklist CONT EditorIDs
+	//--------------------------------
 	blackList.Add('DLC01QA');
 	blackList.Add('DLC02QA');
 	blackList.Add('QA');
-
-
-
-	//Blacklist LVL EditorIDs
+	
+	
+	//--------------------------------
+	//Blacklist LVLI EditorIDs
+	//--------------------------------
+	
 	blackList.Add('ArmorCompanionsSet');
 	blackList.Add('ArmorElvenSet');
 	blackList.Add('ArmorGlassSet');
@@ -359,9 +368,12 @@ begin
 	blackList.Add('TGTQ04DeathItem');
 	blackList.Add('VendorEorlundSkyforgeSteelSet');
 	blackList.Add('WE17BanditOutfitList');
-
-
+	
+	
+	//--------------------------------
 	//Blacklist REFR EditorIDs
+	//--------------------------------
+	
 	blackList.Add('DefaultBookShelfBookMarker');
 	blackList.Add('AleWhiterunQuest');
 	blackList.Add('ArmorBoneCrown');
@@ -535,6 +547,7 @@ begin
 	blackList.Add('TrapDweBallistaBoltAmmo01');
 	blackList.Add('Windhelm');
 	blackList.Add('YsgramorsBladePiece07');
+	
 	
 	lastPercent := 0;
 
@@ -736,8 +749,7 @@ begin
 			end;
 		end
 		else if currentSignature = 'CONT' then begin
-			if Assigned(ebip(rec, 'Items')) then begin
-				
+			if Assigned(ebip(rec, 'Items')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
@@ -752,12 +764,10 @@ begin
 						k := k + 1;
 					end;
 				end;
-
 				if cItemsList.Count = 0 then begin
 					Remove(rec);
 					Continue;
 				end;
-				
 				//Create new items and their Leveled List
 				for j := 0 to cItemsList.Count - 1 do begin
 					cNewItem := cItemsList[j];
@@ -782,7 +792,7 @@ begin
 			cCountsList.Clear;
 		end
 		else if currentSignature = 'FLOR' then begin
-			if Assigned(ebip(rec, 'PFIG')) then begin
+			if Assigned(ebip(rec, 'PFIG')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
 			
 				//Assign utility variables
 				fIngredient := geev(rec, 'PFIG');
@@ -809,7 +819,7 @@ begin
 		end
 		else if currentSignature = 'LVLI' then begin
 			lEntries := ebip(rec, 'Leveled List Entries');
-			if Assigned(lEntries) then begin
+			if Assigned(lEntries) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
 
 				//Add items to list and delete them
 				k := 0;
@@ -864,7 +874,7 @@ begin
 			lCountList.Clear;
 		end
 		else if currentSignature = 'NPC_' then begin
-			if Assigned(ebip(rec, 'Items')) then begin
+			if Assigned(ebip(rec, 'Items')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
@@ -916,7 +926,7 @@ begin
 			cCountsList.Clear;
 		end
 		else if currentSignature = 'TREE' then begin
-			if Assigned(ebip(rec, 'PFIG')) then begin
+			if Assigned(ebip(rec, 'PFIG')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
 				tIngredient := geev(rec, 'PFIG');
 				tEditorID := getEditorID(tIngredient);
 				tSignature := getSignature(tIngredient);
