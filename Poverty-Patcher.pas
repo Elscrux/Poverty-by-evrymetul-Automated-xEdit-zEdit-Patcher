@@ -179,8 +179,10 @@ begin
 	blackList.Add('DLC1LItemDawnguard');
 	blackList.Add('DLC1LItemDisguisedHunterInventory');
 	blackList.Add('DLC1LItemFalmer');
+	blackList.Add('DLC1LItemGargoyleMineralsRaw100');
 	blackList.Add('DLC1LItemKeeper');
 	blackList.Add('DLC1LitemStaffFalmer');
+	blackList.Add('DLC1LItemStaffFalmer');
 	blackList.Add('DLC1LItemVampireCuirass');
 	blackList.Add('DLC1LItemWeaponDawnguardCrossbowLoot75Gated');
 	blackList.Add('DLC1LItemWeaponFalmerShaman');
