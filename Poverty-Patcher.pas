@@ -129,6 +129,8 @@ begin
 	//--------------------------------
 	blackList.Add('DLC01QA');
 	blackList.Add('DLC02QA');
+	blackList.Add('DLC2dunFrostmoonVendorChest');
+	blackList.Add('DLC2MaximianPack');
 	blackList.Add('QA');
 	
 	
@@ -203,6 +205,7 @@ begin
 	blackList.Add('DLC2ExpSpiderAlbinoDeathItemButt');
 	blackList.Add('DLC2LItemArmorBootsHeavy');
 	blackList.Add('DLC2LItemArmorBootsLight');
+	blackList.Add('DLC2LitemArmorBootsLight');
 	blackList.Add('DLC2LItemArmorCuirassHeavy');
 	blackList.Add('DLC2LItemArmorCuirassLight');
 	blackList.Add('DLC2LItemArmorGauntletsHeavy');
@@ -210,6 +213,7 @@ begin
 	blackList.Add('DLC2LItemArmorHelmetHeavy');
 	blackList.Add('DLC2LItemArmorHelmetLight');
 	blackList.Add('DLC2LItemArmorShieldHeavy');
+	blackList.Add('DLC2LitemArmorShieldHeavy');
 	blackList.Add('DLC2LItemArmorShieldLight');
 	blackList.Add('DLC2LItemBook');
 	blackList.Add('DLC2LItemDraugrHulkingShield67');
@@ -220,6 +224,8 @@ begin
 	blackList.Add('DLC2LItemIngredientsRare');
 	blackList.Add('DLC2LItemIngredientsUncommon');
 	blackList.Add('DLC2LItemSpellTomes');
+	blackList.Add('DLC2LItemSpellTOmes');
+	blackList.Add('DLC2LitemSpellTomes');
 	blackList.Add('DLC2LItemWeaponBattleAxe');
 	blackList.Add('DLC2LItemWeaponBow');
 	blackList.Add('DLC2LItemWeaponDagger');
@@ -239,6 +245,7 @@ begin
 	blackList.Add('DLC2SublistEnchArmor');
 	blackList.Add('DLC2SublistEnchNordic');
 	blackList.Add('DLC2SublistEnchStahlrim');
+	blackList.Add('DLC2SublistEnchStalhrim');
 	blackList.Add('dunLItemFolgunthurMikrulSword');
 	blackList.Add('dunLItemFrostmereBlade');
 	blackList.Add('dunLItemGeirmundSigdisBow');
@@ -370,6 +377,24 @@ begin
 	blackList.Add('TGTQ04DeathItem');
 	blackList.Add('VendorEorlundSkyforgeSteelSet');
 	blackList.Add('WE17BanditOutfitList');
+	
+	
+	
+	//--------------------------------
+	//Blacklist NPC EditorIDs
+	//--------------------------------
+	
+	blackList.Add('DLC2dunFahlbtharzExplorerCorpse');
+	blackList.Add('DLC2dunGyldenhulAdventurer');
+	blackList.Add('DLC2EncHunterNordM');
+	blackList.Add('DLC2KagrumezBanditBoss');
+	blackList.Add('DLC2MerilarRendas');
+	blackList.Add('DLC2PillarRRGuard');
+	blackList.Add('DLC2ServosRendas');
+	blackList.Add('DLC2WE05Wizard');
+	
+	
+	
 	
 	
 	//--------------------------------
