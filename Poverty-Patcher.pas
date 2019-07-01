@@ -882,7 +882,7 @@ begin
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
 					nSignature := getSignature(item);
-					if (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (nSignature = 'LVLI')) and (not (nSignature = 'KEYM')) and (not (nSignature = 'WEAP')) and (not (nSignature = 'ARMO')) and ((nSignature = 'AMMO') and (not (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
+					if (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (nSignature = 'LVLI')) and (not (nSignature = 'KEYM')) and (not (nSignature = 'WEAP')) and (not (nSignature = 'ARMO')) and (not ((nSignature = 'AMMO') and (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
 						cItem := ebip(rec, 'Items\[' + IntToStr(k) + ']');
 						cItemsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
 						cCountsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count'));
