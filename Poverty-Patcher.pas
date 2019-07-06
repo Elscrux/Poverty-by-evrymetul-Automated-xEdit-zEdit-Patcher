@@ -21,7 +21,8 @@ begin
 	//Name this whatever you like
 	PatchFileByName('Poverty All-in-One Patch.esp');
 	
-	//Add Poverty as master
+	//Add USSEP and Poverty as master
+	AddMasterIfMissing(mxPatchFile, 'Unofficial Skyrim Special Edition Patch.esp');
 	AddMasterIfMissing(mxPatchFile, 'Poverty.esp');
 	
 	//Set File Header variables
@@ -35,7 +36,7 @@ begin
 	//--------------------------------
 	//Loading records
 	//--------------------------------
-	//LoadChildRecords('CELL', 'REFR');
+	LoadChildRecords('CELL', 'REFR');
 	//LoadChildRecords('WRLD', 'REFR');
 	LoadRecords('CONT');
 	LoadRecords('FLOR');
@@ -664,8 +665,11 @@ begin
 			rFormID := getFormID(rName);
 			
 			//Check for potential errors and sort out records that shall not be processed
-			if Assigned(ebip(rec, 'NAME')) and hasPovertySignature(rSignature) and (not IsInTStringListCopy(blackList, rEditorID)) and (not (Copy(rEditorID, 0, 5) = 'Dummy')) then begin
-				
+			if (not Assigned(ebip(rec, 'NAME'))) or (not hasPovertySignature(rSignature)) or (Copy(rEditorID, 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, rEditorID) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				rItemRecord := RecordByHexFormID(rFormID);
 				
 				//Add poverty LVLI record
@@ -706,7 +710,7 @@ begin
 					6: seev(rec, 'NAME', dummyArrow);
 					11: begin
 							for j := 0 to referenceKeywords.Count - 1 do begin
-								Case Pos(referenceKeywords[j], 'ArmorBoots|ArmorCuirass|ArmorGauntlets|ArmorHelmet|ArmorShield|ClothingCirclet|ClothingRing|ClothingNecklace') of
+								Case Pos(referenceKeywords[j], 'ArmorBoots|ArmorCuirass|ArmorGauntlets|ArmorHelmet|ArmorShield|ClothingCirclet|ClothingRing|ClothingNecklace|ClothingFeet|ClothingBody|ClothingHands|ClothingHead') of
 									1:	begin 
 											seev(rec, 'NAME', dummyBoots);
 											Break;
@@ -737,6 +741,22 @@ begin
 										end;
 									93: begin 
 											seev(rec, 'NAME', dummyAmulet);
+											Break;
+										end;
+									110: begin 
+											seev(rec, 'NAME', dummyBoots);
+											Break;
+										end;
+									123: begin 
+											seev(rec, 'NAME', dummyCuirass);
+											Break;
+										end;
+									136: begin 
+											seev(rec, 'NAME', dummyGauntlets);
+											Break;
+										end;
+									150: begin 
+											seev(rec, 'NAME', dummyHelmet);
 											Break;
 										end;
 								end;
@@ -816,26 +836,27 @@ begin
 				
 				//Clear TStringLists
 				referenceKeywords.Clear;
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 		end
 		else if currentSignature = 'CONT' then begin
-			if Assigned(ebip(rec, 'Items')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
+			if (not Assigned(ebip(rec, 'Items'))) or IsInTStringListCopy(blackList, EditorID(rec)) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
-					if (not (getSignature(item) = 'LVLI')) and (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
+					if (getSignature(item) = 'LVLI') or (getSignature(item) = 'KEYM') or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
+						k := k + 1;
+					end
+					else begin
 						cItem := ebip(rec, 'Items\[' + IntToStr(k) + ']');
 						cItemsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
 						cCountsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count'));
 						Remove(cItem);
-					end
-					else begin
-						k := k + 1;
+						
 					end;
 				end;
 				if cItemsList.Count = 0 then begin
@@ -857,17 +878,16 @@ begin
 					seev(cItem, 'CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
 					seev(cItem, 'CNTO\Count', cCountsList[j]);
 				end;
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 			cItemsList.Clear;
 			cCountsList.Clear;
 		end
 		else if currentSignature = 'FLOR' then begin
-			if Assigned(ebip(rec, 'PFIG')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
-			
+			if (not Assigned(ebip(rec, 'PFIG'))) or IsInTStringListCopy(blackList, EditorID(rec)) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				//Assign utility variables
 				fIngredient := geev(rec, 'PFIG');
 				fSignature := getSignature(fIngredient);
@@ -885,28 +905,27 @@ begin
 				
 				//Change PFIG value
 				seev(rec, 'PFIG', geev(lvliRecord, 'Record Header\FormID'));
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 		end
 		else if currentSignature = 'LVLI' then begin
 			lEntries := ebip(rec, 'Leveled List Entries');
-			if Assigned(lEntries) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
-
+			if (not Assigned(lEntries)) or IsInTStringListCopy(blackList, EditorID(rec)) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (not (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI')) and (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy')) then begin
+					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or IsInTStringListCopy(blackList, getEditorID(item)) or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
+						k := k + 1;
+					end
+					else begin
 						lEntry := ebip(rec, 'Leveled List Entries\[' + IntToStr(k) + ']');
 						lLevelList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Level'));
 						lReferenceList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference'));
 						lCountList.Add(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Count'));
 						Remove(lEntry);
-					end
-					else begin
-						k := k + 1;
 					end;
 				end;
 				
@@ -938,30 +957,30 @@ begin
 					seev(lEntry, 'LVLO\Reference', geev(lvliRecord, 'Record Header\FormID'));
 					seev(lEntry, 'LVLO\Count', lCountList[j]);
 				end;
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 			lLevelList.Clear;
 			lReferenceList.Clear;
 			lCountList.Clear;
 		end
 		else if currentSignature = 'NPC_' then begin
-			if Assigned(ebip(rec, 'Items')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
+			if (not Assigned(ebip(rec, 'Items'))) or IsInTStringListCopy(blackList, EditorID(rec)) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
 					nSignature := getSignature(item);
-					if (not IsInTStringListCopy(blackList, getEditorID(item))) and (not (nSignature = 'LVLI')) and (not (nSignature = 'KEYM')) and (not (nSignature = 'WEAP')) and (not (nSignature = 'ARMO')) and (not ((nSignature = 'AMMO') and (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1))) and (not (Copy(getEditorID(item), 0, 5) = 'Dummy')) then begin
+					if (nSignature = 'LVLI') or (nSignature = 'KEYM') or (nSignature = 'WEAP') or (nSignature = 'ARMO') or (nSignature = 'AMMO') or (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1) or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
+						k := k + 1;
+					end
+					else begin
 						cItem := ebip(rec, 'Items\[' + IntToStr(k) + ']');
 						cItemsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item'));
 						cCountsList.Add(geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count'));
 						Remove(cItem);
-					end
-					else begin
-						k := k + 1;
 					end;
 				end;
 				
@@ -991,25 +1010,23 @@ begin
 					seev(cItem, 'CNTO\Item', geev(lvliRecord, 'Record Header\FormID'));
 					seev(cItem, 'CNTO\Count', cCountsList[j]);
 				end;
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 			cItemsList.Clear;
 			cCountsList.Clear;
 		end
 		else if currentSignature = 'TREE' then begin
-			if Assigned(ebip(rec, 'PFIG')) and (not IsInTStringListCopy(blackList, EditorID(rec))) then begin
+			if (not Assigned(ebip(rec, 'PFIG'))) or IsInTStringListCopy(blackList, EditorID(rec)) then begin
+				Remove(rec);
+				Continue;
+			end
+			else begin
 				tIngredient := geev(rec, 'PFIG');
 				tEditorID := getEditorID(tIngredient);
 				tSignature := getSignature(tIngredient);
 				tFormID := getFormID(tIngredient);
-				if not (tSignature = 'ALCH') then begin
-					if not (tSignature = 'INGR') then begin
-						Remove(rec);
-						Continue;
-					end;
+				if (not (tSignature = 'ALCH')) and (not (tSignature = 'INGR')) then begin
+					Remove(rec);
+					Continue;
 				end;
 				
 				//Add poverty LVLI record
@@ -1017,10 +1034,6 @@ begin
 				
 				//Change PFIG value
 				seev(rec, 'PFIG', geev(lvliRecord, 'Record Header\FormID'));
-			end
-			else begin
-				Remove(rec);
-				Continue;
 			end;
 		end;
 	end;
