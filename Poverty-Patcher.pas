@@ -127,11 +127,18 @@ begin
 	//--------------------------------
 	//Blacklist CONT EditorIDs
 	//--------------------------------
+	
+	blackList.Add('DEMO');
 	blackList.Add('DLC01QA');
 	blackList.Add('DLC02QA');
 	blackList.Add('DLC2dunFrostmoonVendorChest');
 	blackList.Add('DLC2MaximianPack');
+	blackList.Add('e3DEMO');
+	blackList.Add('E3Demo');
+	blackList.Add('MQ101BarracksChest02');
+	blackList.Add('MQ201ElenwenOfficeChest');
 	blackList.Add('QA');
+	blackList.Add('SkyHavenArmoryChest');
 	
 	
 	//--------------------------------
@@ -246,6 +253,7 @@ begin
 	blackList.Add('DLC2SublistEnchNordic');
 	blackList.Add('DLC2SublistEnchStahlrim');
 	blackList.Add('DLC2SublistEnchStalhrim');
+	blackList.Add('dunHillgrundsTombRewardList');
 	blackList.Add('dunLItemFolgunthurMikrulSword');
 	blackList.Add('dunLItemFrostmereBlade');
 	blackList.Add('dunLItemGeirmundSigdisBow');
@@ -255,6 +263,7 @@ begin
 	blackList.Add('LItemApothecaryRecipesCommon100');
 	blackList.Add('LItemArmorBootsHeavy');
 	blackList.Add('LItemArmorBootsLight');
+	blackList.Add('LitemArmorBootsLight');
 	blackList.Add('LItemArmorCuirassHeavy');
 	blackList.Add('LItemArmorCuirassLight');
 	blackList.Add('LItemArmorDwarven');
@@ -263,6 +272,7 @@ begin
 	blackList.Add('LItemArmorHelmetHeavy');
 	blackList.Add('LItemArmorHelmetLight');
 	blackList.Add('LItemArmorShieldHeavy');
+	blackList.Add('LitemArmorShieldHeavy');
 	blackList.Add('LItemArmorShieldLight');
 	blackList.Add('LItemBandit');
 	blackList.Add('LItemBlacksmithMinDagger');
@@ -288,6 +298,7 @@ begin
 	blackList.Add('LItemFoodHonningbrewMead100');
 	blackList.Add('LItemFoodRaw');
 	blackList.Add('LItemForsworn');
+	blackList.Add('LItemGemEmpty');
 	blackList.Add('LItemGems');
 	blackList.Add('LItemGutterSaint');
 	blackList.Add('LItemHunterWeaponBow');
@@ -326,6 +337,8 @@ begin
 	blackList.Add('LItemSoulGemEmpty');
 	blackList.Add('LItemSoulGemFull');
 	blackList.Add('LItemSpellTomes');
+	blackList.Add('LitemSpellTomes');
+	blackList.Add('LItemSpellTOmes');
 	blackList.Add('LItemStaffAlteration');
 	blackList.Add('LItemStaffConjuration');
 	blackList.Add('LItemStaffDestruction00');
@@ -341,6 +354,7 @@ begin
 	blackList.Add('LItemVampire');
 	blackList.Add('LItemVigilant');
 	blackList.Add('LItemWarlock');
+	blackList.Add('LITemWarlockRobes');
 	blackList.Add('LItemWeaponBattleAxe');
 	blackList.Add('LItemWeaponBow');
 	blackList.Add('LItemWeaponDagger');
@@ -354,17 +368,27 @@ begin
 	blackList.Add('LItemWeaponWarhammer');
 	blackList.Add('LItemWEBattlemage');
 	blackList.Add('LItemWerewolf');
+	blackList.Add('LItemwerewolfBossWarhammer');
 	blackList.Add('LItemWESpellsword');
 	blackList.Add('LItemWEThief');
 	blackList.Add('LootBanditArmor100');
 	blackList.Add('LootDwarvenCenturionSoulGem');
 	blackList.Add('LootFalmerOre100');
+	blackList.Add('LootGoldChangeUrns');
 	blackList.Add('LootSabrecatBodyParts');
 	blackList.Add('LootStaffsNecromancy100');
+	blackList.Add('MG04RewardLVL');
+	blackList.Add('MGR01ItemList');
+	blackList.Add('MGR2');
+	blackList.Add('MGRitual');
+	blackList.Add('MQ203AkaviriKatana');
+	blackList.Add('MQ304TsunBattleAxe');
+	blackList.Add('OutfitList');
 	blackList.Add('PenitusGear');
 	blackList.Add('PrisonerPants50');
 	blackList.Add('SublistArmor');
 	blackList.Add('SublistEnch');
+	blackList.Add('SublistENchDaedricWarAxeAbsorb');
 	blackList.Add('SublistScaledCuirassVariants');
 	blackList.Add('SublistSoulGem');
 	blackList.Add('SublistThalmor');
@@ -384,6 +408,13 @@ begin
 	//Blacklist NPC EditorIDs
 	//--------------------------------
 	
+	blackList.Add('CWBattleTullius');
+	blackList.Add('CWFieldCOSons');
+	blackList.Add('CWSiege');
+	blackList.Add('DBTreasCorpseSkeleton');
+	blackList.Add('dunBleakFallsCorpseBretonThomas');
+	blackList.Add('dunHonningbrewRatGuy');
+	blackList.Add('dunMarkarthWizard_Guard');
 	blackList.Add('DLC2dunFahlbtharzExplorerCorpse');
 	blackList.Add('DLC2dunGyldenhulAdventurer');
 	blackList.Add('DLC2EncHunterNordM');
@@ -392,6 +423,22 @@ begin
 	blackList.Add('DLC2PillarRRGuard');
 	blackList.Add('DLC2ServosRendas');
 	blackList.Add('DLC2WE05Wizard');
+	blackList.Add('e3DemoArvel');
+	blackList.Add('EncForsworn');
+	blackList.Add('EncHunter');
+	blackList.Add('EncVigilantOfStendarr');
+	blackList.Add('GaiusMaro');
+	blackList.Add('Golldir');
+	blackList.Add('Jdatharr');
+	blackList.Add('MQ206Gormlaith');
+	blackList.Add('MQ304Froki');
+	blackList.Add('Player');
+	blackList.Add('SummonGormlaith');
+	blackList.Add('TG08BTreasCorpseThiefNordMaleOld');
+	blackList.Add('TG09TreasCorpseAnders');
+	blackList.Add('TreasCorpseVigilantOfStendarrMale');
+	blackList.Add('Urwa');
+	blackList.Add('WEAdventurerBrawler');
 	
 	
 	
