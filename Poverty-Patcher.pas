@@ -569,6 +569,7 @@ begin
 	blackList.Add('dunV');
 	blackList.Add('dunW');
 	blackList.Add('dunYng');
+	blackList.Add('DunYngolBarrowSteelPlateHelmet');
 	blackList.Add('EnchArmorDraugrHelmetResistFire03');
 	blackList.Add('EnchCircletWaterbreathing');
 	blackList.Add('EnchDraugrGreatswordHonedFire03');
