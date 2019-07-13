@@ -400,6 +400,9 @@ begin
 	blackList.Add('TGPotionof');
 	blackList.Add('TGRewardPotion');
 	blackList.Add('TGTQ04DeathItem');
+	blackList.Add('USKPVigilantsWeaponMace');
+	blackList.Add('USLEEPStormfang');
+	blackList.Add('USLEEPSublistEnchDaedricBattle');
 	blackList.Add('VendorEorlundSkyforgeSteelSet');
 	blackList.Add('WE17BanditOutfitList');
 	
