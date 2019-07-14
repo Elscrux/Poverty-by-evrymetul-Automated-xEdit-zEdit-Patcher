@@ -37,7 +37,7 @@ begin
 	//Loading records
 	//--------------------------------
 	LoadChildRecords('CELL', 'REFR');
-	//LoadChildRecords('WRLD', 'REFR');
+	LoadChildRecords('WRLD', 'REFR');
 	LoadRecords('CONT');
 	LoadRecords('FLOR');
 	LoadRecords('LVLI');
@@ -922,7 +922,7 @@ begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or IsInTStringListCopy(blackList, getEditorID(item)) or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
+					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'KEYM') or (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or IsInTStringListCopy(blackList, getEditorID(item)) or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
 						k := k + 1;
 					end
 					else begin
