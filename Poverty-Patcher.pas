@@ -400,6 +400,7 @@ begin
 	blackList.Add('TGPotionof');
 	blackList.Add('TGRewardPotion');
 	blackList.Add('TGTQ04DeathItem');
+	blackList.Add('UDGPDLC1SublistEnchVampireRobesMagickaRate');
 	blackList.Add('USKPVigilantsWeaponMace');
 	blackList.Add('USLEEPStormfang');
 	blackList.Add('USLEEPSublistEnchDaedricBattle');
