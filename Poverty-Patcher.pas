@@ -183,6 +183,7 @@ begin
 	blackList.Add('DB02ShackKey');
 	blackList.Add('DB08DeathBook');
 	blackList.Add('DeathContainerList');
+	blackList.Add('DeathItemDwarvenSphere');
 	blackList.Add('DLC1DawnGuardHelmet75');
 	blackList.Add('DLC1FalmerShamanWeapon');
 	blackList.Add('DLC1LItemDaedric');
@@ -509,9 +510,10 @@ begin
 	blackList.Add('DLC1VQ07InitiatesEwer');
 	blackList.Add('DLC1V');
 	blackList.Add('DLC2Bl');
-	blackList.Add('DLC2dunFahlbtharzDwarvenHelmet');
 	blackList.Add('DLC2dunBloodskalNote01');
+	blackList.Add('DLC2dunFahlbtharzDwarvenHelmet');
 	blackList.Add('DLC2dunHaknirScimitar01');
+	blackList.Add('DLC2dunKarstaagSkullItemNoName');
 	blackList.Add('DLC2dunKolbjornBoots');
 	blackList.Add('DLC2dunKolbjornGauntlets');
 	blackList.Add('DLC2dunKolbjornHelm');
@@ -551,6 +553,7 @@ begin
 	blackList.Add('dunIronbindLetter');
 	blackList.Add('dunK');
 	blackList.Add('dunLabyrinthian');
+	blackList.Add('DunLabyrinthianSpellTomeEquilibrium');
 	blackList.Add('dunLiarsRetreatLonghammer');
 	blackList.Add('dunLost');
 	blackList.Add('dunMarkarthWizard_LabJournal');
@@ -562,6 +565,8 @@ begin
 	blackList.Add('dunN');
 	blackList.Add('dunOrotheimJournal');
 	blackList.Add('dunP');
+	blackList.Add('DunP');
+	blackList.Add('DUNPOIDragonAttackNote');
 	blackList.Add('dunR');
 	blackList.Add('dunSaarthalStaffJyrikStaff');
 	blackList.Add('dunSerpentsBluffNote');
