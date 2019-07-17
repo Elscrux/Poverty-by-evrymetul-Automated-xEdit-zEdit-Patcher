@@ -858,7 +858,7 @@ begin
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
-					if (getSignature(item) = 'LVLI') or (getSignature(item) = 'KEYM') or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
+					if (getSignature(item) = 'LVLI') or (getSignature(item) = 'KEYM') or (Copy(getEditorID(item), 0, 5) = 'Dummy') then begin
 						k := k + 1;
 					end
 					else begin
@@ -927,7 +927,7 @@ begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'KEYM') or (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or IsInTStringListCopy(blackList, getEditorID(item)) or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
+					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'KEYM') or (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
 						k := k + 1;
 					end
 					else begin
@@ -983,7 +983,7 @@ begin
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
 					nSignature := getSignature(item);
-					if (nSignature = 'LVLI') or (nSignature = 'KEYM') or (nSignature = 'WEAP') or (nSignature = 'ARMO') or (nSignature = 'AMMO') or (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1) or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
+					if (nSignature = 'LVLI') or (nSignature = 'KEYM') or (nSignature = 'WEAP') or (((nSignature = 'ARMO') or (nSignature = 'AMMO')) and (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1)) or (Copy(getEditorID(item), 0, 5) = 'Dummy') then begin
 						k := k + 1;
 					end
 					else begin
@@ -1228,7 +1228,7 @@ begin
 	end;
 	
 	//Special cases
-	if ContainsText(geev(fidRecord, 'EDID'), 'Gold') and ContainsText(geev(fidRecord, 'EDID'), 'Vendor') then begin
+	if ContainsText(geev(fidRecord, 'EDID'), 'Gold') and (ContainsText(geev(fidRecord, 'EDID'), 'Vendor') or ContainsText(geev(fidRecord, 'EDID'), 'Merchant')) then begin
 		eid := eid + '_MERCHANT';
 	end
 	else if ContainsText(geev(fidRecord, 'EDID'), 'SpellTome') or ContainsText(geev(fidRecord, 'EDID'), 'Scroll') then begin
