@@ -183,7 +183,6 @@ begin
 	blackList.Add('DB02ShackKey');
 	blackList.Add('DB08DeathBook');
 	blackList.Add('DeathContainerList');
-	blackList.Add('DeathItemDwarvenSphere');
 	blackList.Add('DLC1DawnGuardHelmet75');
 	blackList.Add('DLC1FalmerShamanWeapon');
 	blackList.Add('DLC1LItemDaedric');
@@ -421,6 +420,7 @@ begin
 	blackList.Add('dunBleakFallsCorpseBretonThomas');
 	blackList.Add('dunHonningbrewRatGuy');
 	blackList.Add('dunMarkarthWizard_Guard');
+	blackList.Add('DLC1HunterBaseIntroVigilant');
 	blackList.Add('DLC2dunFahlbtharzExplorerCorpse');
 	blackList.Add('DLC2dunGyldenhulAdventurer');
 	blackList.Add('DLC2EncHunterNordM');
