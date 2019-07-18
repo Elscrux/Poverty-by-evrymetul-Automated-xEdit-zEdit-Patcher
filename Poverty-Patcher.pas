@@ -7,7 +7,7 @@ function Initialize: integer;
 var
   changed: boolean;
   i, j, k, lastPercent: integer;
-  currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, item, fIngredient, fEditor, lNewItem, fSignature, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
+  currentFile, currentSignature, editorID, formID, rName, rFormID, rEditorID, rSignature, item, fIngredient, fEditor, lNewItem, fSignature, reference, fFormID, lEditorID, lSignature, lFormID, cNewItem, cEditorID, cSignature, nItem, nEditorID, nSignature, tIngredient, tEditorID, tSignature, tFormID, povertyFileLoadOrder, dummyDrink, dummyFood, dummyPotion, dummyArrow, dummyAmulet, dummyBoots, dummyCirclet, dummyCuirass, dummyGauntlets, dummyHelmet, dummyRing, dummyShield, dummyBook, dummyIngredient, dummyClutter, dummyResource, dummySeptim, dummySoulGem, dummyBattleaxe, dummyBow, dummyDagger, dummyGreatSword, dummyMace, dummyStaff, dummySword, dummyWarAxe, dummyWarhammer, dummyWeapon1H, dummyWeapon2H: string;
   rec, lvliRecord, rItemRecord, ItemsListubRecord, cItem, lEntries, lEntry, nItems: IInterface;
   referenceKeywords, failedFormIDs, errorFormIDs, cItemsList, cCountsList, lLevelList, lReferenceList, lCountList, blackList: TStringList;
 
@@ -858,7 +858,7 @@ begin
 				k := 0;
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
-					if (getSignature(item) = 'LVLI') or (getSignature(item) = 'KEYM') or (Copy(getEditorID(item), 0, 5) = 'Dummy') then begin
+					if (getSignature(item) = 'LVLI') or (getSignature(item) = 'KEYM') or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
 						k := k + 1;
 					end
 					else begin
@@ -927,7 +927,8 @@ begin
 				//Add items to list and delete them
 				k := 0;
 				for j := 0 to ElementCount(lEntries) - 1 do begin
-					if (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'KEYM') or (getSignature(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')) = 'LVLI') or (Copy(getEditorID(geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference')), 0, 5) = 'Dummy') then begin
+				reference := geev(rec, 'Leveled List Entries\[' + IntToStr(k) + ']\LVLO\Reference');
+					if (getSignature(reference) = 'KEYM') or (getSignature(reference) = 'LVLI') or (Copy(getEditorID(reference), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(reference)) then begin
 						k := k + 1;
 					end
 					else begin
@@ -983,7 +984,7 @@ begin
 				for j := 0 to ElementCount(ebip(rec, 'Items')) - 1 do begin
 					item := geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Item');
 					nSignature := getSignature(item);
-					if (nSignature = 'LVLI') or (nSignature = 'KEYM') or (nSignature = 'WEAP') or (((nSignature = 'ARMO') or (nSignature = 'AMMO')) and (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1)) or (Copy(getEditorID(item), 0, 5) = 'Dummy') then begin
+					if (nSignature = 'LVLI') or (nSignature = 'KEYM') or (nSignature = 'WEAP') or (((nSignature = 'ARMO') or (nSignature = 'AMMO')) and (geev(rec, 'Items\[' + IntToStr(k) + ']\CNTO\Count') = 1)) or (Copy(getEditorID(item), 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, getEditorID(item)) then begin
 						k := k + 1;
 					end
 					else begin
