@@ -675,7 +675,7 @@ begin
 			rFormID := getFormID(rName);
 			
 			//Check for potential errors and sort out records that shall not be processed
-			if (not Assigned(ebip(rec, 'NAME'))) or (not hasPovertySignature(rSignature)) or (Copy(rEditorID, 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, rEditorID) then begin
+			if (not Assigned(ebip(rec, 'NAME'))) or (not hasPovertySignature(rSignature)) or (Copy(rEditorID, 0, 5) = 'Dummy') or IsInTStringListCopy(blackList, rEditorID) or IsInTStringListCopy(blackList, geev(rec, 'EDID')) then begin
 				Remove(rec);
 				Continue;
 			end
