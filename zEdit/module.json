@@ -1,0 +1,12 @@
+{
+  "id": "PovertyPatcher",
+  "name": "Poverty Patcher",
+  "author": "Elscrux",
+  "version": "1.0.0",
+  "released": "7/16/2019",
+  "updated": "7/16/2019",
+  "description": "",
+  "requires": ["unifiedPatchingFramework"],
+  "moduleLoader": "UPF",
+  "canHotLoad": true
+}
