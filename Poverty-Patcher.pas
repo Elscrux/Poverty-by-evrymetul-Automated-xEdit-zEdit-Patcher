@@ -189,6 +189,7 @@ begin
 	blacklistLVLI.Add('DB02ShackKey');
 	blacklistLVLI.Add('DB08DeathBook');
 	blacklistLVLI.Add('DeathContainerList');
+	blacklistLVLI.Add('DeathItemDwarvenSphere');
 	blacklistLVLI.Add('DLC1DawnGuardHelmet75');
 	blacklistLVLI.Add('DLC1FalmerShamanWeapon');
 	blacklistLVLI.Add('DLC1LItemDaedric');
@@ -390,6 +391,7 @@ begin
 	blacklistLVLI.Add('MGRitual');
 	blacklistLVLI.Add('MQ203AkaviriKatana');
 	blacklistLVLI.Add('MQ304TsunBattleAxe');
+	blacklistLVLI.Add('MS09Reward');
 	blacklistLVLI.Add('OutfitList');
 	blacklistLVLI.Add('PenitusGear');
 	blacklistLVLI.Add('PrisonerPants50');
@@ -426,16 +428,22 @@ begin
 	blacklistNPC.Add('dunBleakFallsCorpseBretonThomas');
 	blacklistNPC.Add('dunHonningbrewRatGuy');
 	blacklistNPC.Add('dunMarkarthWizard_Guard');
+	blacklistNPC.Add('DLC1dunDarkfallTreasCorpse01');
 	blacklistNPC.Add('DLC1HunterBaseIntroVigilant');
+	blacklistNPC.Add('DLC1VQ01VigilantTolanCorpse');
 	blacklistNPC.Add('DLC2dunFahlbtharzExplorerCorpse');
 	blacklistNPC.Add('DLC2dunGyldenhulAdventurer');
 	blacklistNPC.Add('DLC2EncHunterNordM');
 	blacklistNPC.Add('DLC2KagrumezBanditBoss');
 	blacklistNPC.Add('DLC2MerilarRendas');
 	blacklistNPC.Add('DLC2PillarRRGuard');
+	blacklistNPC.Add('DLC2RR');
 	blacklistNPC.Add('DLC2ServosRendas');
 	blacklistNPC.Add('DLC2WE05Wizard');
+	blacklistNPC.Add('dunCGImperialSoldierArcherA04');
+	blacklistNPC.Add('dunPOIVolcanicLuckyLorenze');
 	blacklistNPC.Add('e3DemoArvel');
+	blacklistNPC.Add('E3DemoTowerBanditMissile');
 	blacklistNPC.Add('EncForsworn');
 	blacklistNPC.Add('EncHunter');
 	blacklistNPC.Add('EncVigilantOfStendarr');
@@ -444,6 +452,7 @@ begin
 	blacklistNPC.Add('Jdatharr');
 	blacklistNPC.Add('MQ206Gormlaith');
 	blacklistNPC.Add('MQ304Froki');
+	blacklistNPC.Add('MS03ChaletGuardExterior');
 	blacklistNPC.Add('Player');
 	blacklistNPC.Add('SummonGormlaith');
 	blacklistNPC.Add('TG08BTreasCorpseThiefNordMaleOld');
@@ -648,6 +657,13 @@ begin
 	
 	//blacklistREFR.Add('FavorTorbjornItemREF');
 	//^example^: remove the '//' if you want this to work. '//' comments out stuff so it won't be read by xEdit
+	
+	blacklistREFR.Add('DA16AwakeBarrierGem');
+	blacklistREFR.Add('DBMarkarthDagger');
+	blacklistREFR.Add('Favor');
+	blacklistREFR.Add('FestivalSpicedWineSpigotRef');
+	blacklistREFR.Add('SiddgeirBlackBriarMeadREF');
+	blacklistREFR.Add('YsoldaFavorItemREF');
 	
 	//--------------------------------
 	//Blacklist FLOR EditorIDs
