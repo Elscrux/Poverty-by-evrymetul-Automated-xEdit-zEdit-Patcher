@@ -905,9 +905,9 @@ function AddPovertyLVLI(file, record, origin) {
 	let editorID = xelib.EditorID(record);
 	
 	//If reference is LVLI get the first non LVLI entry
-	if(signature == "LVLI" && getSignature(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI") {
+	if(signature == "LVLI" && xelib.Signature(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI") {
 		var innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"));
-		while(xelib.Signature(innerlvli) == "LVLI" && getSignature(xelib.GetValue(innerlvli, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI") {
+		while(xelib.Signature(innerlvli) == "LVLI" && xelib.Signature(xelib.GetLinksTo(innerlvli, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI") {
 			innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(innerlvli, "Leveled List Entries\\[0]\\LVLO\\Reference"));
 		}
 		signature = xelib.Signature(innerlvli);
