@@ -818,8 +818,6 @@ registerPatcher({
 					if(settings.logCurrent) {
 						helpers.logMessage(xelib.LongName(record));
 					}
-					locals.lastCheckSeconds = 0;
-					locals.currentSeconds = 0;
 					let ingredient = xelib.GetLinksTo(record, "PFIG");
 					let editorID = xelib.EditorID(ingredient);
 					let lvliRecord;
@@ -851,8 +849,6 @@ registerPatcher({
 					if(settings.logCurrent) {
 						helpers.logMessage(xelib.LongName(record));
 					}
-					locals.lastCheckSeconds = 0;
-					locals.currentSeconds = 0;
 					let ingredient = xelib.GetLinksTo(record, "PFIG");
 					let editorID = xelib.EditorID(ingredient);
 					let lvliRecord;
