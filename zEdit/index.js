@@ -598,29 +598,29 @@ registerPatcher({
 							xelib.SetValue(record, "NAME", "DummyArrow");
 							break;
 						case "ARMO":
-							if(xelib.HasKeyword(record, "ArmorBoots")) {
+							if(xelib.HasKeyword(baseRecord, "ArmorBoots")) {
 								xelib.SetValue(record, "NAME", "DummyBoots");
-							} else if(xelib.HasKeyword(record, "ArmorCuirass")) {
+							} else if(xelib.HasKeyword(baseRecord, "ArmorCuirass")) {
 								xelib.SetValue(record, "NAME", "DummyCuirass");
-							} else if(xelib.HasKeyword(record, "ArmorGauntlets")) {
+							} else if(xelib.HasKeyword(baseRecord, "ArmorGauntlets")) {
 								xelib.SetValue(record, "NAME", "DummyGauntlets");
-							} else if(xelib.HasKeyword(record, "ArmorHelmet")) {
+							} else if(xelib.HasKeyword(baseRecord, "ArmorHelmet")) {
 								xelib.SetValue(record, "NAME", "DummyHelmet");
-							} else if(xelib.HasKeyword(record, "ArmorShield")) {
+							} else if(xelib.HasKeyword(baseRecord, "ArmorShield")) {
 								xelib.SetValue(record, "NAME", "DummyShield");
-							} else if(xelib.HasKeyword(record, "ClothingCirclet")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingCirclet")) {
 								xelib.SetValue(record, "NAME", "DummyCirclet");
-							} else if(xelib.HasKeyword(record, "ClothingRing")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingRing")) {
 								xelib.SetValue(record, "NAME", "DummyRing");
-							} else if(xelib.HasKeyword(record, "ClothingNecklace")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingNecklace")) {
 								xelib.SetValue(record, "NAME", "DummyAmulet");
-							} else if(xelib.HasKeyword(record, "ClothingFeet")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingFeet")) {
 								xelib.SetValue(record, "NAME", "DummyBoots");
-							} else if(xelib.HasKeyword(record, "ClothingBody")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingBody")) {
 								xelib.SetValue(record, "NAME", "DummyCuirass");
-							} else if(xelib.HasKeyword(record, "ClothingHands")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingHands")) {
 								xelib.SetValue(record, "NAME", "DummyGauntlets");
-							} else if(xelib.HasKeyword(record, "ClothingHead")) {
+							} else if(xelib.HasKeyword(baseRecord, "ClothingHead")) {
 								xelib.SetValue(record, "NAME", "DummyHelmet");
 							}
 							break;
@@ -643,27 +643,26 @@ registerPatcher({
 							xelib.SetValue(record, "NAME", "DummySoulGem");
 							break;
 						case "WEAP":
-							if(xelib.HasKeyword(record, "WeapTypeBattleaxe")) {
+							if(xelib.HasKeyword(baseRecord, "WeapTypeBattleaxe")) {
 								xelib.SetValue(record, "NAME", "DummyBattleaxe");
-							} else if(xelib.HasKeyword(record, "WeapTypeBow")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeBow")) {
 								xelib.SetValue(record, "NAME", "DummyBow");
-							} else if(xelib.HasKeyword(record, "WeapTypeDagger")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeDagger")) {
 								xelib.SetValue(record, "NAME", "DummyDagger");
-							} else if(xelib.HasKeyword(record, "WeapTypeGreatsword")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeGreatsword")) {
 								xelib.SetValue(record, "NAME", "DummyGreatsword");
-							} else if(xelib.HasKeyword(record, "WeapTypeMace")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeMace")) {
 								xelib.SetValue(record, "NAME", "DummyMace");
-							} else if(xelib.HasKeyword(record, "WeapTypeSword")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeSword")) {
 								xelib.SetValue(record, "NAME", "DummySword");
-							} else if(xelib.HasKeyword(record, "WeapTypeWarAxe")) {
-								xelib.SetValue(record, "NAME", "DummyWaraxe");
-							} else if(xelib.HasKeyword(record, "WeapTypeWarhammer")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeWarAxe")) {
+								xelib.SetValue(record, "NAME", "DummyWarAxe");
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeWarhammer")) {
 								xelib.SetValue(record, "NAME", "DummyWarhammer");
-							} else if(xelib.HasKeyword(record, "WeapTypeStaff")) {
+							} else if(xelib.HasKeyword(baseRecord, "WeapTypeStaff")) {
 								xelib.SetValue(record, "NAME", "DummyStaff");
 							}
 							break;
-					
 					}
 				}
 			}
