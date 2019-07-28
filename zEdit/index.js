@@ -650,7 +650,7 @@ registerPatcher({
 							} else if(xelib.HasKeyword(baseRecord, "WeapTypeDagger")) {
 								xelib.SetValue(record, "NAME", "DummyDagger");
 							} else if(xelib.HasKeyword(baseRecord, "WeapTypeGreatsword")) {
-								xelib.SetValue(record, "NAME", "DummyGreatsword");
+								xelib.SetValue(record, "NAME", "DummyGreatSword");
 							} else if(xelib.HasKeyword(baseRecord, "WeapTypeMace")) {
 								xelib.SetValue(record, "NAME", "DummyMace");
 							} else if(xelib.HasKeyword(baseRecord, "WeapTypeSword")) {
