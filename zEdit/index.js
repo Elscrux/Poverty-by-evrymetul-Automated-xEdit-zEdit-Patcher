@@ -546,7 +546,39 @@ registerPatcher({
 			]
 			
 			locals.blacklistTREE = [
-				
+				"BYOHHouseFloraCabbage01",
+				"BYOHHouseFloraCarrots01",
+				"BYOHHouseFloraGourd01",
+				"BYOHHouseFloraLeek01",
+				"BYOHHouseFloraPotato01",
+				"BYOHHouseIngrdCanisRoot01",
+				"BYOHHouseIngrdCotton01",
+				"BYOHHouseIngrdCreepCluster01",
+				"BYOHHouseIngrdDeathbell01",
+				"BYOHHouseIngrdDragonTongue01",
+				"BYOHHouseIngrdFungalPod01",
+				"BYOHHouseIngrdGiantLichen01",
+				"BYOHHouseIngrdGlowMushrm01",
+				"BYOHHouseIngrdJazbay01",
+				"BYOHHouseIngrdJuniper01",
+				"BYOHHouseIngrdLavender01",
+				"BYOHHouseIngrdMoraTap01",
+				"BYOHHouseIngrdMtFlBlue01",
+				"BYOHHouseIngrdMtFlPurple01",
+				"BYOHHouseIngrdMtFlRed01",
+				"BYOHHouseIngrdMushroom01",
+				"BYOHHouseIngrdMushroom02",
+				"BYOHHouseIngrdMushroom03",
+				"BYOHHouseIngrdMushroom04",
+				"BYOHHouseIngrdMushroom05",
+				"BYOHHouseIngrdMushroom06",
+				"BYOHHouseIngrdNightshade01",
+				"BYOHHouseIngrdScalyPBits01",
+				"BYOHHouseIngrdSnowberry01",
+				"BYOHHouseIngrdSpikyGrass01",
+				"BYOHHouseIngrdThistle01",
+				"BYOHHouseIngrdWheat01",
+				"DLC01AncestorsGladeTree"
 			]
 		},
         process: [{
