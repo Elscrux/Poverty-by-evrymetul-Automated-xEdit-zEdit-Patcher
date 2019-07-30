@@ -6,18 +6,19 @@ registerPatcher({
         templateUrl: `${patcherUrl}/partials/settings.html`,
         defaultSettings: {
 			patchFileName: 'PovertyPatch.esp',
-      			processREFR: true,
-      			processCONT: true,
-      			processFLORandTREE: true,
-      			processLVLI: true,
-      			processNPC_: true,
+      		processREFR: true,
+      		processCONT: true,
+      		processFLORandTREE: true,
+      		processLVLI: true,
+      		processNPC_: true,
 			logCurrent: true
         }
     },
     requiredFiles: ["Poverty.esp"],
 	getFilesToPatch: function (filenames) {
-		filenames = ["HearthFires.esm"];
-        return filenames;
+		return filenames.filter(function(value, index, arr) {
+            return (value != "Poverty.esp");
+        });
     },
     execute: (patchFile, helpers, settings, locals) => ({
         initialize: function () {
@@ -555,9 +556,15 @@ registerPatcher({
 				overrides: false,
 				filter: function(record) {
 					let baseRecord = xelib.GetLinksTo(record, "NAME");
-					if(!hasPovertySignature(baseRecord)) {
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!hasPovertySignature(baseRecord)) {
 						return false;
 					} else if(!xelib.HasElement(record, "NAME")) {
+						return false;
+					} else if(xelib.GetRecordFlag(record, "Initially Disabled")) {
+						return false;
+					} else if(xelib.Signature(xelib.GetLinksTo(record, "NAME")) == "LVLI") {
 						return false;
 					} else if(isInBlacklist(locals.blacklistREFR, xelib.EditorID(record))) {
 						return false;
@@ -670,7 +677,9 @@ registerPatcher({
 				signature: "CONT",
 				overrides: false,
 				filter: function(record) {
-					if(!xelib.HasElement(record, "Items")) {
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!xelib.HasElement(record, "Items")) {
 						return false;
 					} else if(isInBlacklist(locals.blacklistCONT, xelib.EditorID(record))) {
 						return false;
@@ -715,7 +724,11 @@ registerPatcher({
 				signature: "LVLI",
 				overrides: false,
 				filter: function(record) {
-					if(!xelib.HasElement(record, "Leveled List Entries")) {
+					let masterRecord = xelib.GetMasterRecord(record);
+					let overrides = xelib.GetOverrides(masterRecord);
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!xelib.HasElement(record, "Leveled List Entries")) {
 						return false;
 					} else if(isInBlacklist(locals.blacklistLVLI, xelib.EditorID(record))) {
 						return false;
@@ -740,6 +753,8 @@ registerPatcher({
 						previousRecord = overrides[overrides.length - 2];
 					}
 					
+					let processedLVLICount = 0;
+					
 					//Cycle through leveled entries
 					for(let i = 0; i < xelib.GetValue(record, "LLCT").toString(); i++) {
 						let leveledlist = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
@@ -747,10 +762,14 @@ registerPatcher({
 						
 						//Replace leveled entry with poverty LVLI
 						if(!(("LVLI|KEYM".includes(xelib.Signature(leveledlist))) || isInBlacklist(locals.blacklist, editorID))) {
+							processedLVLICount++;
 							let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledlist), xelib.EditorID(record), "LVLI", patchFile, helpers);
 							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledlist, "Record Header\\FormID"));
 						}
+					}
+					if(processedLVLICount != 0) {
+						AddPovertyLVLIGlobal(record, helpers);
 					}
 				}
 			}
@@ -760,7 +779,9 @@ registerPatcher({
 				signature: "NPC_",
 				overrides: false,
 				filter: function(record) {
-					if(!xelib.HasElement(record, "Items")) {
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!xelib.HasElement(record, "Items")) {
 						return false;
 					} else if(isInBlacklist(locals.blacklistNPC, xelib.EditorID(record))) {
 						return false;
@@ -805,7 +826,9 @@ registerPatcher({
 				signature: "FLOR",
 				overrides: false,
 				filter: function(record) {
-					if(!xelib.HasElement(record, "PFIG")) {
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!xelib.HasElement(record, "PFIG")) {
 						return false;
 					} else if(!hasPovertySignature(xelib.GetLinksTo(record, "PFIG"))) {
 						return false;
@@ -833,7 +856,9 @@ registerPatcher({
 				signature: "TREE",
 				overrides: false,
 				filter: function(record) {
-					if(!xelib.HasElement(record, "PFIG")) {
+					if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
+						return false;
+					} else if(!xelib.HasElement(record, "PFIG")) {
 						return false;
 					} else if(!hasPovertySignature(xelib.GetLinksTo(record, "PFIG"))) {
 						return false;
@@ -855,7 +880,6 @@ registerPatcher({
 					xelib.SetLinksTo(record, lvliRecord, "PFIG");
 				}
 			}
-			
 		}],
         finalize: function () {
         }
@@ -987,4 +1011,60 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		return xelib.GetElement(0, xelib.Path(patchFile) + "\\LVLI\\p" + editorID);
 	}
 	
+}
+
+function AddPovertyLVLIGlobal(record, helpers) {
+	let signatures = [];
+	let gold = 0;
+	SearchForAllLVLISignatures(record, signatures, helpers);
+	for(let i = 0; i < signatures.length; i++) {
+		if(!(signatures[i] == signatures[0])) {
+			helpers.logMessage("WARNING: No Global for LVLI " + xelib.EditorID(record) + " available!");
+			return;
+		}
+	}
+	
+	switch(signatures[0]) {
+		case "ALCH":
+			xelib.AddElementValue(record, "LVLG", "pFood");
+			break;
+		case "AMMO":
+			xelib.AddElementValue(record, "LVLG", "pAmmo");
+			break;
+		case "ARMO":
+			xelib.AddElementValue(record, "LVLG", "pArmor");
+			break;
+		case "BOOK":
+			xelib.AddElementValue(record, "LVLG", "pBook");
+			break;
+		case "INGR":
+			xelib.AddElementValue(record, "LVLG", "pIngredient");
+			break;
+		case "MISC":
+			if(gold == signatures.length) {
+				xelib.AddElementValue(record, "LVLG", "pGold");
+			} else {
+				xelib.AddElementValue(record, "LVLG", "pClutter");
+			}
+			break;
+		case "SCRL":
+			xelib.AddElementValue(record, "LVLG", "pBookSpell");
+			break;
+		case "SLGM":
+			xelib.AddElementValue(record, "LVLG", "pSoulGem");
+			break;
+		case "WEAP":
+			xelib.AddElementValue(record, "LVLG", "pWeapon");
+			break;
+	}
+}
+
+function SearchForAllLVLISignatures(currentEntry, signatures, helpers) {
+	if(xelib.Signature(currentEntry)  == "LVLI" && xelib.HasElement(currentEntry, "Leveled List Entries")) {
+		for(let i = 0; i < Number(xelib.GetValue(currentEntry, "LLCT")); i++) {
+			SearchForAllLVLISignatures(xelib.GetLinksTo(currentEntry, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference"), signatures, helpers);
+		}
+	} else if(xelib.Signature(currentEntry)  != "LVLI") {
+		signatures.push(xelib.Signature(currentEntry));
+	}
 }
