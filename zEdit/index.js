@@ -593,12 +593,13 @@ registerPatcher({
 				
 				//Add XLIB to reference
 				xelib.AddElementValue(record, "XLIB", xelib.EditorID(lvliRecord));
+				
 				//Change the name
 				switch(xelib.Signature(baseRecord)) {
 					case "ALCH":
 						if(xelib.HasKeyword(record, "VendorItemPotion") || xelib.HasKeyword(record, "VendorItemPoison")) {
 							xelib.SetValue(record, "NAME", "DummyDrink");
-						} else if(xelib.GetHexFormID(xelib.GetLinksTo(baseRecord, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
+						} else if(xelib.HasElement(record, "ENIT\\Sound - Consume") && xelib.GetValue(record, "ENIT\\Sound - Consume") != "NULL - Null Reference [00000000]" && xelib.GetHexFormID(xelib.GetLinksTo(record, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
 							xelib.SetValue(record, "NAME", "DummyDrink");
 						} else {
 							xelib.SetValue(record, "NAME", "DummyFood");
@@ -760,13 +761,8 @@ registerPatcher({
 				}
 				
 				//Utility variables for setting the global
-				let editorID = xelib.EditorID(record);
-				let firstSignature = xelib.Signature(xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[0]\\LVLO\\Reference"));
-				let sameSignatureCount = 0;
-				let potionCount = 0;
-				let drinkCount = 0;
-				let resourceCount = 0;
-				let goldCount = 0;
+				let firstGlobal = "";
+				let sameGlobalCount = 0;
 				
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(record, "LLCT"); i++) {
@@ -776,77 +772,22 @@ registerPatcher({
 					
 					//Replace leveled entry with poverty LVLI
 					if(!(("LVLI|KEYM".includes(signature)) || isInBlacklist(locals.blacklist, editorID))) {
-						//Check if global should be used for the current entry
-						if(signature == firstSignature) {
-							sameSignatureCount++;
-						}
-						if(signature == "ALCH" && xelib.HasKeyword(leveledEntry, "VendorItemPotion") || xelib.HasKeyword(leveledEntry, "VendorItemPoison")) {
-							potionCount++;
-						}
-						if(signature == "ALCH" && xelib.GetHexFormID(xelib.GetLinksTo(leveledEntry, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
-							drinkCount++;
-						}
-						if(signature == "MISC" && getsReferencedByRecordWithSignature(leveledEntry, "COBJ")) {
-							resourceCount++;
-						}
-						if(editorID.includes("Gold")) {
-							goldCount++;
-						}
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
 						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
+						if(i == 0){
+							firstGlobal = xelib.GetValue(lvliRecord, "LVLG");
+						}
+						if(xelib.GetValue(lvliRecord, "LVLG") == firstGlobal) {
+							sameGlobalCount++;
+						}
 					}
 				}
+				
 				//Add global
-				if(sameSignatureCount ==  xelib.GetValue(record, "LLCT") && xelib.GetValue(record, "LVLD") == "0" && !xelib.HasElement(record, "LVLG")) {
-					switch(firstSignature) {
-						case "ALCH":
-							if(potionCount == xelib.GetValue(record, "LLCT")) {
-								xelib.AddElementValue(record, "LVLG", "pDrink");
-							} else if(drinkCount == xelib.GetValue(record, "LLCT")) {
-								xelib.AddElementValue(record, "LVLG", "pPotion");
-							} else {
-								xelib.AddElementValue(record, "LVLG", "pFood");
-							}
-							break;
-						case "AMMO":
-							xelib.AddElementValue(record, "LVLG", "pAmmo");
-							break;
-						case "ARMO":
-							xelib.AddElementValue(record, "LVLG", "pArmor");
-							break;
-						case "BOOK":
-							if(editorID.includes("SpellTome") || editorID.includes("Scroll")){
-								xelib.AddElementValue(record, "LVLG", "pBookSpell");
-							} else {
-								xelib.AddElementValue(record, "LVLG", "pBook");
-							}
-							break;
-						case "INGR":
-							xelib.AddElementValue(record, "LVLG", "pIngredient");
-							break;
-						case "MISC":
-							if(goldCount == xelib.GetValue(record, "LLCT") && (editorID.includes("Vendor") || editorID.includes("Merchant"))) {
-								xelib.AddElementValue(record, "LVLG", "pMerchantGold");
-							} else if(goldCount == xelib.GetValue(record, "LLCT")) {
-								xelib.AddElementValue(record, "LVLG", "pGold");
-							} else if(resourceCount == xelib.GetValue(record, "LLCT")) {
-								xelib.AddElementValue(record, "LVLG", "pResource");
-							} else {
-								xelib.AddElementValue(record, "LVLG", "pClutter");
-							}
-							break;
-						case "SCRL":
-							xelib.AddElementValue(record, "LVLG", "pBookSpell");
-							break;
-						case "SLGM":
-							xelib.AddElementValue(record, "LVLG", "pSoulGem");
-							break;
-						case "WEAP":
-							xelib.AddElementValue(record, "LVLG", "pWeapon");
-							break;
-		}
+				if(sameGlobalCount ==  xelib.GetValue(record, "LLCT")) {
+					xelib.AddElementValue(record, "LVLG", firstGlobal);
 				}
 			}
 		}, {
@@ -870,7 +811,7 @@ registerPatcher({
 			},
 			patch: function (record, helpers, settings, locals) {
 				if(settings.logCurrent) {
-					helpers.logMessage(xelib.LongName(record));
+					//helpers.logMessage(xelib.LongName(record));
 				}
 				
 				//Get previous Record
@@ -887,11 +828,25 @@ registerPatcher({
 				for(let i = 0; i < xelib.GetValue(record, "COCT"); i++) {
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
+					let signature = xelib.Signature(item);
+					
 					//Replace items with poverty LVLI
-					if(!(("LVLI|KEYM|WEAP".includes(xelib.Signature(item))) || (("AMMO|ARMO".includes(xelib.Signature(item))) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || isInBlacklist(locals.blacklist, editorID))) {
+					if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || isInBlacklist(locals.blacklist, editorID))) {
+						helpers.logMessage(xelib.LongName(record));
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, helpers);
-						xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
-						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
+						if(signature != "AMMO") {
+							xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
+							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
+						} else {
+							xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
+							for(let j = 0; j < xelib.GetValue(record, "COCT"); j++) {
+								let item = xelib.GetLinksTo(previousRecord, "Items\\[" + j.toString() + "]\\CNTO\\Item");
+								if(xelib.EditorID(item) == editorID) {
+									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
+									return;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -992,7 +947,6 @@ function hasPovertySignature(record) {
 function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile, helpers) {
 	let signature = xelib.Signature(record);
 	let editorID = xelib.EditorID(record);
-	
 	//If reference is LVLI get the first non LVLI entry
 	if(signature == "LVLI" && xelib.Signature(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI" && xelib.HasElement(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"), "Leveled List Entries")) {
 		var innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"));
@@ -1001,16 +955,16 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		}
 		signature = xelib.Signature(innerlvli);
 	}
-	
 	//Special cases
 	if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant"))) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
-	} else if(originSignature == "NPC_" && ("MISC".includes(signature) && getsReferencedByRecordWithSignature(record, "COBJ")) || "ALCH|AMMO|INGR".includes(signature)) {
+	} else if((originSignature == "NPC_" && "AMMO|INGR".includes(signature)) || (originSignature == "LVLI" && ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ")) || ("ALCH" == signature && originEditorID.includes("DeathItem")))) {
 		editorID = editorID + "_NPC";
+	} else if(originSignature == "FLOR" || originSignature == "TREE") {
+		editorID = editorID + "_FLORA";
 	}
-	
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
 		//Add LVLI record	
 		let lvli = xelib.AddElement(file, "LVLI\\LVLI");
@@ -1019,20 +973,20 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		xelib.AddLeveledEntry(lvli, xelib.GetHexFormID(record, false, false), "1", "1");
 		switch(signature) {
 			case "ALCH":
-				if(originSignature == "FLOR" || originSignature == "TREE") {
+				if(editorID.includes("_FLORA")) {
 					xelib.AddElementValue(lvli, "LVLG", "pHarvestFoodFlora");
 				} else if(editorID.includes("_NPC")) {
 					xelib.AddElementValue(lvli, "LVLG", "pHarvestFoodNPC");
 				} else if(xelib.HasKeyword(record, "VendorItemPotion") || xelib.HasKeyword(record, "VendorItemPoison")) {
 					xelib.AddElementValue(lvli, "LVLG", "pPotion");
-				} else if(xelib.GetHexFormID(xelib.GetLinksTo(record, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
+				} else if(xelib.HasElement(record, "ENIT\\Sound - Consume") && xelib.GetValue(record, "ENIT\\Sound - Consume") != "NULL - Null Reference [00000000]" && xelib.GetHexFormID(xelib.GetLinksTo(record, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
 					xelib.AddElementValue(lvli, "LVLG", "pDrink");
 				} else {
 					xelib.AddElementValue(lvli, "LVLG", "pFood");
 				}
 				break;
 			case "AMMO":
-				if(editorID.includes("_NPC")){
+				if(editorID.includes("_NPC")) {
 					xelib.AddElementValue(lvli, "LVLG", "pAmmoNPC");
 				} else {
 					xelib.AddElementValue(lvli, "LVLG", "pAmmo");
@@ -1042,14 +996,14 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 				xelib.AddElementValue(lvli, "LVLG", "pArmor");
 				break;
 			case "BOOK":
-				if(editorID.includes("_SPELL")){
+				if(editorID.includes("_SPELL")) {
 					xelib.AddElementValue(lvli, "LVLG", "pBookSpell");
 				} else {
 					xelib.AddElementValue(lvli, "LVLG", "pBook");
 				}
 				break;
 			case "INGR":
-				if(originSignature == "FLOR" || originSignature == "TREE"){
+				if(editorID.includes("_FLORA")) {
 					xelib.AddElementValue(lvli, "LVLG", "pHarvestIngredientsFlora");
 				} else if(editorID.includes("_NPC")) {
 					xelib.AddElementValue(lvli, "LVLG", "pHarvestIngredientsNPC");
@@ -1088,5 +1042,4 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 			return xelib.GetElement(0, xelib.Path(patchFile) + "\\LVLI\\p" + editorID);
 		}
 	}
-	
 }
