@@ -7,7 +7,7 @@
 6. Start zEdit in edit mode
 7. Click on the puzzle icon on the top right corner
 8. Click on 'Build' next to PovertyPatch.esp
-9. Wait for it to finish (That can take upto several hours if you patch several huge mods)
+9. Wait for it to finish (That can take from some minutes up to several hours if you patch several huge mods)
 10. Enjoy!
 
 ## Compatibility
