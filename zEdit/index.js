@@ -644,7 +644,7 @@ registerPatcher({
 					case "MISC":
 						if(editorID.includes("Gold001")) {
 							xelib.SetValue(record, "NAME", "DummySeptim");
-						} else if(getsReferencedByRecordWithSignature(baseRecord, "COBJ")) {
+						} else if(getsReferencedByRecordWithSignature(baseRecord, "COBJ", "")) {
 							xelib.SetValue(record, "NAME", "DummyResource");
 						} else {
 							xelib.SetValue(record, "NAME", "DummyClutter");
@@ -738,7 +738,7 @@ registerPatcher({
 						return false;
 					} else if(isInBlacklist(locals.blacklistLVLI, xelib.EditorID(record))) {
 						return false;
-					} else if(getsReferencedByRecordWithSignature(record, "OTFT")) {
+					} else if(getsReferencedByRecordWithSignature(record, "OTFT", "")) {
 						return false;
 					} else {
 						return true;
@@ -773,7 +773,11 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if(!(("LVLI|KEYM".includes(signature)) || isInBlacklist(locals.blacklist, editorID))) {
 						//Exchange the old leveled entry with a poverty variant
-						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
+						if(getsReferencedByRecordWithSignature(record, "FLOR", "TREE")) {
+							let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, helpers);
+						} else {
+							let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
+						}
 						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
 						if(i == 0){
@@ -786,7 +790,7 @@ registerPatcher({
 				}
 				
 				//Add global
-				if(sameGlobalCount ==  xelib.GetValue(record, "LLCT")) {
+				if(!xelib.HasElement(record, "LVLG") == sameGlobalCount ==  xelib.GetValue(record, "LLCT") && xelib.GetValue(record, "LVLD") == "1") {
 					xelib.AddElementValue(record, "LVLG", firstGlobal);
 				}
 			}
@@ -926,10 +930,11 @@ function isInBlacklist(blacklist, editorID) {
 	return false;
 }
 
-function getsReferencedByRecordWithSignature(record, signature) {
+function getsReferencedByRecordWithSignature(record, signature, signature2) {
 	let references = xelib.GetReferencedBy(record);
 	for(let i = 0; i < references.length; i++) {
-		if(xelib.Signature(references[i]) == signature) {
+		let currentSignature = xelib.Signature(references[i]);
+		if(currentSignature == signature || currentSignature == signature2) {
 			return true;
 		}
 	}
@@ -956,11 +961,11 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		signature = xelib.Signature(innerlvli);
 	}
 	//Special cases
-	if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant"))) {
+	if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant") || originEditorID.includes("PerkInvestorStoreUpgrade") || originEditorID.includes("PerkMasterTraderGold"))) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && "AMMO|INGR".includes(signature)) || (originSignature == "LVLI" && ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ")) || ("ALCH" == signature && originEditorID.includes("DeathItem")))) {
+	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem")))) {
 		editorID = editorID + "_NPC";
 	} else if(originSignature == "FLOR" || originSignature == "TREE") {
 		editorID = editorID + "_FLORA";
@@ -1018,7 +1023,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 					xelib.AddElementValue(lvli, "LVLG", "pMerchantGold");
 				} else if(editorID.includes("Gold001")) {
 					xelib.AddElementValue(lvli, "LVLG", "pGold");
-				} else if(getsReferencedByRecordWithSignature(record, "COBJ")) {
+				} else if(getsReferencedByRecordWithSignature(record, "COBJ", "")) {
 					xelib.AddElementValue(lvli, "LVLG", "pResource");
 				} else {
 					xelib.AddElementValue(lvli, "LVLG", "pClutter");
