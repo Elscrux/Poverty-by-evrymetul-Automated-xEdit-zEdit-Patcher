@@ -773,10 +773,11 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if(!(("LVLI|KEYM".includes(signature)) || isInBlacklist(locals.blacklist, editorID))) {
 						//Exchange the old leveled entry with a poverty variant
+						let lvliRecord;
 						if(getsReferencedByRecordWithSignature(record, "FLOR", "TREE")) {
-							let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, helpers);
 						} else {
-							let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
 						}
 						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
