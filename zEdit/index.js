@@ -759,6 +759,8 @@ registerPatcher({
 				} else {
 					previousRecord = overrides[overrides.length - 2];
 				}
+
+				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(record, "FLOR", "TREE");
 				
 				//Utility variables for setting the global
 				let firstGlobal = "";
@@ -774,7 +776,7 @@ registerPatcher({
 					if(!(("LVLI|KEYM".includes(signature)) || isInBlacklist(locals.blacklist, editorID))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
-						if(getsReferencedByRecordWithSignature(record, "FLOR", "TREE")) {
+						if(getsReferencedByFloraRecord) {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, helpers);
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
@@ -962,14 +964,14 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		signature = xelib.Signature(innerlvli);
 	}
 	//Special cases
-	if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant") || originEditorID.includes("PerkInvestorStoreUpgrade") || originEditorID.includes("PerkMasterTraderGold"))) {
+	if(originSignature == "FLOR" || originSignature == "TREE") {
+		editorID = editorID + "_FLORA";
+	} else if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant") || originEditorID.includes("PerkInvestorStoreUpgrade") || originEditorID.includes("PerkMasterTraderGold"))) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
 	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem")))) {
 		editorID = editorID + "_NPC";
-	} else if(originSignature == "FLOR" || originSignature == "TREE") {
-		editorID = editorID + "_FLORA";
 	}
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
 		//Add LVLI record	
