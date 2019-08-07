@@ -5,7 +5,6 @@ registerPatcher({
         label: 'Poverty Patcher',
         templateUrl: `${patcherUrl}/partials/settings.html`,
         defaultSettings: {
-			patchFileName: 'PovertyPatch.esp',
       		processREFR: true,
       		processCONT: true,
       		processFLORandTREE: true,
@@ -759,8 +758,8 @@ registerPatcher({
 				} else {
 					previousRecord = overrides[overrides.length - 2];
 				}
-
-				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(record, "FLOR", "TREE");
+				
+				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
 				
 				//Utility variables for setting the global
 				let firstGlobal = "";
