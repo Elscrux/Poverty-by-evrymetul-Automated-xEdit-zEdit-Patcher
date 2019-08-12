@@ -598,6 +598,16 @@ registerPatcher({
 				"BYOHHouseIngrd",
 				"DLC01AncestorsGladeTree"
 			]
+		
+			locals.merchantGold = [
+				"Merchant",
+				"Vendor",
+				"PerkInvestorStoreUpgrade",
+				"PerkMasterTraderGold",
+				"KRY_Variable01Gold",
+				"KRY_Variable02Gold",
+				"KRY_Variable03Gold"
+			]
 		},
         process: [{
 			//Process REFR
@@ -1010,9 +1020,9 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		signature = xelib.Signature(innerlvli);
 	}
 	//Special cases
-	if(originSignature == "FLOR" || originSignature == "TREE") {
+	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && originEditorID.includes("YASH2_Ingredient"))) {
 		editorID = editorID + "_FLORA";
-	} else if(editorID.includes("Gold001") && (originEditorID.includes("Vendor") || originEditorID.includes("Merchant") || originEditorID.includes("PerkInvestorStoreUpgrade") || originEditorID.includes("PerkMasterTraderGold"))) {
+	} else if(editorID.includes("Gold001") && isInBlacklist(locals.merchantGold, originEditorID)) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
