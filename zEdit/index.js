@@ -520,6 +520,7 @@ registerPatcher({
 					"RegionalHunterClothes",
 					"RegionalHunterGloves",
 					"RegionalVigilantHood",
+				        "SF_LootDaedraSkin25",
 					"SublistArmor",
 					"SublistEnch",
 					"SublistENchDaedricWarAxeAbsorb",
