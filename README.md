@@ -1,5 +1,5 @@
 ## Installation
-1. Install [Poverty LE](https://www.nexusmods.com/skyrim/mods/96891)/[Poverty SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712) and its requirement [USLEEP](https://www.nexusmods.com/skyrim/mods/71214) for Legendary Edition and [USSEP](https://www.nexusmods.com/skyrimspecialedition/mods/266) for Special Edition
+1. Install [Poverty LE](https://www.nexusmods.com/skyrim/mods/96891)/[Poverty SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712) and its requirement [USLEEP](https://www.nexusmods.com/skyrim/mods/71214) for LE and [USSEP](https://www.nexusmods.com/skyrimspecialedition/mods/266) for SE
 2. Install [zEdit](https://github.com/z-edit/zedit/releases)
 3. Download the [Patcher](https://github.com/Elscrux/Poverty-by-evrymetul-Automated-xEdit-zEdit-Patcher/releases)
 4. Extract the file and place it into the zEdit/modules folder
@@ -15,3 +15,11 @@ The patcher makes a single compatibility patch for basically every mod you have 
 The only problems are quest item. They will be processed by the patcher if they are not on a blacklist.
 This blacklist will be constantly updated to assure compatibility for as many mods as possible.
 The following quest mods are already compatible:
+-Clothing and Clutter Fixes (LE)
+-Weapons and Armor Fixes Redone (LE)
+-Complete Alchemy and Cooking Overhaul (LE/SE)
+-Expanded Towns and Cities (LE/SE)
+-Immersive College of Winterhold (LE/SE)
+-Dawn of Skyrim Director's Cut (LE/SE)
+-Trade and Barter (LE/SE)
+-YASH (LE/SE)
