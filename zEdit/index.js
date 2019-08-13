@@ -608,6 +608,15 @@ registerPatcher({
 				"KRY_Variable02Gold",
 				"KRY_Variable03Gold"
 			]
+
+			locals.npcFood = [
+				"CreatureMeat"
+			]
+
+			locals.npcIngredient = [
+				"CreatureIngr",
+				"CreaturePerkIngr"
+			]
 		},
         process: [{
 			//Process REFR
@@ -1024,7 +1033,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem")))) {
+	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInBlacklist(locals.npcFood, originEditorID) || isInBlacklist(locals.npcIngredient, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
