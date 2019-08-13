@@ -15,11 +15,11 @@ The patcher makes a single compatibility patch for basically every mod you have 
 The only problems are quest item. They will be processed by the patcher if they are not on a blacklist.
 This blacklist will be constantly updated to assure compatibility for as many mods as possible.
 The following quest mods are already compatible:
--Clothing and Clutter Fixes (LE)
--Weapons and Armor Fixes Redone (LE)
--Complete Alchemy and Cooking Overhaul (LE/SE)
--Expanded Towns and Cities (LE/SE)
--Immersive College of Winterhold (LE/SE)
--Dawn of Skyrim Director's Cut (LE/SE)
--Trade and Barter (LE/SE)
--YASH (LE/SE)
+* Clothing and Clutter Fixes ([LE](https://www.nexusmods.com/skyrim/mods/43053))
+* Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
+* Complete Alchemy and Cooking Overhaul ([LE](https://www.nexusmods.com/skyrim/mods/69306)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/19924))
+* Expanded Towns and Cities ([LE](https://www.nexusmods.com/skyrim/mods/13608)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/13552))
+* Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
+* Dawn of Skyrim Director's Cut ([LE](https://www.nexusmods.com/skyrim/mods/77794)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9074))
+* Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
+* YASH ([LE](https://www.nexusmods.com/skyrim/mods/32562)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/2430))
