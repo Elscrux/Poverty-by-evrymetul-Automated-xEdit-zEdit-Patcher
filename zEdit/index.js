@@ -520,7 +520,6 @@ registerPatcher({
 					"RegionalHunterClothes",
 					"RegionalHunterGloves",
 					"RegionalVigilantHood",
-				        "SF_LootDaedraSkin25",
 					"SublistArmor",
 					"SublistEnch",
 					"SublistENchDaedricWarAxeAbsorb",
@@ -646,7 +645,7 @@ registerPatcher({
 				let editorID = xelib.EditorID(baseRecord);
 				
 				//Add poverty LVLI record
-				let lvliRecord = AddPovertyLVLI(patchFile, baseRecord, editorID, "REFR", patchFile, helpers);
+				let lvliRecord = AddPovertyLVLI(patchFile, baseRecord, editorID, "REFR", patchFile, locals, helpers);
 				
 				//Add XLIB to reference
 				xelib.AddElementValue(record, "XLIB", xelib.EditorID(lvliRecord));
@@ -773,7 +772,7 @@ registerPatcher({
 					let editorID = xelib.EditorID(item);
 					//Replace items with poverty LVLI
 					if(!(("LVLI|KEYM".includes(xelib.Signature(item))) || isInBlacklist(locals.blacklist, editorID))) {
-						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "CONT", patchFile, helpers);
+						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "CONT", patchFile, locals, helpers);
 						xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 					}
@@ -826,17 +825,15 @@ registerPatcher({
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(record, "LLCT"); i++) {
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
-					let editorID = xelib.EditorID(leveledEntry);
-					let signature = xelib.Signature(leveledEntry);
 					
 					//Replace leveled entry with poverty LVLI
-					if(!(("LVLI|KEYM".includes(signature)) || isInBlacklist(locals.blacklist, editorID))) {
+					if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(xelib.Signature(leveledEntry))) || isInBlacklist(locals.blacklist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
-							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, locals, helpers);
 						} else {
-							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, locals, helpers);
 						}
 						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
@@ -897,7 +894,7 @@ registerPatcher({
 					//Replace items with poverty LVLI
 					if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || isInBlacklist(locals.blacklist, editorID))) {
 						helpers.logMessage(xelib.LongName(record));
-						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, helpers);
+						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
 						if(signature != "AMMO") {
 							xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
@@ -941,7 +938,7 @@ registerPatcher({
 				}
 				let ingredient = xelib.GetLinksTo(record, "PFIG");
 				let editorID = xelib.EditorID(ingredient);
-				let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(ingredient), xelib.EditorID(record), "FLOR", patchFile, helpers);
+				let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(ingredient), xelib.EditorID(record), "FLOR", patchFile, locals, helpers);
 				xelib.SetLinksTo(record, lvliRecord, "PFIG");
 			}
 		}, {
@@ -971,7 +968,7 @@ registerPatcher({
 				}
 				let ingredient = xelib.GetLinksTo(record, "PFIG");
 				let editorID = xelib.EditorID(ingredient);
-				let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(ingredient), xelib.EditorID(record), "TREE", patchFile, helpers);
+				let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(ingredient), xelib.EditorID(record), "TREE", patchFile, locals, helpers);
 				xelib.SetLinksTo(record, lvliRecord, "PFIG");
 			}
 		}],
@@ -1009,7 +1006,7 @@ function hasPovertySignature(record) {
 	}
 }
 
-function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile, helpers) {
+function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile, locals, helpers) {
 	let signature = xelib.Signature(record);
 	let editorID = xelib.EditorID(record);
 	//If reference is LVLI get the first non LVLI entry
