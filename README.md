@@ -2,10 +2,11 @@
 1. Install [Poverty LE](https://www.nexusmods.com/skyrim/mods/96891)/[Poverty SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712) and its requirement [USLEEP](https://www.nexusmods.com/skyrim/mods/71214) for LE and [USSEP](https://www.nexusmods.com/skyrimspecialedition/mods/266) for SE
 2. Install [zEdit](https://github.com/z-edit/zedit/releases)
 3. Download the [Patcher](https://github.com/Elscrux/Poverty-by-evrymetul-Automated-xEdit-zEdit-Patcher/releases)
-4. Extract the file and place it into the zEdit/modules folder
-5. Place Poverty.esp directly after Unofficial Skyrim Legendary/Special Edition Patch.esp
-6. Have your Smashed/Bashed Patch build.
-7. Start zEdit in edit mode
+4. Place Poverty.esp directly after Unofficial Skyrim Legendary/Special Edition Patch.esp
+5. Have your Smashed/Bashed Patch build.
+6. Start zEdit in edit mode
+7. Click on the three boxes icon on the top right corner
+8. Choose 'Install Module' and pick PovertyPatcher.7z from your downloads folder
 8. Click on the puzzle icon on the top right corner
 9. Click on 'Build' next to zPatch.esp
 10. Wait for it to finish (That can take from some minutes up to several hours if you patch several huge mods)
