@@ -827,10 +827,6 @@ registerPatcher({
 				
 				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
 				
-				//Utility variables for setting the global
-				let firstGlobal = "";
-				let sameGlobalCount = 0;
-				
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(record, "LLCT"); i++) {
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
@@ -846,18 +842,7 @@ registerPatcher({
 						}
 						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-						if(i == 0){
-							firstGlobal = xelib.GetValue(lvliRecord, "LVLG");
-						}
-						if(xelib.GetValue(lvliRecord, "LVLG") == firstGlobal) {
-							sameGlobalCount++;
-						}
 					}
-				}
-				
-				//Add global
-				if(!xelib.HasElement(record, "LVLG") == sameGlobalCount ==  xelib.GetValue(record, "LLCT") && xelib.GetValue(record, "LVLD") == "1") {
-					xelib.AddElementValue(record, "LVLG", firstGlobal);
 				}
 			}
 		}, {
