@@ -243,6 +243,10 @@ registerPatcher({
 					"YsgramorsBladePiece07"
 			]
 			
+			locals.whitelist = [
+				
+			]
+
 			locals.blacklistCONT = [
 				"CCF_AllClothing",
 				"CWI_Container_All",
@@ -259,12 +263,20 @@ registerPatcher({
 				"SkyHavenArmoryChest"
 			]
 			
+			locals.whitelistCONT = [
+				
+			]
+
 			locals.blacklistFLOR = [
 				"CoinPurse",
 				"BYOHMead",
 				"TGCoinPurse"
 			]
 			
+			locals.whitelistFLOR = [
+
+			]
+
 			locals.blacklistLVLI = [
 					"ArmorCompanionsSet",
 					"ArmorElvenSet",
@@ -541,6 +553,52 @@ registerPatcher({
 					"WE17BanditOutfitList"
 			]
 			
+			locals.whitelistLVLI = [
+				"LItemArmorBootsHeavyBlacksmith",
+				"LItemArmorBootsHeavySpecial",
+				"LitemArmorBootsLightBlacksmith",
+				"LItemArmorBootsLightSpecial",
+				"LItemArmorCuirassHeavyBlacksmith",
+				"LItemArmorCuirassHeavySpecial",
+				"LItemArmorCuirassLightBlacksmith",
+				"LItemArmorCuirassLightSpecial",
+				"LItemArmorDwarvenCuirassHeavy",
+				"LItemArmorDwarvenGauntletsHeavy",
+				"LItemArmorDwarvenHelmetHeavy",
+				"LItemArmorGauntletsHeavyBlacksmith",
+				"LItemArmorGauntletsHeavySpecial",
+				"LItemArmorGauntletsLightBlacksmith",
+				"LItemArmorGauntletsLightSpecial",
+				"LItemArmorHelmetHeavyBest",
+				"LItemArmorHelmetHeavyBlacksmith",
+				"LItemArmorHelmetHeavySpecial",
+				"LItemArmorHelmetLightBest",
+				"LItemArmorHelmetLightBlacksmith",
+				"LItemArmorHelmetLightSpecial",
+				"LitemArmorShieldHeavyBlacksmith",
+				"LItemArmorShieldHeavySpecial",
+				"LItemArmorShieldLightBest",
+				"LItemArmorShieldLightBlacksmith",
+				"LItemArmorShieldLightSpecial",
+				"LItemBanditHideHelmetVariants",
+				"LItemClothesFarmAll",
+				"LItemForswornBossHelmet",
+				"LItemForswornMace",
+				"LItemForswornSword",
+				"LItemForswornWarAxe",
+				"LItemForswornWeaponArrows",
+				"LItemOrcStrongholdGreatsword",
+				"LItemVampireWeaponBow",
+				"LItemWeaponBattleAxeBlacksmith",
+				"LItemWeaponBowBlacksmith",
+				"LItemWeaponDaggerBlacksmith",
+				"LItemWeaponGreatSwordBlacksmith",
+				"LItemWeaponMaceBlacksmith",
+				"LItemWeaponSwordBlacksmith",
+				"LItemWeaponWarAxeBlacksmith",
+				"LItemWeaponWarhammerBlacksmith"
+			]
+
 			locals.blacklistNPC = [
 					"CWBattleTullius",
 					"CWFieldCOSons",
@@ -582,7 +640,11 @@ registerPatcher({
 					"Urwa",
 					"WEAdventurerBrawler"
 			]
-        
+		
+			locals.whitelistNPC = [
+				
+			]
+
 			locals.blacklistREFR = [
 				"CWDummy",
 				"DA16AwakeBarrierGem",
@@ -593,12 +655,20 @@ registerPatcher({
 				"YsoldaFavorItemREF"
 			]
 			
+			locals.whitelistREFR = [
+				
+			]
+
 			locals.blacklistTREE = [
 				"BYOHHouseFlora",
 				"BYOHHouseIngrd",
 				"DLC01AncestorsGladeTree"
 			]
 		
+			locals.whitelistTREE = [
+				
+			]
+
 			locals.merchantGold = [
 				"Merchant",
 				"Vendor",
@@ -637,9 +707,9 @@ registerPatcher({
 						return false;
 					} else if(xelib.Signature(xelib.GetLinksTo(record, "NAME")) == "LVLI") {
 						return false;
-					} else if(isInBlacklist(locals.blacklistREFR, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistREFR, xelib.EditorID(record)) && !isInList(locals.whitelistREFR, xelib.EditorID(record))) {
 						return false;
-					} else if(isInBlacklist(locals.blacklist, xelib.EditorID(baseRecord))) {
+					} else if(isInList(locals.blacklist, xelib.EditorID(baseRecord)) && !isInList(locals.whitelist, xelib.EditorID(baseRecord))) {
 						return false;
 					} else {
 						return true;
@@ -753,7 +823,7 @@ registerPatcher({
 						return false;
 					} else if(!xelib.HasElement(record, "Items")) {
 						return false;
-					} else if(isInBlacklist(locals.blacklistCONT, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistCONT, xelib.EditorID(record)) && !isInList(locals.whitelistCONT, xelib.EditorID(record))) {
 						return false;
 					} else {
 						return true;
@@ -780,7 +850,7 @@ registerPatcher({
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					//Replace items with poverty LVLI
-					if(!(("LVLI|KEYM".includes(xelib.Signature(item))) || isInBlacklist(locals.blacklist, editorID))) {
+					if(!(("LVLI|KEYM".includes(xelib.Signature(item))) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "CONT", patchFile, locals, helpers);
 						xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
@@ -801,7 +871,7 @@ registerPatcher({
 						return false;
 					} else if(!xelib.HasElement(record, "Leveled List Entries")) {
 						return false;
-					} else if(isInBlacklist(locals.blacklistLVLI, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistLVLI, xelib.EditorID(record)) && !isInList(locals.whitelistLVLI, xelib.EditorID(record))) {
 						return false;
 					} else if(getsReferencedByRecordWithSignature(record, "OTFT", "")) {
 						return false;
@@ -832,7 +902,7 @@ registerPatcher({
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
 					
 					//Replace leveled entry with poverty LVLI
-					if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(xelib.Signature(leveledEntry))) || isInBlacklist(locals.blacklist, xelib.EditorID(leveledEntry)))) {
+					if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(xelib.Signature(leveledEntry))) || (isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry))))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
@@ -857,7 +927,7 @@ registerPatcher({
 						return false;
 					} else if(!xelib.HasElement(record, "Items")) {
 						return false;
-					} else if(isInBlacklist(locals.blacklistNPC, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistNPC, xelib.EditorID(record)) && !isInList(locals.whitelistNPC, xelib.EditorID(record))) {
 						return false;
 					} else {
 						return true;
@@ -886,7 +956,7 @@ registerPatcher({
 					let signature = xelib.Signature(item);
 					
 					//Replace items with poverty LVLI
-					if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || isInBlacklist(locals.blacklist, editorID))) {
+					if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
 						helpers.logMessage(xelib.LongName(record));
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
 						if(signature != "AMMO") {
@@ -919,7 +989,7 @@ registerPatcher({
 						return false;
 					} else if(!hasPovertySignature(xelib.GetLinksTo(record, "PFIG"))) {
 						return false;
-					} else if(isInBlacklist(locals.blacklistFLOR, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistFLOR, xelib.EditorID(record)) && !isInList(locals.whitelistFLOR, xelib.EditorID(record))) {
 						return false;
 					} else {
 						return true;
@@ -949,7 +1019,7 @@ registerPatcher({
 						return false;
 					} else if(!hasPovertySignature(xelib.GetLinksTo(record, "PFIG"))) {
 						return false;
-					} else if(isInBlacklist(locals.blacklistTREE, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistTREE, xelib.EditorID(record)) && !isInList(locals.blacklistTREE, xelib.EditorID(record))) {
 						return false;
 					} else {
 						return true;
@@ -971,10 +1041,10 @@ registerPatcher({
     })
 });
 
-function isInBlacklist(blacklist, editorID) {
+function isInList(list, editorID) {
 	let i;
-	for(i = 0; i < blacklist.length; i++) {
-		if(editorID.substring(0, blacklist[i].length) == blacklist[i]) {
+	for(i = 0; i < list.length; i++) {
+		if(editorID.substring(0, list[i].length) == list[i]) {
 			return true;
 		}
 	}
@@ -1014,11 +1084,11 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 	//Special cases
 	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && originEditorID.includes("YASH2_Ingredient"))) {
 		editorID = editorID + "_FLORA";
-	} else if(editorID.includes("Gold001") && isInBlacklist(locals.merchantGold, originEditorID)) {
+	} else if(editorID.includes("Gold001") && isInList(locals.merchantGold, originEditorID)) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInBlacklist(locals.npcFood, originEditorID) || isInBlacklist(locals.npcIngredient, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
+	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcFood, originEditorID) || isInList(locals.npcIngredient, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
