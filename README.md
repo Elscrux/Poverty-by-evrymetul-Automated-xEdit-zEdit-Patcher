@@ -19,8 +19,8 @@ This blacklist will be constantly updated to assure compatibility for as many mo
 The following quest mods are already compatible:
 * Clothing and Clutter Fixes ([LE](https://www.nexusmods.com/skyrim/mods/43053))
 * Complete Alchemy and Cooking Overhaul ([LE](https://www.nexusmods.com/skyrim/mods/69306)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/19924))
-* Dawn of Skyrim Director's Cut ([LE](https://www.nexusmods.com/skyrim/mods/77794)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9074))
-* Expanded Towns and Cities ([LE](https://www.nexusmods.com/skyrim/mods/13608)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/13552))
+* Dawn of Skyrim Director's Cut ([LE](https://www.nexusmods.com/skyrim/mods/77794)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9074)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
+* Expanded Towns and Cities ([LE](https://www.nexusmods.com/skyrim/mods/13608)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/13552)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
 * Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
