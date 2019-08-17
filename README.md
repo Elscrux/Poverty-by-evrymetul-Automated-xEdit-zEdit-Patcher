@@ -22,6 +22,8 @@ The following quest mods are already compatible:
 * Dawn of Skyrim Director's Cut ([LE](https://www.nexusmods.com/skyrim/mods/77794)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9074)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * Expanded Towns and Cities ([LE](https://www.nexusmods.com/skyrim/mods/13608)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/13552)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
+* The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
+* Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607))
 * Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
 * YASH ([LE](https://www.nexusmods.com/skyrim/mods/32562)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/2430))
