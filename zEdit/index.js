@@ -211,12 +211,34 @@ registerPatcher({
 					"MQ106DragonParchment",
 					"MQPaarthurnaxBook",
 					"MS",
+					"NecroAntiochJournal",
+					"NecroArkayPriestHeart",
+					"NecroBlackBook01",
+					"NecroBlackDye",
+					"NecroBloodroot",
+					"NecroCaravanAttackOrders01",
+					"NecroConstructSkeletonNote01",
+					"NecroGreenDye",
+					"NecroJournal01",
+					"NecroLichJournal",
+					"NecroLichSpellKey",
+					"NecroQuest04AlchemistNote",
+					"NecroScourgBarrowBook01",
+					"NecroScourgBarrowMinionJournal",
+					"NecroTomeofUnlife",
+					"NecroVigilantLetter01",
+					"NecroVyngaldShroud",
 					"NN01SinderionsJournal",
 					"POI",
 					"sc_ArvakSkullUNIQUE",
+					"SkinDragonPriestFXMist",
 					"SolitudeToryggWarHorn",
 					"SpellTomeConjureDaedrothNew",
 					"SpellTomeConjureScampNew",
+					"SpellTomeConstructSkeleton",
+					"SpellTomeDecay",
+					"SpellTomeEnervate",
+					"SpellTomeMassReanimate",
 					"SpellTomeTransmuteOreMineral",
 					"SovRoastOx",
 					"SteelBattleAxeBroken",
@@ -240,7 +262,25 @@ registerPatcher({
 					"TGTQ03SolitudeLetter",
 					"TrapDweBallistaBoltAmmo01",
 					"Windhelm",
-					"YsgramorsBladePiece07"
+					"YsgramorsBladePiece07",
+					"_Lull_Archerons",
+					"_Lull_AtlantanPneuma",
+					"_Lull_Bear",
+					"_Lull_Book10",
+					"_Lull_Book11",
+					"_Lull_Book2",
+					"_Lull_Book3",
+					"_Lull_Book6",
+					"_Lull_Cave_Battery",
+					"_Lull_Cave_Drill",
+					"_lull_cheaterMessage",
+					"_lull_divingHelmet",
+					"_Lull_GateAddress",
+					"_lull_gem",
+					"_Lull_IdiotsLantern",
+					"_Lull_MemodermicSword",
+					"_Lull_Shotmold",
+					"_Lull_Stone"
 			]
 			
 			locals.whitelist = [
@@ -960,7 +1000,7 @@ registerPatcher({
 						return false;
 					} else if(!hasPovertySignature(xelib.GetLinksTo(record, "PFIG"))) {
 						return false;
-					} else if(isInList(locals.blacklistTREE, xelib.EditorID(record)) && !isInList(locals.blacklistTREE, xelib.EditorID(record))) {
+					} else if(isInList(locals.blacklistTREE, xelib.EditorID(record)) && !isInList(locals.whitelistTREE, xelib.EditorID(record))) {
 						return false;
 					} else {
 						return true;
