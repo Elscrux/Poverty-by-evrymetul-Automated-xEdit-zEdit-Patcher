@@ -24,6 +24,7 @@ The following quest mods are already compatible:
 * Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
 * The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
-* Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607))
+* Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/6180))
 * Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
+* Weapons Armor Clothing and Clutter Fixes ([SE](https://www.nexusmods.com/skyrimspecialedition/mods/18994))
 * YASH ([LE](https://www.nexusmods.com/skyrim/mods/32562)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/2430))
