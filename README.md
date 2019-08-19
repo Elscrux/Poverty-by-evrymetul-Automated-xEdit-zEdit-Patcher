@@ -23,7 +23,7 @@ The following quest mods are already compatible:
 * Expanded Towns and Cities ([LE](https://www.nexusmods.com/skyrim/mods/13608)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/13552)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * Helgen Reborn ([LE](https://www.nexusmods.com/skyrim/mods/35841)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/5673))
 * Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
-* Moon and Star ([LE](https://www.nexusmods.com/skyrim/mods/52397)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4301))
+* Moon and Star ([LE](https://www.nexusmods.com/skyrim/mods/52397)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4301)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
 * Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/6180))
