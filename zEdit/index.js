@@ -866,7 +866,7 @@ registerPatcher({
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					//Replace items with poverty LVLI
-					if(previousFile == settings.customPatch && xelib.Name(xelib.GetElementFile(item))) {
+					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 					} else if(!(("LVLI|KEYM".includes(xelib.Signature(item))) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "CONT", patchFile, locals, helpers);
@@ -918,9 +918,10 @@ registerPatcher({
 
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(previousRecord, "LLCT"); i++) {
+					helpers.logMessage(i.toString() + ". leveled entry");
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
 					//Replace leveled entry with poverty LVLI
-					if(previousFile == settings.customPatch && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
+					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
 					} else if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(xelib.Signature(leveledEntry))) || (isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry))))) {
 						//Exchange the old leveled entry with a poverty variant
@@ -975,24 +976,28 @@ registerPatcher({
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					let signature = xelib.Signature(item);
-					
 					//Replace items with poverty LVLI
-					if(previousFile == settings.customPatch && xelib.Name(xelib.GetElementFile(item))) {
+					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 					} else if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
-						helpers.logMessage(xelib.LongName(record));
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
 						if(signature != "AMMO") {
 							xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 						} else {
-							xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
+							let pAmmo = false;
 							for(let j = 0; j < xelib.GetValue(record, "COCT"); j++) {
 								let item = xelib.GetLinksTo(previousRecord, "Items\\[" + j.toString() + "]\\CNTO\\Item");
 								if(xelib.EditorID(item) == editorID) {
 									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
 									return;
 								}
+								if(xelib.EditorID(lvliRecord) == xelib.EditorID(item)) {
+									pAmmo = true;
+								}
+							}
+							if(!pAmmo) {
+								xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
 							}
 						}
 					}
