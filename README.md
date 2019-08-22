@@ -6,7 +6,7 @@
 5. Have your Smashed/Bashed Patch build.
 6. Start zEdit in edit mode
 7. Click on the three boxes icon on the top right corner
-8. Choose 'Install Module' and pick PovertyPatcher.7z from your downloads folder
+8. Choose 'Install Module' and pick PovertyPatcher.zip from your downloads folder
 8. Click on the puzzle icon on the top right corner
 9. Click on 'Build' next to zPatch.esp
 10. Wait for it to finish (That can take from some minutes up to several hours if you patch several huge mods)
