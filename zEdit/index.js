@@ -716,6 +716,10 @@ registerPatcher({
 				"CreatureIngr",
 				"CreaturePerkIngr"
 			]
+
+			locals.spellBook = [
+
+			]
 		},
         process: [{
 			//Process REFR
@@ -1121,7 +1125,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_FLORA";
 	} else if(editorID.includes("Gold001") && isInList(locals.merchantGold, originEditorID)) {
 		editorID = editorID + "_MERCHANT";
-	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll")) {
+	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
 	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcFood, originEditorID) || isInList(locals.npcIngredient, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
