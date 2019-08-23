@@ -36,6 +36,16 @@ registerPatcher({
 					"AleWhiterunQuest",
 					"ArmorBoneCrown",
 					"ArmorDragonPriestMaskWoodHelmet",
+					"ArnimaFlameAvatarSoulGem",
+					"ArnimaGuardianAvatarSoulGem",
+					"ArnimaHolyAvatarSoulGem",
+					"arnimajournalhenrig",
+					"ArnimaManifestSupremacyTome",
+					"ArnimaReaverAvatarSoulGem",
+					"ArnimaSpellTomeDarkCircle",
+					"ArnimaStealthAvatarSoulGem",
+					"ArnimaUnHolyAvatarSoulGem",
+					"arnimavoidthought",
 					"BalokBookRedguardHistory",
 					"BalokDisplayRoomBook",
 					"BalokHuntingBow",
@@ -330,6 +340,8 @@ registerPatcher({
 			]
 
 			locals.blacklistCONT = [
+				"ArnimaArmorContainerResource",
+				"ArnimaSpellContainerResource",
 				"BalokTest",
 				"CCF_AllClothing",
 				"CWI_Container_All",
@@ -718,7 +730,17 @@ registerPatcher({
 			]
 
 			locals.spellBook = [
-
+				"arnimabloodhexbook",
+				"arnimaburst",
+				"arnimadarkburdenbook",
+				"ArnimaFrigid",
+				"ArnimaGoldBoltTome",
+				"ArnimaHealTurretTome",
+				"ArnimaInfernalWatcherTome",
+				"ArnimaRanger",
+				"ArnimaRetributionTome",
+				"ArnimaStorm",
+				"arnimatomefear"
 			]
 		},
         process: [{
