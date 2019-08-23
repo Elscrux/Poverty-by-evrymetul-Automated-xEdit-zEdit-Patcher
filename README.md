@@ -17,6 +17,7 @@ The patcher makes a single compatibility patch for basically every mod you have 
 The only problems are quest item. They will be processed by the patcher if they are not on a blacklist.
 This blacklist will be constantly updated to assure compatibility for as many mods as possible.
 The following quest mods are already compatible:
+* Beyond Reach ([LE](https://www.nexusmods.com/skyrim/mods/48467/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/3008))
 * Clothing and Clutter Fixes ([LE](https://www.nexusmods.com/skyrim/mods/43053))
 * Complete Alchemy and Cooking Overhaul ([LE](https://www.nexusmods.com/skyrim/mods/69306)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/19924))
 * Dawn of Skyrim Director's Cut ([LE](https://www.nexusmods.com/skyrim/mods/77794)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9074)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
