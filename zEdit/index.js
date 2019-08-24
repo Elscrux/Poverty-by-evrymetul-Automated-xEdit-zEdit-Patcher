@@ -959,7 +959,6 @@ registerPatcher({
 
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(previousRecord, "LLCT"); i++) {
-					helpers.logMessage(i.toString() + ". leveled entry");
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
@@ -1031,7 +1030,6 @@ registerPatcher({
 								let item = xelib.GetLinksTo(previousRecord, "Items\\[" + j.toString() + "]\\CNTO\\Item");
 								if(xelib.EditorID(item) == editorID) {
 									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
-									return;
 								}
 								if(xelib.EditorID(lvliRecord) == xelib.EditorID(item)) {
 									pAmmo = true;
