@@ -971,7 +971,7 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, locals, helpers);
 						}
-						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), "1", xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
+						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
 					}
 				}
