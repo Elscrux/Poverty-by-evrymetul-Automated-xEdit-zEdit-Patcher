@@ -754,7 +754,7 @@ registerPatcher({
 						return false;
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
 						return false;
-					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(record))) {
+					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(baseRecord))) {
 						return false;
 					} else if(!xelib.HasElement(record, "NAME")) {
 						return false;
