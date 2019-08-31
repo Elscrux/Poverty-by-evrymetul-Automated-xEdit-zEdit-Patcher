@@ -4,27 +4,27 @@
 	<ignore-plugins patcher-id="PovertyPatcher"></ignore-plugins>
 	<br>
 	<h4>Processing:</h4>
-    <input type="checkbox" ng-model="settings.PovertyPatcher.processREFR" />
-    <span>Process references of items</span>
+    <input type="checkbox" id="processREFR" ng-model="settings.PovertyPatcher.processREFR" />
+    <label for="processREFR">Process references of items</label>
 	<br>
-	<input type="checkbox" ng-model="settings.PovertyPatcher.processCONT" />
-    <span>Process items in containers</span>
+	<input type="checkbox" id="processCONT" ng-model="settings.PovertyPatcher.processCONT" />
+    <label for="processCONT">Process items in containers</label>
 	<br>
-	<input type="checkbox" ng-model="settings.PovertyPatcher.processFLORandTREE" />
-    <span>Process harvestable flora and fauna</span>
+	<input type="checkbox" id="processFLORandTREE" ng-model="settings.PovertyPatcher.processFLORandTREE" />
+    <label for="processFLORandTREE">Process harvestable flora and fauna</label>
 	<br>
-	<input type="checkbox" ng-model="settings.PovertyPatcher.processLVLI" />
-    <span>Process leveled lists</span>
+	<input type="checkbox" id="processLVLI" ng-model="settings.PovertyPatcher.processLVLI" />
+    <label for="processLVLI">Process leveled lists</label>
 	<br>
-	<input type="checkbox" ng-model="settings.PovertyPatcher.processNPC_" />
-    <span>Process NPCs</span>
+	<input type="checkbox" id="processNPC_" ng-model="settings.PovertyPatcher.processNPC_" />
+    <label for="processNPC_">Process NPCs</label>
 	<br>
 	<h4>Custom patches:</h4>
-	<span>Add the full name of your custom conflict resolution patch which must be last in your load order e.g.: "Patch.esp". Bashed/Smashed Patch are automatically supported.</span>
-    <input type="text" ng-model="settings.PovertyPatcher.customPatch" />
+	<label for="customPatch">Add the full name of your custom conflict resolution patch which must be last in your load order e.g.: "Patch.esp". Bashed/Smashed Patch are automatically supported.</label>
+    <input type="text" id="customPatch" placeholder="Example.esp" ng-model="settings.PovertyPatcher.customPatch" />
 	<br>
 	<h4>Logging:</h4>
-	<input type="checkbox" ng-model="settings.PovertyPatcher.logCurrent" />
-    <span>Log which record is currently processed</span>
+	<input type="checkbox" id="logCheckbox" ng-model="settings.PovertyPatcher.logCurrent" />
+    <label for="logCheckbox">Log which record is currently processed</label>
 	<br>
 </div>
