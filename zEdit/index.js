@@ -749,17 +749,10 @@ registerPatcher({
 				"KRY_Variable03Gold"
 			]
 
-			locals.npcFood = [
-				"CreatureMeat"
-			]
-
-			locals.npcIngredient = [
+			locals.npcItems = [
+				"CreatureMeat",
 				"CreatureIngr",
 				"CreaturePerkIngr"
-			]
-			
-			locals.npcResource = [
-
 			]
 
 			locals.spellBook = [
@@ -1087,6 +1080,8 @@ registerPatcher({
 						return false;
 					} else if(!xelib.HasElement(record, "PFIG")) {
 						return false;
+					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(xelib.GetLinksTo(record, "PFIG")))) {
+						return false;
 					} else if(isInList(locals.blacklistFLOR, xelib.EditorID(record)) && !isInList(locals.whitelistFLOR, xelib.EditorID(record))) {
 						return false;
 					} else {
@@ -1114,6 +1109,8 @@ registerPatcher({
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
 						return false;
 					} else if(!xelib.HasElement(record, "PFIG")) {
+						return false;
+					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(xelib.GetLinksTo(record, "PFIG")))) {
 						return false;
 					} else if(isInList(locals.blacklistTREE, xelib.EditorID(record)) && !isInList(locals.whitelistTREE, xelib.EditorID(record))) {
 						return false;
@@ -1176,7 +1173,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcFood, originEditorID) || isInList(locals.npcResource, originEditorID) || isInList(locals.npcIngredient, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
+	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
