@@ -61,7 +61,6 @@ registerPatcher({
 					"ArnimaSpellTomeDarkCircle",
 					"ArnimaStealthAvatarSoulGem",
 					"arnimatemplenote1",
-					"arnimatomefear",
 					"ArnimaUnHolyAvatarSoulGem",
 					"arnimavoidthought",
 					"BalokBookRedguardHistory",
