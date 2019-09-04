@@ -819,6 +819,10 @@ registerPatcher({
 				"manny_GF_LI_DesertWolf"
 			]
 
+			locals.floraItems = [
+				
+			]
+
 			locals.spellBook = [
 				"arnimabloodhexbook",
 				"arnimaburst",
@@ -1231,7 +1235,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		signature = xelib.Signature(innerlvli);
 	}
 	//Special cases
-	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && originEditorID.includes("YASH2_Ingredient"))) {
+	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && originEditorID.includes("YASH2_Ingredient")) || (originSignature == "LVLI" && isInList(locals.floraItems, originEditorID))) {
 		editorID = editorID + "_FLORA";
 	} else if(editorID.includes("Gold001") && isInList(locals.merchantGold, originEditorID)) {
 		editorID = editorID + "_MERCHANT";
