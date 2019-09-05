@@ -816,10 +816,14 @@ registerPatcher({
 				"CreatureIngr",
 				"CreaturePerkIngr",
 				"manny_GF_LI_AncestralCheetah",
-				"manny_GF_LI_DesertWolf"
+				"manny_GF_LI_DesertWolf",
+				"_DS_DeathItem_",
+				"_DS_LI_Mats_"
+				
 			]
 
 			locals.floraItems = [
+			"_DS_LI_Forage_"
 				
 			]
 
