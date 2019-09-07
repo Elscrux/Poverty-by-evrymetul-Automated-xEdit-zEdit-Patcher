@@ -33,6 +33,7 @@ The following quest mods are already compatible:
 * The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
 * Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/6180))
+* Vigilant ([LE](https://www.nexusmods.com/skyrim/mods/67103/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/11849))
 * Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
 * Weapons Armor Clothing and Clutter Fixes ([SE](https://www.nexusmods.com/skyrimspecialedition/mods/18994))
 * Wyrmstooth ([LE](https://archive.org/details/Wyrmstooth1.17B)/[SE](https://archive.org/details/Wyrmstooth1.17BSSE))
