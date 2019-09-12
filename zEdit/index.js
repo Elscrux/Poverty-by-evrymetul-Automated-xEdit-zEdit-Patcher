@@ -978,7 +978,7 @@ registerPatcher({
 			]
 
 			locals.floraItems = [
-			"_DS_LI_Forage_"
+				"_DS_LI_Forage_"
 				
 			]
 
@@ -995,6 +995,10 @@ registerPatcher({
 				"ArnimaStorm",
 				"arnimatomefear",
 				"zzzCHMeridiaConjure"
+			]
+
+			locals.lvliAmmo = [
+				
 			]
 		},
         process: [{
@@ -1197,6 +1201,8 @@ registerPatcher({
 				if(settings.logCurrent) {
 					helpers.logMessage(xelib.LongName(record));
 				}
+
+				let editorID = xelib.EditorID(record);
 				
 				//Get previous Record
 				let masterRecord = xelib.GetMasterRecord(record);
@@ -1221,12 +1227,18 @@ registerPatcher({
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
-							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "FLOR", patchFile, locals, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "FLOR", patchFile, locals, helpers);
 						} else {
-							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), xelib.EditorID(record), "LVLI", patchFile, locals, helpers);
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
-						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
+						if(isInList(locals.lvliAmmo, editorID)) {
+							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
+							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
+						} else {
+							xelib.SetValue(record, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count", "1");
+							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), (xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count") - 1).toString());
+						}
+						
 					}
 				}
 			}
@@ -1279,19 +1291,8 @@ registerPatcher({
 							xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 						} else {
-							let pAmmo = false;
-							for(let j = 0; j < xelib.GetValue(record, "COCT"); j++) {
-								let item = xelib.GetLinksTo(previousRecord, "Items\\[" + j.toString() + "]\\CNTO\\Item");
-								if(xelib.EditorID(item) == editorID) {
-									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
-								}
-								if(xelib.EditorID(lvliRecord) == xelib.EditorID(item)) {
-									pAmmo = true;
-								}
-							}
-							if(!pAmmo) {
-								xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
-							}
+							xelib.SetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count", "1");
+							xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
 						}
 					}
 				}
