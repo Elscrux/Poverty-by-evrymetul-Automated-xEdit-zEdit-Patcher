@@ -324,6 +324,7 @@ registerPatcher({
 					"MQ103FarengarBook",
 					"MQ105Note",
 					"MQ106DragonParchment",
+					"MQ203AkaviriKatana5",
 					"MQPaarthurnaxBook",
 					"MS",
 					"NecroAntiochJournal",
@@ -347,6 +348,26 @@ registerPatcher({
 					"NecroVyngaldShroud",
 					"NN01SinderionsJournal",
 					"POI",
+					"REQ_Book_Alchemy_ZerusChaosWizards",
+					"REQ_Book_BelethorHowToSellYourSister",
+					"REQ_Book_FellglowFailureNote",
+					"REQ_Book_GorakNote",
+					"REQ_Book_HelgenEasterEgg",
+					"REQ_Book_HowNotToBeSeen",
+					"REQ_Book_Jo",
+					"REQ_Book_LetterMercerFreyHouse",
+					"REQ_Book_LetterToRon",
+					"REQ_Book_MQ",
+					"REQ_Book_SaarthalSuppliesNote",
+					"REQ_Book_Speech_",
+					"REQ_Book_TalesOfHalfdanTheBlack",
+					"REQ_Book_TheArtOfFishingAndSlapping",
+					"REQ_Book_TheDarkKnightsStory",
+					"REQ_Book_TheNaughtyAlchemist",
+					"REQ_Book_TheThirteenthStone",
+					"REQ_Book_TyranusJournal",
+					"REQ_Book_ValtheimBossJournal",
+					"REQ_Daedric",
 					"sc_ArvakSkullUNIQUE",
 					"SkinDragonPriestFXMist",
 					"SolitudeToryggWarHorn",
@@ -628,11 +649,6 @@ registerPatcher({
 					"DLC1LItemDawnguard",
 					"DLC1LItemDisguisedHunterInventory",
 					"DLC1LItemFalmer",
-					"DLC1LItemGuardCrossbowAndBolts_CCO",
-					"DLC1LItemGuardHuntingBowAndArrowsAllON_CCO",
-					"DLC1LItemGuardHuntingBowAndArrows_CCO",
-					"DLC1LItemGuardImperialBowAndArrowsAllON_CCO",
-					"DLC1LItemGuardImperialBowAndArrows_CCO",
 					"DLC1LItemKeeper",
 					"DLC1LitemStaffFalmer",
 					"DLC1LItemStaffFalmer",
@@ -794,6 +810,20 @@ registerPatcher({
 					"RegionalHunterClothes",
 					"RegionalHunterGloves",
 					"RegionalVigilantHood",
+					"REQ_LI_Armor_",
+					"REQ_LI_Dwarven_Longsword_Quality",
+					"REQ_LI_Gear_Penitus",
+					"REQ_LI_HealingTomeReward",
+					"REQ_LI_MQ102Reward",
+					"REQ_LI_OrcishArmorReward",
+					"REQ_LI_RewardArmor",
+					"REQ_LI_Soulcairn_Draugr02Weapon1H",
+					"REQ_LI_RewardWeapon",
+					"REQ_LI_VampireBoss_WeaponEbony",
+					"REQ_LI_VigilantCrossbow",
+					"REQ_LI_VigilantWeapon",
+					"REQ_LI_Weapon",
+					"REQ_NULL_SublistThalmorBowAndArrowsSteel",
 					"SublistArmor",
 					"SublistEnch",
 					"SublistENchDaedricWarAxeAbsorb",
@@ -972,14 +1002,17 @@ registerPatcher({
 				"CreaturePerkIngr",
 				"manny_GF_LI_AncestralCheetah",
 				"manny_GF_LI_DesertWolf",
+				"REQ_LI_DeathItem_Werewolf",
+				"REQ_LI_Perl",
+				"REQ_LI_SpiderEggs0",
 				"_DS_DeathItem_",
 				"_DS_LI_Mats_"
 				
 			]
 
 			locals.floraItems = [
-				"_DS_LI_Forage_"
-				
+				"REQ_LI_ClamPearl",
+				"_DS_LI_Forage_"	
 			]
 
 			locals.spellBook = [
@@ -998,7 +1031,27 @@ registerPatcher({
 			]
 
 			locals.lvliAmmo = [
-				
+				"DLC1LItemGuardCrossbowAndBolts_CCO",
+				"DLC1LItemGuardHuntingBowAndArrowsAllON_CCO",
+				"DLC1LItemGuardHuntingBowAndArrows_CCO",
+				"DLC1LItemGuardImperialBowAndArrowsAllON_CCO",
+				"DLC1LItemGuardImperialBowAndArrows_CCO",
+				"REQ_LI_BanditWeaponMissileCrossbow",
+				"REQ_CLI_EquipSet_BanditLight_01_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_01_Bolts",
+				"REQ_CLI_EquipSet_BanditLight_02_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_02_Bolts",
+				"REQ_CLI_EquipSet_BanditLight_03_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_03_Bolts",
+				"REQ_CLI_EquipSet_BanditLight_04_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_04_Bolts",
+				"REQ_CLI_EquipSet_BanditLight_05_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_05_Bolts",
+				"REQ_CLI_EquipSet_BanditLight_06_Arrows",
+				"REQ_CLI_EquipSet_BanditLight_06_Bolts",
+				"REQ_LI_Ammo_BoltsSteel75",
+				"REQ_LI_EnchantedSphereBoltsLeft",
+				"REQ_LI_SphereBoltsLeft"
 			]
 		},
         process: [{
@@ -1231,7 +1284,7 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(isInList(locals.lvliAmmo, editorID) && signature == "AMMO") {
+						if(isInList(locals.lvliAmmo, editorID)) {
 							xelib.SetValue(record, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count", "1");
 							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), (xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count") - 1).toString());
 						} else {
