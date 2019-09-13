@@ -1231,12 +1231,12 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(!isInList(locals.lvliAmmo, editorID)) {
-							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
-							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-						} else {
+						if(isInList(locals.lvliAmmo, editorID) && signature == "AMMO") {
 							xelib.SetValue(record, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count", "1");
 							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), (xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count") - 1).toString());
+						} else {
+							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
+							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
 						}
 						
 					}
