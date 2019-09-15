@@ -1273,10 +1273,13 @@ registerPatcher({
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.GetValue(previousRecord, "LLCT"); i++) {
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
+					let signature = xelib.Signature(leveledEntry);
+					let count = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count");
+					let level = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level");
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(xelib.Signature(leveledEntry))) || (isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry))))) {
+					} else if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(signature)) || (isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry))))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
@@ -1284,14 +1287,13 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(isInList(locals.lvliAmmo, editorID)) {
+						if(isInList(locals.lvliAmmo, editorID) && signature == "AMMO" && count > 1) {
 							xelib.SetValue(record, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count", "1");
-							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), (xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count") - 1).toString());
+							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, (count - 1).toString());
 						} else {
-							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Level"), xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count"));
+							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, count);
 							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
 						}
-						
 					}
 				}
 			}
@@ -1335,17 +1337,18 @@ registerPatcher({
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					let signature = xelib.Signature(item);
+					let count = xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count");
 					//Replace items with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 					} else if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
-						if(signature != "AMMO") {
-							xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
+						if(signature != "AMMO" && count > 1) {
+							xelib.AddItem(record, xelib.EditorID(lvliRecord), count);
 							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 						} else {
 							xelib.SetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count", "1");
-							xelib.AddItem(record, xelib.EditorID(lvliRecord), (xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count") - 1).toString());
+							xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
 						}
 					}
 				}
