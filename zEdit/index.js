@@ -28,6 +28,11 @@ registerPatcher({
 			helpers.logMessage("Building references: This might take several minutes");
 			xelib.BuildReferences(0, true);
 			
+			//--------------------------------
+			// blacklist for placed objects
+			// and items inside containers,
+			// leveled lists and npcs
+			//--------------------------------
 			locals.blacklist = [
 					"DefaultBookShelfBookMarker",
 					"aaaBalokDunGlassClaw",
@@ -586,12 +591,19 @@ registerPatcher({
 					"_Lull_Stone"
 			]
 			
+			//--------------------------------
+			// whitelist for placed objects
+			// and items inside containers,
+			// leveled lists and npcs
+			//--------------------------------
 			locals.whitelist = [
-			"zzzCHArmorUmarilCuirass_Valkyrie",
-			"zzzCHArmorUmarilHelmet_Frog"
-				
+				"zzzCHArmorUmarilCuirass_Valkyrie",
+				"zzzCHArmorUmarilHelmet_Frog"
 			]
 
+			//--------------------------------
+			// blacklist for containers
+			//--------------------------------
 			locals.blacklistCONT = [
 				"ArnimaArmorContainerResource",
 				"ArnimaSpellContainerResource",
@@ -613,20 +625,32 @@ registerPatcher({
 				"zzzCHTESTArmorChest"
 			]
 			
+			//--------------------------------
+			// whitelist for containers
+			//--------------------------------
 			locals.whitelistCONT = [
 				
 			]
 
+			//--------------------------------
+			// blacklist for flora records
+			//--------------------------------
 			locals.blacklistFLOR = [
 				"CoinPurse",
 				"BYOHMead",
 				"TGCoinPurse"
 			]
 			
+			//--------------------------------
+			// whitelist for flora records
+			//--------------------------------
 			locals.whitelistFLOR = [
 
 			]
 
+			//--------------------------------
+			// blacklist for leveled lists
+			//--------------------------------
 			locals.blacklistLVLI = [
 					"1Dr_BANDG_FlaskCCO",
 					"1Dr_BANDG_NotebookCCO",
@@ -900,6 +924,9 @@ registerPatcher({
 					"zzzCOLitemRustyWeapons",
 			]
 			
+			//--------------------------------
+			// whitelist for leveled lists
+			//--------------------------------
 			locals.whitelistLVLI = [
 				"LItemArmorBootsHeavyBlacksmith",
 				"LItemArmorBootsHeavySpecial",
@@ -946,6 +973,9 @@ registerPatcher({
 				"LItemWeaponWarhammerBlacksmith"
 			]
 
+			//--------------------------------
+			// blacklist for npcs
+			//--------------------------------
 			locals.blacklistNPC = [
 					"CWBattleTullius",
 					"CWFieldCOSons",
@@ -988,10 +1018,16 @@ registerPatcher({
 					"WEAdventurerBrawler"
 			]
 		
+			//--------------------------------
+			// whitelist for npcs
+			//--------------------------------
 			locals.whitelistNPC = [
 				
 			]
 
+			//--------------------------------
+			// blacklist for references
+			//--------------------------------
 			locals.blacklistREFR = [
 				"CWDummy",
 				"DA16AwakeBarrierGem",
@@ -1002,20 +1038,34 @@ registerPatcher({
 				"YsoldaFavorItemREF"
 			]
 			
+			//--------------------------------
+			// whitelist for references
+			//--------------------------------
 			locals.whitelistREFR = [
 				
 			]
 
+			//--------------------------------
+			// blacklist for tree records
+			//--------------------------------
 			locals.blacklistTREE = [
 				"BYOHHouseFlora",
 				"BYOHHouseIngrd",
 				"DLC01AncestorsGladeTree"
 			]
 		
+			//--------------------------------
+			// whitelist for tree records
+			//--------------------------------
 			locals.whitelistTREE = [
 				
 			]
 
+			//--------------------------------
+			// list for records where gold
+			// should be treated as merchants
+			// gold
+			//--------------------------------
 			locals.merchantGold = [
 				"Merchant",
 				"Vendor",
@@ -1026,6 +1076,11 @@ registerPatcher({
 				"KRY_Variable03Gold"
 			]
 
+			//--------------------------------
+			// list for leveled lists that
+			// contain death items of
+			// creatures or animals
+			//--------------------------------
 			locals.npcItems = [
 				"CreatureMeat",
 				"CreatureIngr",
@@ -1040,11 +1095,21 @@ registerPatcher({
 				
 			]
 
+			//--------------------------------
+			// list for leveled lists that
+			// contain harvestable 
+			// or consumables of plants
+			//--------------------------------
 			locals.floraItems = [
 				"REQ_LI_ClamPearl",
-				"_DS_LI_Forage_"	
+				"_DS_LI_Forage_",
+				"YASH2_Ingredient"
 			]
 
+			//--------------------------------
+			// list for records that are
+			// considered a spell book
+			//--------------------------------
 			locals.spellBook = [
 				"arnimabloodhexbook",
 				"arnimaburst",
@@ -1060,6 +1125,10 @@ registerPatcher({
 				"zzzCHMeridiaConjure"
 			]
 
+			//--------------------------------
+			// list of leveled lists that
+			// contain ammo records
+			//--------------------------------
 			locals.lvliAmmo = [
 				"DLC1LItemGuardCrossbowAndBolts_CCO",
 				"DLC1LItemGuardHuntingBowAndArrowsAllON_CCO",
@@ -1317,9 +1386,15 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(isInList(locals.lvliAmmo, editorID) && signature == "AMMO" && count > 1) {
-							xelib.SetValue(record, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count", "1");
-							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, (count - 1).toString());
+						if(signature == "AMMO" && isInList(locals.lvliAmmo, editorID) && count > 1) {
+							for(let j = 0; j < xelib.GetValue(record, "LLCT"); j++) {
+								helpers.logMessage(j.toString() + " " + xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) + " " + xelib.EditorID(leveledEntry));
+								if(xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) == xelib.EditorID(leveledEntry)) {
+									xelib.SetValue(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count", "1");
+									xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, (count - 1).toString());
+									break;
+								}
+							}
 						} else {
 							xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, count);
 							xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
@@ -1373,12 +1448,17 @@ registerPatcher({
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
 					} else if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
-						if(signature != "AMMO" && count > 1) {
+						if(signature == "AMMO" && count > 1) {
+							for(let j = 0; j < xelib.GetValue(record, "COCT"); j++) {
+								if(xelib.EditorID(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO")) == xelib.EditorID(item)) {
+									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
+									xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
+									break;
+								}
+							}
+						} else {
 							xelib.AddItem(record, xelib.EditorID(lvliRecord), count);
 							xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
-						} else {
-							xelib.SetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count", "1");
-							xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
 						}
 					}
 				}
@@ -1482,7 +1562,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		signature = xelib.Signature(innerlvli);
 	}
 	//Special cases
-	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && originEditorID.includes("YASH2_Ingredient")) || (originSignature == "LVLI" && isInList(locals.floraItems, originEditorID))) {
+	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && isInList(locals.floraItems, originEditorID))) {
 		editorID = editorID + "_FLORA";
 	} else if(editorID.includes("Gold001") && isInList(locals.merchantGold, originEditorID)) {
 		editorID = editorID + "_MERCHANT";
