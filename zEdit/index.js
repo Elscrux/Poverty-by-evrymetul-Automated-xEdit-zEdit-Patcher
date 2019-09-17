@@ -1135,22 +1135,7 @@ registerPatcher({
 				"DLC1LItemGuardHuntingBowAndArrows_CCO",
 				"DLC1LItemGuardImperialBowAndArrowsAllON_CCO",
 				"DLC1LItemGuardImperialBowAndArrows_CCO",
-				"REQ_LI_BanditWeaponMissileCrossbow",
-				"REQ_CLI_EquipSet_BanditLight_01_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_01_Bolts",
-				"REQ_CLI_EquipSet_BanditLight_02_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_02_Bolts",
-				"REQ_CLI_EquipSet_BanditLight_03_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_03_Bolts",
-				"REQ_CLI_EquipSet_BanditLight_04_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_04_Bolts",
-				"REQ_CLI_EquipSet_BanditLight_05_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_05_Bolts",
-				"REQ_CLI_EquipSet_BanditLight_06_Arrows",
-				"REQ_CLI_EquipSet_BanditLight_06_Bolts",
-				"REQ_LI_Ammo_BoltsSteel75",
-				"REQ_LI_EnchantedSphereBoltsLeft",
-				"REQ_LI_SphereBoltsLeft"
+				"REQ_LI_Ammo_BoltsSteel75"
 			]
 		},
         process: [{
