@@ -27,7 +27,7 @@ registerPatcher({
 			
 			helpers.logMessage("Building references: This might take several minutes");
 			xelib.BuildReferences(0, true);
-			
+
 			//--------------------------------
 			// blacklist for placed objects
 			// and items inside containers,
@@ -1124,19 +1124,6 @@ registerPatcher({
 				"arnimatomefear",
 				"zzzCHMeridiaConjure"
 			]
-
-			//--------------------------------
-			// list of leveled lists that
-			// contain ammo records
-			//--------------------------------
-			locals.lvliAmmo = [
-				"DLC1LItemGuardCrossbowAndBolts_CCO",
-				"DLC1LItemGuardHuntingBowAndArrowsAllON_CCO",
-				"DLC1LItemGuardHuntingBowAndArrows_CCO",
-				"DLC1LItemGuardImperialBowAndArrowsAllON_CCO",
-				"DLC1LItemGuardImperialBowAndArrows_CCO",
-				"REQ_LI_Ammo_BoltsSteel75"
-			]
 		},
         process: [{
 			//Process REFR
@@ -1298,13 +1285,13 @@ registerPatcher({
 
 				
 				//Cycle through items
-				for(let i = 0; i < xelib.GetValue(previousRecord, "COCT"); i++) {
+				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Items")); i++) {
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					//Replace items with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
-					} else if(!(("LVLI|KEYM".includes(xelib.Signature(item))) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
+					} else if(!"LVLI|KEYM".includes(xelib.Signature(item)) && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "CONT", patchFile, locals, helpers);
 						xelib.AddItem(record, xelib.EditorID(lvliRecord), xelib.GetValue(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Count"));
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
@@ -1340,7 +1327,7 @@ registerPatcher({
 				}
 
 				let editorID = xelib.EditorID(record);
-				
+
 				//Get previous Record
 				let masterRecord = xelib.GetMasterRecord(record);
 				let overrides = xelib.GetOverrides(masterRecord);
@@ -1353,9 +1340,8 @@ registerPatcher({
 				let previousFile = xelib.Name(xelib.GetElementFile(previousRecord));
 				
 				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
-
 				//Cycle through leveled entries
-				for(let i = 0; i < xelib.GetValue(previousRecord, "LLCT"); i++) {
+				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Leveled List Entries")); i++) {
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
 					let signature = xelib.Signature(leveledEntry);
 					let count = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Count");
@@ -1363,7 +1349,7 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if(!(xelib.GetValue(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference").includes("< Error: Could not be resolved >") || ("LVLI|KEYM".includes(signature)) || (isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry))))) {
+					} else if(!"LVLI|KEYM".includes(signature) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
@@ -1371,8 +1357,8 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(signature == "AMMO" && isInList(locals.lvliAmmo, editorID) && count > 1) {
-							for(let j = 0; j < xelib.GetValue(record, "LLCT"); j++) {
+						if(signature == "AMMO" && onlyGetsUsedByRecordWithSignature(record, "NPC_") && count > 1) {
+							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Leveled List Entries")); j++) {
 								helpers.logMessage(j.toString() + " " + xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) + " " + xelib.EditorID(leveledEntry));
 								if(xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) == xelib.EditorID(leveledEntry)) {
 									xelib.SetValue(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count", "1");
@@ -1410,7 +1396,7 @@ registerPatcher({
 				if(settings.logCurrent) {
 					helpers.logMessage(xelib.LongName(record));
 				}
-				
+
 				//Get previous Record
 				let masterRecord = xelib.GetMasterRecord(record);
 				let overrides = xelib.GetOverrides(masterRecord);
@@ -1423,7 +1409,7 @@ registerPatcher({
 				let previousFile = xelib.Name(xelib.GetElementFile(previousRecord));
 
 				//Cycle through items
-				for(let i = 0; i < xelib.GetValue(previousRecord, "COCT"); i++) {
+				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Items")); i++) {
 					let item = xelib.GetLinksTo(previousRecord, "Items\\[" + i.toString() + "]\\CNTO\\Item");
 					let editorID = xelib.EditorID(item);
 					let signature = xelib.Signature(item);
@@ -1431,10 +1417,10 @@ registerPatcher({
 					//Replace items with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
-					} else if(!("LVLI|KEYM|WEAP".includes(signature) || (("AMMO|ARMO".includes(signature)) && (xelib.GetValue(record, "Items\\[" + i.toString() + "]\\CNTO\\Count") == "1")) || (isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID)))) {
+					} else if(!"LVLI|KEYM|WEAP".includes(signature) && ("AMMO|ARMO".includes(signature) && count > "1") && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
-						if(signature == "AMMO" && count > 1) {
-							for(let j = 0; j < xelib.GetValue(record, "COCT"); j++) {
+						if(signature == "AMMO") {
+							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Items")); j++) {
 								if(xelib.EditorID(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO")) == xelib.EditorID(item)) {
 									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
 									xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
@@ -1514,6 +1500,23 @@ registerPatcher({
     })
 });
 
+function onlyGetsUsedByRecordWithSignature(record, signature) {
+	let references = xelib.GetReferencedBy(record);
+	let rightSignature = 0;
+	let i;
+	for(i = 0; i < references.length; i++) {
+		let currentSignature = xelib.Signature(references[i]);
+		if(currentSignature == signature || currentSignature == "LVLI" && onlyGetsUsedByRecordWithSignature(references[i], signature)) {
+			rightSignature++;
+		}
+	}
+	if(rightSignature == i) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function isInList(list, editorID) {
 	let i;
 	for(i = 0; i < list.length; i++) {
@@ -1549,7 +1552,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 	//Special cases
 	if(originSignature == "FLOR" || originSignature == "TREE" || (originSignature == "LVLI" && isInList(locals.floraItems, originEditorID))) {
 		editorID = editorID + "_FLORA";
-	} else if(editorID.includes("Gold001") && isInList(locals.merchantGold, originEditorID)) {
+	} else if(editorID.includes("Gold001") && (isInList(locals.merchantGold, originEditorID || originEditorID.includes("Vendor") || originEditorID.includes("Merchant")))) {
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
