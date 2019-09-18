@@ -34,7 +34,7 @@ The following quest mods are already compatible:
 * Vigilant ([LE](https://www.nexusmods.com/skyrim/mods/67103/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/11849))
 * Wyrmstooth ([LE](https://archive.org/details/Wyrmstooth1.17B)/[SE](https://archive.org/details/Wyrmstooth1.17BSSE))
 
-The following mods are compatible as well:
+The following mods are confirmed compatible as well:
 * Clothing and Clutter Fixes ([LE](https://www.nexusmods.com/skyrim/mods/43053))
 * Complete Alchemy and Cooking Overhaul ([LE](https://www.nexusmods.com/skyrim/mods/69306)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/19924))
 * Complete Crafting Overhaul Remade ([LE](https://www.nexusmods.com/skyrim/mods/49791))
