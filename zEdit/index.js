@@ -1417,11 +1417,11 @@ registerPatcher({
 					//Replace items with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
-					} else if(!"LVLI|KEYM|WEAP".includes(signature) && ("AMMO|ARMO".includes(signature) && count > "1") && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
+					} else if((!"LVLI|KEYM|WEAP|AMMO|ARMO".includes(signature) || ("AMMO|ARMO".includes(signature) && count > "1")) && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
 						if(signature == "AMMO") {
 							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Items")); j++) {
-								if(xelib.EditorID(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO")) == xelib.EditorID(item)) {
+								if(xelib.EditorID(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO\\Item")) == xelib.EditorID(item)) {
 									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
 									xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
 									break;
@@ -1559,6 +1559,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
+
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
 		//Add LVLI record	
 		let lvli = xelib.AddElement(file, "LVLI\\LVLI");
