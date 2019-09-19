@@ -1349,7 +1349,7 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if(!"LVLI|KEYM".includes(signature) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
+					} else if((!"LVLI|KEYM".includes(signature) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
@@ -1357,10 +1357,10 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(signature == "AMMO" && onlyGetsUsedByRecordWithSignature(record, "NPC_") && count > 1) {
+						if(signature == "AMMO" && onlyGetsUsedByRecordWithSignature(record, "NPC_")) {
 							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Leveled List Entries")); j++) {
-								helpers.logMessage(j.toString() + " " + xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) + " " + xelib.EditorID(leveledEntry));
-								if(xelib.EditorID(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference")) == xelib.EditorID(leveledEntry)) {
+								let currentCount = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count");
+								if(xelib.EditorID(xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference"))) == xelib.EditorID(leveledEntry) && currentCount == count && currentCount > 1) {
 									xelib.SetValue(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count", "1");
 									xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, (count - 1).toString());
 									break;
@@ -1417,11 +1417,12 @@ registerPatcher({
 					//Replace items with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(item)) == "Poverty.esp") {
 						xelib.RemoveItem(record, xelib.GetValue(item, "Record Header\\FormID"));
-					} else if((!"LVLI|KEYM|WEAP|AMMO|ARMO".includes(signature) || ("AMMO|ARMO".includes(signature) && count > "1")) && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
+					} else if((!"LVLI|KEYM|WEAP|AMMO|ARMO".includes(signature) || ("AMMO|ARMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, editorID) && !isInList(locals.whitelist, editorID))) {
 						let lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(item), xelib.EditorID(record), "NPC_", patchFile, locals, helpers);
 						if(signature == "AMMO") {
 							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Items")); j++) {
-								if(xelib.EditorID(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO\\Item")) == xelib.EditorID(item)) {
+								let currentCount = xelib.GetValue(previousRecord, "Items\\[" + j.toString() + "]\\CNTO\\Count");
+								if(xelib.EditorID(xelib.GetWinningOverride(xelib.GetLinksTo(record, "Items\\[" + j.toString() + "]\\CNTO\\Item"))) == xelib.EditorID(item) && currentCount == count && currentCount > 1) {
 									xelib.SetValue(record, "Items\\[" + j.toString() + "]\\CNTO\\Count", "1");
 									xelib.AddItem(record, xelib.EditorID(lvliRecord), (count - 1).toString());
 									break;
