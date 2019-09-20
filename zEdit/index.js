@@ -1138,11 +1138,7 @@ registerPatcher({
 						return false;
 					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(baseRecord))) {
 						return false;
-					} else if(!xelib.HasElement(record, "NAME")) {
-						return false;
 					} else if(xelib.GetRecordFlag(record, "Initially Disabled")) {
-						return false;
-					} else if(xelib.Signature(xelib.GetLinksTo(record, "NAME")) == "LVLI") {
 						return false;
 					} else if(isInList(locals.blacklistREFR, xelib.EditorID(record)) && !isInList(locals.whitelistREFR, xelib.EditorID(record))) {
 						return false;
@@ -1169,9 +1165,9 @@ registerPatcher({
 				//Change the name
 				switch(xelib.Signature(baseRecord)) {
 					case "ALCH":
-						if(xelib.HasKeyword(record, "VendorItemPotion") || xelib.HasKeyword(record, "VendorItemPoison")) {
+						if(xelib.HasKeyword(baseRecord, "VendorItemPotion") || xelib.HasKeyword(baseRecord, "VendorItemPoison")) {
 							xelib.SetValue(record, "NAME", "DummyDrink");
-						} else if(xelib.HasElement(record, "ENIT\\Sound - Consume") && xelib.GetValue(record, "ENIT\\Sound - Consume") != "NULL - Null Reference [00000000]" && xelib.GetHexFormID(xelib.GetLinksTo(record, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
+						} else if(xelib.HasElement(baseRecord, "ENIT\\Sound - Consume") && xelib.GetValue(baseRecord, "ENIT\\Sound - Consume") != "NULL - Null Reference [00000000]" && xelib.GetHexFormID(xelib.GetLinksTo(baseRecord, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
 							xelib.SetValue(record, "NAME", "DummyDrink");
 						} else {
 							xelib.SetValue(record, "NAME", "DummyFood");
@@ -1304,9 +1300,7 @@ registerPatcher({
 				signature: "LVLI",
 				overrides: false,
 				filter: function(record) {
-					let masterRecord = xelib.GetMasterRecord(record);
-					let overrides = xelib.GetOverrides(masterRecord);
-					if(!settings.processLVLI) {
+					if(!settings.processLVLI && xelib.EditorID(record) != "DLC1LItemGuardHuntingBowAndArrowsAllON_CCO") {
 						return false;
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
 						return false;
@@ -1340,6 +1334,8 @@ registerPatcher({
 				let previousFile = xelib.Name(xelib.GetElementFile(previousRecord));
 				
 				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
+				let onlyGetsUsedByNPCRecords = onlyGetsUsedByRecordWithSignature(record, "NPC_");
+
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Leveled List Entries")); i++) {
 					let leveledEntry = xelib.GetLinksTo(previousRecord, "Leveled List Entries\\[" + i.toString() + "]\\LVLO\\Reference");
@@ -1357,9 +1353,9 @@ registerPatcher({
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
-						if(signature == "AMMO" && onlyGetsUsedByRecordWithSignature(record, "NPC_")) {
+						if(signature == "AMMO" && onlyGetsUsedByNPCRecords) {
 							for(let j = 0; j < xelib.ElementCount(xelib.GetElement(record, "Leveled List Entries")); j++) {
-								let currentCount = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count");
+								let currentCount = xelib.GetValue(previousRecord, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count");								
 								if(xelib.EditorID(xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Reference"))) == xelib.EditorID(leveledEntry) && currentCount == count && currentCount > 1) {
 									xelib.SetValue(record, "Leveled List Entries\\[" + j.toString() + "]\\LVLO\\Count", "1");
 									xelib.AddLeveledEntry(record, xelib.EditorID(lvliRecord), level, (count - 1).toString());
@@ -1557,12 +1553,12 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && "AMMO" == signature) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
+	} else if((originSignature == "NPC_" && signature == "AMMO") || (originSignature == "LVLI" && (signature == "AMMO" || ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 
 	if(!(xelib.HasElement(patchFile, "LVLI\\p" + editorID) || xelib.HasElement(xelib.FileByName("Poverty.esp"), "LVLI\\p" + editorID))) {
-		//Add LVLI record	
+		//Add LVLI record
 		let lvli = xelib.AddElement(file, "LVLI\\LVLI");
 		xelib.AddElementValue(lvli, "EDID", "p" + editorID);
 		xelib.SetFlag(lvli, "LVLF", "Calculate for each item in count", true);
