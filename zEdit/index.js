@@ -1300,7 +1300,7 @@ registerPatcher({
 				signature: "LVLI",
 				overrides: false,
 				filter: function(record) {
-					if(!settings.processLVLI && xelib.EditorID(record) != "DLC1LItemGuardHuntingBowAndArrowsAllON_CCO") {
+					if(!settings.processLVLI) {
 						return false;
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
 						return false;
@@ -1334,7 +1334,7 @@ registerPatcher({
 				let previousFile = xelib.Name(xelib.GetElementFile(previousRecord));
 				
 				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
-				let onlyGetsUsedByNPCRecords = onlyGetsUsedByRecordWithSignature(record, "NPC_");
+				let onlyGetsUsedByNPCRecords = onlyGetsUsedByRecordWithSignature(record, "NPC_", "QUST");
 
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Leveled List Entries")); i++) {
@@ -1345,7 +1345,7 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if((!"LVLI|KEYM".includes(signature) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
+					} else if((!"LVLI|KEYM|WEAP".includes(signature) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
@@ -1497,13 +1497,13 @@ registerPatcher({
     })
 });
 
-function onlyGetsUsedByRecordWithSignature(record, signature) {
+function onlyGetsUsedByRecordWithSignature(record, signature, signature2) {
 	let references = xelib.GetReferencedBy(record);
 	let rightSignature = 0;
 	let i;
 	for(i = 0; i < references.length; i++) {
 		let currentSignature = xelib.Signature(references[i]);
-		if(currentSignature == signature || currentSignature == "LVLI" && onlyGetsUsedByRecordWithSignature(references[i], signature)) {
+		if(currentSignature == signature || currentSignature == signature2 || currentSignature == "LVLI" && onlyGetsUsedByRecordWithSignature(references[i], signature, signature2)) {
 			rightSignature++;
 		}
 	}
