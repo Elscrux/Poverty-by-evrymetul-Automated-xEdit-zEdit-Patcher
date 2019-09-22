@@ -1345,7 +1345,7 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if(((!"LVLI|KEYM".includes(signature) && ("WEAP".includes(signature) && !onlyGetsUsedByRecordWithSignature)) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
+					} else if((!"LVLI|KEYM|WEAP".includes(signature) || ("WEAP".includes(signature) && !onlyGetsUsedByRecordWithSignature) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
