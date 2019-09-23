@@ -1345,11 +1345,13 @@ registerPatcher({
 					//Replace leveled entry with poverty LVLI
 					if((previousFile == settings.customPatch || "Smashed Patch.esp|Bashed Patch, 0.esp".includes(previousFile)) && xelib.Name(xelib.GetElementFile(leveledEntry)) == "Poverty.esp") {
 						xelib.RemoveLeveledEntry(record, xelib.GetValue(leveledEntry, "Record Header\\FormID"));
-					} else if((!"LVLI|KEYM|WEAP".includes(signature) || ("WEAP".includes(signature) && !onlyGetsUsedByRecordWithSignature) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
+					} else if((!"LVLI|KEYM|WEAP".includes(signature) || ("WEAP".includes(signature) && !onlyGetsUsedByNPCRecords) || ("AMMO".includes(signature) && count > 1)) && !(isInList(locals.blacklist, xelib.EditorID(leveledEntry)) && !isInList(locals.whitelist, xelib.EditorID(leveledEntry)))) {
 						//Exchange the old leveled entry with a poverty variant
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "FLOR", patchFile, locals, helpers);
+						} else if(onlyGetsUsedByNPCRecords) {
+							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "NPC_", patchFile, locals, helpers);
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
 						}
@@ -1553,7 +1555,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && signature == "AMMO") || (originSignature == "LVLI" && (signature == "AMMO" || ("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
+	} else if((originSignature == "NPC_" && signature == "AMMO") || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 
