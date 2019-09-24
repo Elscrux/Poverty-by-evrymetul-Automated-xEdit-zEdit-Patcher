@@ -1509,7 +1509,7 @@ function onlyGetsUsedByRecordWithSignature(record, signature, signature2) {
 			rightSignature++;
 		}
 	}
-	if(rightSignature == i) {
+	if(rightSignature == references.length && references.length != 0) {
 		return true;
 	} else {
 		return false;
