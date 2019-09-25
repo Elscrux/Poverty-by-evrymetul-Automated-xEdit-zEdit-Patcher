@@ -1350,7 +1350,7 @@ registerPatcher({
 						let lvliRecord;
 						if(getsReferencedByFloraRecord) {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "FLOR", patchFile, locals, helpers);
-						} else if(onlyGetsUsedByNPCRecords) {
+						} else if(onlyGetsUsedByNPCRecords && signature == "AMMO") {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "NPC_", patchFile, locals, helpers);
 						} else {
 							lvliRecord = AddPovertyLVLI(patchFile, xelib.GetWinningOverride(leveledEntry), editorID, "LVLI", patchFile, locals, helpers);
@@ -1499,6 +1499,16 @@ registerPatcher({
     })
 });
 
+function isInList(list, editorID) {
+	let i;
+	for(i = 0; i < list.length; i++) {
+		if(editorID.substring(0, list[i].length) == list[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function onlyGetsUsedByRecordWithSignature(record, signature, signature2) {
 	let references = xelib.GetReferencedBy(record);
 	let rightSignature = 0;
@@ -1509,21 +1519,11 @@ function onlyGetsUsedByRecordWithSignature(record, signature, signature2) {
 			rightSignature++;
 		}
 	}
-	if(rightSignature == references.length && references.length != 0) {
+	if(rightSignature == references.length) {
 		return true;
 	} else {
 		return false;
 	}
-}
-
-function isInList(list, editorID) {
-	let i;
-	for(i = 0; i < list.length; i++) {
-		if(editorID.substring(0, list[i].length) == list[i]) {
-			return true;
-		}
-	}
-	return false;
 }
 
 function getsReferencedByRecordWithSignature(record, signature, signature2) {
