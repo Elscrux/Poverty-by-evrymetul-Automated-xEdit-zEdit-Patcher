@@ -1319,9 +1319,8 @@ registerPatcher({
 				if(settings.logCurrent) {
 					helpers.logMessage(xelib.LongName(record));
 				}
-
 				let editorID = xelib.EditorID(record);
-
+				
 				//Get previous Record
 				let masterRecord = xelib.GetMasterRecord(record);
 				let overrides = xelib.GetOverrides(masterRecord);
@@ -1331,10 +1330,9 @@ registerPatcher({
 				} else {
 					previousRecord = overrides[overrides.length - 2];
 				}
-				let previousFile = xelib.Name(xelib.GetElementFile(previousRecord));
-				
-				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(previousRecord, "FLOR", "TREE");
-				let onlyGetsUsedByNPCRecords = onlyGetsUsedByRecordWithSignature(record, "NPC_", "QUST");
+				let previousFile = xelib.Name(xelib.GetElementFile(masterRecord));
+				let getsReferencedByFloraRecord = getsReferencedByRecordWithSignature(masterRecord, "FLOR", "TREE");
+				let onlyGetsUsedByNPCRecords = onlyGetsUsedByRecordWithSignature(masterRecord, "NPC_", "QUST", patchFile);
 
 				//Cycle through leveled entries
 				for(let i = 0; i < xelib.ElementCount(xelib.GetElement(previousRecord, "Leveled List Entries")); i++) {
@@ -1509,21 +1507,38 @@ function isInList(list, editorID) {
 	return false;
 }
 
-function onlyGetsUsedByRecordWithSignature(record, signature, signature2) {
+function onlyGetsUsedByRecordWithSignature(record, signature, signature2, patchFile) {
 	let references = xelib.GetReferencedBy(record);
-	let rightSignature = 0;
-	let i;
-	for(i = 0; i < references.length; i++) {
-		let currentSignature = xelib.Signature(references[i]);
-		if(currentSignature == signature || currentSignature == signature2 || currentSignature == "LVLI" && onlyGetsUsedByRecordWithSignature(references[i], signature, signature2)) {
-			rightSignature++;
+	count = references.length;
+	let rightSignature = onlyGetsUsedByRecordWithSignatureRecursive(record, signature, signature2, patchFile);
+	for(let i = 0; i < references.length; i++) {
+		let reference = xelib.GetMasterRecord(references[i]);
+		if(xelib.GetFileName(xelib.GetElementFile(xelib.GetMasterRecord(reference))) == xelib.GetFileName(patchFile)) {
+			count--;
 		}
 	}
-	if(rightSignature == references.length) {
+
+	if(rightSignature == count && count != 0) {
 		return true;
 	} else {
 		return false;
 	}
+}
+
+function onlyGetsUsedByRecordWithSignatureRecursive(record, signature, signature2, patchFile) {
+	let references = xelib.GetReferencedBy(record);
+	let rightSignature = 0;
+	for(let i = 0; i < references.length; i++) {
+		let reference = xelib.GetMasterRecord(references[i]);
+		let currentSignature = xelib.Signature(reference);
+		if(currentSignature == signature || currentSignature == signature2) {
+			rightSignature++;
+		}
+		if(currentSignature == "LVLI" && onlyGetsUsedByRecordWithSignatureRecursive(reference, signature, signature2, patchFile)) {
+			rightSignature++;
+		}
+	}
+	return rightSignature;
 }
 
 function getsReferencedByRecordWithSignature(record, signature, signature2) {
