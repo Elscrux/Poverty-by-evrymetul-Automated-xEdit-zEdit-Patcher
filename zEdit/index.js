@@ -1116,6 +1116,15 @@ registerPatcher({
 			]
 
 			//--------------------------------
+			// list for npcs that
+			// contain death items of
+			// creatures or animals
+			//--------------------------------
+			locals.deadItemNPCs = [
+				
+			]
+
+			//--------------------------------
 			// list for leveled lists that
 			// contain harvestable 
 			// or consumables of plants
@@ -1590,7 +1599,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 		editorID = editorID + "_MERCHANT";
 	} else if(editorID.includes("SpellTome") || editorID.includes("Scroll") || isInList(locals.spellBook, editorID)) {
 		editorID = editorID + "_SPELL";
-	} else if((originSignature == "NPC_" && signature == "AMMO") || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
+	} else if((originSignature == "NPC_" && (signature == "AMMO" || isInList(locals.deadItemNPCs, originEditorID))) || (originSignature == "LVLI" && (("MISC" == signature && originEditorID.includes("DeathItem") && getsReferencedByRecordWithSignature(record, "COBJ", "")) || isInList(locals.npcItems, originEditorID) || ("ALCH|INGR".includes(signature) && originEditorID.includes("DeathItem"))))) {
 		editorID = editorID + "_NPC";
 	}
 
