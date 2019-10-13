@@ -1122,6 +1122,24 @@ registerPatcher({
 			//--------------------------------
 			locals.deadItemNPCs = [
 				
+				"AKEncA",
+				"AKEncBloodsuckerfish",
+				"AKEncChaurus",
+				"AKEncDragonPriest",
+				"AKEncFrostbiteSpider",
+				"AKEncHagravenAscendedsleeper",
+				"AKEncHorker",
+				"AKEncIceWraith",
+				"AKEncNCRSpidermedium",
+				"AKEncRatSkeever",
+				"AKEncSabreCatPanther",
+				"AKEncSkeeverShoggoth",
+				"AKEncWerewolf",
+				"AKEncWispMara",
+				"AKLvlArachneNoGiant",
+				"AKLvlDraugrMelee",
+				"akLvlNRCBlueSpiderAmbush",
+				"akLvlNRCBlueSpiderAmbush"
 			]
 
 			//--------------------------------
