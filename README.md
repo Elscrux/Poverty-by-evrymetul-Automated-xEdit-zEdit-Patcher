@@ -29,6 +29,7 @@ The following quest mods are already compatible:
 * Gray Cowl of Nocturnal ([LE](https://www.nexusmods.com/skyrim/mods/64651)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4509))
 * Helgen Reborn ([LE](https://www.nexusmods.com/skyrim/mods/35841)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/5673))
 * Moon and Star ([LE](https://www.nexusmods.com/skyrim/mods/52397)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4301)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
+* Project AHO ([LE](https://www.nexusmods.com/skyrim/mods/90276/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/15996))
 * The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
 * Undeath ([LE](https://www.nexusmods.com/skyrim/mods/40607)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/6180))
 * Vigilant ([LE](https://www.nexusmods.com/skyrim/mods/67103/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/11849))
