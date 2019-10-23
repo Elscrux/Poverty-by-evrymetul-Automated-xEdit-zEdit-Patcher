@@ -35,6 +35,27 @@ registerPatcher({
 			//--------------------------------
 			locals.blacklist = [
 					"DefaultBookShelfBookMarker",
+					"000FCAAALetter",
+					"000FCAltriusSuicideNote",
+					"000FCArmorDwarvenHelmet",
+					"000FCAsanshiLetter",
+					"000FCBrandasWill",
+					"000FCClothesWarlockRobes",
+					"000FCDeadNecromancerJournal",
+					"000FCDeglundLetter",
+					"000FCEntryBandit",
+					"000FCGulvarsAxe",
+					"000FCHarubalLetterToGuul",
+					"000FCJesholLetter",
+					"000FCJournal",
+					"000FCLetter",
+					"000FCMissingRingHabiq",
+					"000FCNote",
+					"000FCPalaceLectureNotes",
+					"000FCRedInkwell",
+					"000FCTorchLarge",
+					"000FCVernonThreatNoteIncomplete",
+					"000FCYsmarLetter",
 					"aaaBalokDunGlassClaw",
 					"aaaBalokEnchDragonPriestDagger",
 					"aaaWereBanditSpecialPick",
@@ -672,6 +693,7 @@ registerPatcher({
 			// blacklist for leveled lists
 			//--------------------------------
 			locals.blacklistLVLI = [
+					"000FCLItemCassiaReward",
 					"1Dr_BANDG_FlaskCCO",
 					"1Dr_BANDG_NotebookCCO",
 					"1nivListCloakGuardHoodARM",
@@ -1121,7 +1143,6 @@ registerPatcher({
 			// creatures or animals
 			//--------------------------------
 			locals.deadItemNPCs = [
-				
 				"AKEncA",
 				"AKEncBloodsuckerfish",
 				"AKEncChaurus",
