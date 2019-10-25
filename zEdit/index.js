@@ -456,6 +456,22 @@ registerPatcher({
 					"SpellTomeMassReanimate",
 					"SpellTomeTransmuteOreMineral",
 					"SovRoastOx",
+					"SSewersAnnouncement",
+					"SSewersBanditNote",
+					"SSewersBook1",
+					"SSewersBookT",
+					"SSewersDarmokJournal",
+					"SSewersFrostVaultLog",
+					"SSewersJsasheBook",
+					"SSewersLoveLetter5thEra",
+					"SSewersOldHaafingarSteelDragonClaw",
+					"SSewersRourkenBlade",
+					"SSewersSongOfUlvaak",
+					"SSewersStahlrimLongsword",
+					"SSewersStormFang01",
+					"SSewersThalmorNote",
+					"SSewersUlvigNotes",
+					"SSewersVindicatorRant",
 					"SteelBattleAxeBroken",
 					"SteelWarhammerBrokenHandle",
 					"T0",
@@ -1115,7 +1131,8 @@ registerPatcher({
 				"PerkMasterTraderGold",
 				"KRY_Variable01Gold",
 				"KRY_Variable02Gold",
-				"KRY_Variable03Gold"
+				"KRY_Variable03Gold",
+				"SSewersPeddlerChest"
 			]
 
 			//--------------------------------
