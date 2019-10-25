@@ -47,6 +47,7 @@ The following mods are confirmed compatible as well:
 * Immersive College of Winterhold ([LE](https://www.nexusmods.com/skyrim/mods/36849)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/17004))
 * Requiem ([LE](https://www.nexusmods.com/skyrim/mods/19281))
 * Scarcity ([LE](https://www.nexusmods.com/skyrim/mods/49496/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/8647))
+* Skyrim Sewers ([LE](https://www.nexusmods.com/skyrim/mods/14351)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/9320?tab=files))
 * Skyrim Underground ([LE](https://www.nexusmods.com/skyrim/mods/75004)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/131/))
 * Trade and Barter ([LE](https://www.nexusmods.com/skyrim/mods/34612)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/23081))
 * Weapons and Armor Fixes Remade ([LE](https://www.nexusmods.com/skyrim/mods/34093))
