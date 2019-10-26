@@ -29,6 +29,7 @@ The following quest mods are already compatible:
 * Forgotten City ([LE](https://www.nexusmods.com/skyrim/mods/70219)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/1179/))
 * Gray Cowl of Nocturnal ([LE](https://www.nexusmods.com/skyrim/mods/64651)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4509))
 * Helgen Reborn ([LE](https://www.nexusmods.com/skyrim/mods/35841)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/5673))
+* Interesting NPCs ([LE](https://www.nexusmods.com/skyrim/mods/8429/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/29194/))
 * Moon and Star ([LE](https://www.nexusmods.com/skyrim/mods/52397)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/4301)) + Optional Extra Poverty Features Patch ([LE](https://www.nexusmods.com/skyrim/mods/96891?tab=files)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/24712?tab=files))
 * Project AHO ([LE](https://www.nexusmods.com/skyrim/mods/90276/)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/15996))
 * The Wheels of Lull ([LE](https://www.nexusmods.com/skyrim/mods/58672)/[SE](https://www.nexusmods.com/skyrimspecialedition/mods/748))
