@@ -1258,6 +1258,7 @@ registerPatcher({
 				signature: "REFR",
 				overrides: false,
 				filter: function(record) {
+					helpers.logMessage(xelib.GetValue(record, "NAME"));
 					if(!settings.processREFR) {
 						return false;
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
