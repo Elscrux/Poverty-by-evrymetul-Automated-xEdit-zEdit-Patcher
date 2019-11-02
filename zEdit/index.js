@@ -1258,20 +1258,18 @@ registerPatcher({
 				signature: "REFR",
 				overrides: false,
 				filter: function(record) {
-					helpers.logMessage(xelib.GetValue(record, "NAME"));
+					let baseRecord = xelib.GetLinksTo(record, "NAME");
 					if(!settings.processREFR) {
 						return false;
 					} else if(xelib.Name(xelib.GetElementFile(xelib.GetWinningOverride(record))) == "Poverty.esp") {
 						return false;
-					} else if(xelib.GetValue(record, "NAME") == "NULL - Null Reference [00000000]") {
-						return false;
-					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(xelib.GetLinksTo(record, "NAME")))) {
+					} else if(!"ALCH|AMMO|ARMO|BOOK|INGR|MISC|SLGM|WEAP".includes(xelib.Signature(baseRecord))) {
 						return false;
 					} else if(xelib.GetRecordFlag(record, "Initially Disabled")) {
 						return false;
 					} else if(isInList(locals.blacklistREFR, xelib.EditorID(record)) && !isInList(locals.whitelistREFR, xelib.EditorID(record))) {
 						return false;
-					} else if(isInList(locals.blacklist, xelib.EditorID(xelib.GetLinksTo(record, "NAME"))) && !isInList(locals.whitelist, xelib.EditorID(xelib.GetLinksTo(record, "NAME")))) {
+					} else if(isInList(locals.blacklist, xelib.EditorID(baseRecord)) && !isInList(locals.whitelist, xelib.EditorID(baseRecord))) {
 						return false;
 					} else {
 						return true;
