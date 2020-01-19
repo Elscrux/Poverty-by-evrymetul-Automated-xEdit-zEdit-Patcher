@@ -1353,7 +1353,7 @@ registerPatcher({
 				switch(xelib.Signature(baseRecord)) {
 					case "ALCH":
 						if(xelib.HasKeyword(baseRecord, "VendorItemPotion") || xelib.HasKeyword(baseRecord, "VendorItemPoison")) {
-							xelib.SetValue(record, "NAME", "DummyDrink");
+							xelib.SetValue(record, "NAME", "DummyPotion");
 						} else if(xelib.HasElement(baseRecord, "ENIT\\Sound - Consume") && xelib.GetValue(baseRecord, "ENIT\\Sound - Consume") != "NULL - Null Reference [00000000]" && xelib.GetHexFormID(xelib.GetLinksTo(baseRecord, "ENIT\\Sound - Consume"), false, false) == "000B6435") {
 							xelib.SetValue(record, "NAME", "DummyDrink");
 						} else {
@@ -1744,7 +1744,7 @@ function AddPovertyLVLI(file, record, originEditorID, originSignature, patchFile
 	let editorID = xelib.EditorID(record);
 	//If reference is LVLI get the first non LVLI entry
 	if(signature == "LVLI" && xelib.Signature(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI" && xelib.HasElement(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"), "Leveled List Entries")) {
-		var innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"));
+		let innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"));
 		while(xelib.Signature(innerlvli) == "LVLI" && xelib.Signature(xelib.GetLinksTo(innerlvli, "Leveled List Entries\\[0]\\LVLO\\Reference")) == "LVLI" && xelib.HasElement(xelib.GetLinksTo(record, "Leveled List Entries\\[0]\\LVLO\\Reference"), "Leveled List Entries")) {
 			innerlvli = xelib.GetWinningOverride(xelib.GetLinksTo(innerlvli, "Leveled List Entries\\[0]\\LVLO\\Reference"));
 		}
