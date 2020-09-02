@@ -700,6 +700,8 @@ registerPatcher({
 					"REQ_Book_TyranusJournal",
 					"REQ_Book_ValtheimBossJournal",
 					"REQ_Daedric",
+					"REQ_Misc_BigKettle",
+					"REQ_Misc_Spellchoice",
 					"RuinsLinenPile01WWW2",
 					"sc_ArvakSkullUNIQUE",
 					"SkinDragonPriestFXMist",
